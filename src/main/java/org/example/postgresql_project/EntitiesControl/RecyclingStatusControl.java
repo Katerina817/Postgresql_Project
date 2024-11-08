@@ -20,17 +20,17 @@ public class RecyclingStatusControl {
     }
 
     //Метод для добавления записи в таблицу recycling_status
-    public void insertRecyclingStatus(@NonNull RecyclingStatus recyclingStatus) throws SQLException {
+    public boolean insertRecyclingStatus(@NonNull RecyclingStatus recyclingStatus) throws SQLException {
         try{
             recyclingStatus_check.CheckRecyclingStatus(recyclingStatus);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
 
         if (!isStatusNameUnique(recyclingStatus.getRecyclingStatusName())) {
             new ErrorClass().startError("Ошибка","Название уже существует","Пожалуйста, выберите другое название.");
-            return;
+            return false;
         }
         recyclingStatus.setRecyclingStatusId(UUID.randomUUID().toString());
         String sql = "INSERT INTO recycling_status (recycling_status_id, recycling_status_name, current_process_description) VALUES (?, ?, ?)";
@@ -42,7 +42,9 @@ public class RecyclingStatusControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке статуса переработки",e.getMessage());
+            return false;
         }
+        return true;
     }
     //метод для проверки уникальности названия
     private boolean isStatusNameUnique(String recycling_status_name) throws SQLException {
@@ -54,6 +56,30 @@ public class RecyclingStatusControl {
                 return resultSet.getInt(1) == 0;
             }
             return true;
+        }
+    }
+
+
+
+    //Метод для удаления записи из таблицы recycling_status
+    public boolean deleteRecyclingStatusByColumnName(String column_name,String value) {
+        String selectSql = "SELECT recycling_status_id FROM recycling_status WHERE " + column_name + " = ?";
+        String sql = "DELETE FROM recycling_status WHERE "+column_name+" = ?";
+        try (PreparedStatement selectStatement = connection.prepareStatement(selectSql);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            selectStatement.setString(1, value);
+            statement.setString(1, value);
+            ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                String recyclingStatusId = resultSet.getString("recycling_status_id");
+                RecyclingControl recyclingControl = new RecyclingControl(connection);
+                recyclingControl.deleteRecyclingByColumnName("recycling_status_id", recyclingStatusId);
+            }
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении записи о статусе переработки",e.getMessage());
+            return false;
         }
     }
 }

@@ -20,17 +20,17 @@ public class ReportTypeControl {
     }
 
     //Метод для добавления записи в таблицу report_type
-    public void insertReportType(@NonNull ReportType reportType) throws SQLException {
+    public boolean insertReportType(@NonNull ReportType reportType) throws SQLException {
         try{
             reportType_check.CheckReportType(reportType);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
 
         if (!isNameUnique(reportType.getReportTypeName())) {
             new ErrorClass().startError("Ошибка","Название уже существует","Пожалуйста, выберите другое название.");
-            return;
+            return false;
         }
         reportType.setReportTypeId(UUID.randomUUID().toString());
         String sql = "INSERT INTO report_type (report_type_id, report_type_name) VALUES (?,?)";
@@ -41,7 +41,9 @@ public class ReportTypeControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке типа отчета",e.getMessage());
+            return false;
         }
+        return true;
     }
     //метод для проверки уникальности названия
     private boolean isNameUnique(String report_type_name) throws SQLException {
@@ -53,6 +55,30 @@ public class ReportTypeControl {
                 return resultSet.getInt(1) == 0;
             }
             return true;
+        }
+    }
+
+
+    //Метод для удаления записи из таблицы report_type
+    public boolean deleteReportTypeByColumnName(String column_name,String value) {
+        String selectSql = "SELECT report_type_id FROM report_type WHERE " + column_name + " = ?";
+        String sql = "DELETE FROM report_type WHERE "+column_name+" = ?";
+        try (PreparedStatement selectStatement = connection.prepareStatement(selectSql);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            selectStatement.setString(1, value);
+            statement.setString(1, value);
+
+            ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                String reportTypeId = resultSet.getString("report_type_id");
+                ReportControl reportControl = new ReportControl(connection);
+                reportControl.deleteReportByColumnName("report_type_id", reportTypeId);
+            }
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении записи о типе отчета",e.getMessage());
+            return false;
         }
     }
 }
