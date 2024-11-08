@@ -21,17 +21,17 @@ public class TrashTypeControl {
 
 
     //Метод для добавления записи в таблицу trash_type
-    public void insertReportType(@NonNull TrashType trashType) throws SQLException {
+    public boolean insertReportType(@NonNull TrashType trashType) throws SQLException {
         try{
             trashType_check.CheckTrashType(trashType);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
 
         if (!isNameUnique(trashType.getTrashTypeName())) {
             new ErrorClass().startError("Ошибка","Название уже существует","Пожалуйста, выберите другое название.");
-            return;
+            return false;
         }
         trashType.setTrashTypeId(UUID.randomUUID().toString());
         String sql = "INSERT INTO trash_type (trash_type_id, trash_type_name) VALUES (?,?)";
@@ -42,7 +42,9 @@ public class TrashTypeControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке типа мусора",e.getMessage());
+            return false;
         }
+        return true;
     }
     //метод для проверки уникальности названия
     private boolean isNameUnique(String trash_type_name) throws SQLException {
@@ -54,6 +56,22 @@ public class TrashTypeControl {
                 return resultSet.getInt(1) == 0;
             }
             return true;
+        }
+    }
+
+
+
+
+    //Метод для удаления записи из таблицы trash_type по id
+    public boolean deleteTrashTypeById(String trashTypeId) {
+        String sql = "DELETE FROM trash_type WHERE trash_type_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, trashTypeId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении записи о типе мусора",e.getMessage());
+            return false;
         }
     }
 }

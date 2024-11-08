@@ -19,16 +19,16 @@ public class TrashInfoControl {
     }
 
     //Метод для добавления записи в таблицу trash_info
-    public void insertTrashInfo(@NonNull TrashInfo trashInfo) throws SQLException {
+    public boolean insertTrashInfo(@NonNull TrashInfo trashInfo) throws SQLException {
         try{
             trash_info_check.CheckTrashInfo(trashInfo);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
         if (!checkUserExists(trashInfo.getUserId()) || !checkTrashTypeExists(trashInfo.getTrashTypeId())) {
             new ErrorClass().startError("Ошибка", "Пользователь или тип мусора не найден в базе данных");
-            return;
+            return false;
         }
         trashInfo.setTrashInfoId(UUID.randomUUID().toString());
         String sql = "INSERT INTO trash_info (trash_info_id, user_id,trash_type_id,trash_quantity) VALUES (?, ?, ?, ?)";
@@ -41,7 +41,9 @@ public class TrashInfoControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке информации о мусоре",e.getMessage());
+            return false;
         }
+        return true;
     }
     // метод для проверки существования пользователя
     private boolean checkUserExists(String userId) throws SQLException {
@@ -57,6 +59,23 @@ public class TrashInfoControl {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, trashTypeId);
             return statement.executeQuery().next();
+        }
+    }
+
+
+
+
+
+    //Метод для удаления записи из таблицы trash_info по id
+    public boolean deleteTrashInfoById(String trashInfoId) {
+        String sql = "DELETE FROM trash_info WHERE trash_info_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, trashInfoId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении записи об информации о мусоре",e.getMessage());
+            return false;
         }
     }
 }

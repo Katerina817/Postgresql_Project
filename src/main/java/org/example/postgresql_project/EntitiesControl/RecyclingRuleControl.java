@@ -19,12 +19,12 @@ public class RecyclingRuleControl {
     }
 
     //Метод для добавления записи в таблицу recycling_rule
-    public void insertRecyclingRule(@NonNull RecyclingRule recyclingRule) throws SQLException {
+    public boolean insertRecyclingRule(@NonNull RecyclingRule recyclingRule) throws SQLException {
         try{
             recyclingRule_check.CheckRecyclingRule(recyclingRule);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
         recyclingRule.setRuleId(UUID.randomUUID().toString());
         String sql = "INSERT INTO recycling_rule (rule_id, content) VALUES (?, ?)";
@@ -35,6 +35,21 @@ public class RecyclingRuleControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке правила переработки",e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    //Метод для удаления записи из таблицы recycling_rule по id
+    public boolean deleteRecyclingRuleById(String ruleId) {
+        String sql = "DELETE FROM recycling_rule WHERE rule_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, ruleId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении записи о правиле переработки",e.getMessage());
+            return false;
         }
     }
 }

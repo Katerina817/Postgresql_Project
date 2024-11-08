@@ -19,16 +19,16 @@ public class RecyclingControl {
     }
 
     //Метод для добавления записи в таблицу recycling
-    public void insertRecycling(@NonNull Recycling recycling) throws SQLException {
+    public boolean insertRecycling(@NonNull Recycling recycling) throws SQLException {
         try{
             recycling_check.CheckRecycling(recycling);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
         if (!checkStatusExists(recycling.getRecyclingStatusId()) || !checkRuleExists(recycling.getRuleId())|| !checkTrashInfoExists(recycling.getTrashInfoId())) {
             new ErrorClass().startError("Ошибка", "Статус, правило или информация о мусоре не найдена в базе данных");
-            return;
+            return false;
         }
         recycling.setRecyclingId(UUID.randomUUID().toString());
         String sql = "INSERT INTO recycling (recycling_id, recycling_status_id,rule_id,trash_info_id,recycling_date) VALUES (?, ?, ?, ?, ?)";
@@ -42,7 +42,9 @@ public class RecyclingControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке информации о переработке",e.getMessage());
+            return false;
         }
+        return true;
     }
     // метод для проверки существования статуса
     private boolean checkStatusExists(String recyclingStatusId) throws SQLException {
@@ -66,6 +68,23 @@ public class RecyclingControl {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, trashInfoId);
             return statement.executeQuery().next();
+        }
+    }
+
+
+
+
+
+    //Метод для удаления записи из таблицы recycling по id
+    public boolean deleteRecyclingById(String recyclingId) {
+        String sql = "DELETE FROM recycling WHERE recycling_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, recyclingId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении записи о переработке",e.getMessage());
+            return false;
         }
     }
 }

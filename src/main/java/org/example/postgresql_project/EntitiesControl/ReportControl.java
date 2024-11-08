@@ -20,16 +20,16 @@ public class ReportControl {
     }
 
     //Метод для добавления записи в таблицу report
-    public void insertReport(@NonNull Report report) throws SQLException {
+    public boolean insertReport(@NonNull Report report) throws SQLException {
         try{
             report_check.CheckReport(report);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
         if (!checkReportTypeExists(report.getReportTypeId()) || !checkAdminExists(report.getAdminId())|| !checkRecyclingExists(report.getRecyclingId())) {
             new ErrorClass().startError("Ошибка", "Тип мусора, админ или информация о переработке не найдены в базе данных");
-            return;
+            return false;
         }
         report.setReportId(UUID.randomUUID().toString());
         String sql = "INSERT INTO report (report_id, report_type_id,admin_id,content,report_date, recycling_id) VALUES (?, ?, ?, ?, ?, ?)";
@@ -44,7 +44,9 @@ public class ReportControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке информации об отчете",e.getMessage());
+            return false;
         }
+        return true;
     }
     // метод для проверки существования типа мусора
     private boolean checkReportTypeExists(String reportTypeId) throws SQLException {
@@ -68,6 +70,21 @@ public class ReportControl {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, recyclingId);
             return statement.executeQuery().next();
+        }
+    }
+
+
+
+    //Метод для удаления записи из таблицы report по id
+    public boolean deleteReportById(String reportId) {
+        String sql = "DELETE FROM report WHERE report_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, reportId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении записи об отчете",e.getMessage());
+            return false;
         }
     }
 }

@@ -20,20 +20,20 @@ public class AdminControl {
     }
 
     //Метод для добавления записи в таблицу админ
-    public void insertAdmin(@NonNull Admin admin) throws SQLException {
+    public boolean insertAdmin(@NonNull Admin admin) throws SQLException {
         try{
             admin_check.CheckAdmin(admin);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
 
         if (!isLoginUnique(admin.getLogin())) {
             new ErrorClass().startError("Ошибка","Логин уже существует","Пожалуйста, выберите другой логин.");
-            return;
+            return false;
         }
         admin.setAdminId(UUID.randomUUID().toString());
-        String sql = "INSERT INTO admin (admin_id, login, name, surname, password, email, age, birth_year, tel_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO admin (admin_id, login, name, surname, password, email, age, birth_year) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, admin.getAdminId());
@@ -47,7 +47,9 @@ public class AdminControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке пользователя",e.getMessage());
+            return false;
         }
+        return true;
     }
     //метод для проверки уникальности логина
     private boolean isLoginUnique(String login) throws SQLException {
@@ -59,6 +61,21 @@ public class AdminControl {
                 return resultSet.getInt(1) == 0;
             }
             return true;
+        }
+    }
+
+
+
+    //Метод для удаления записи из таблицы админ по id
+    public boolean deleteAdminById(String adminId) {
+        String sql = "DELETE FROM admin WHERE admin_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, adminId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении админа",e.getMessage());
+            return false;
         }
     }
 }

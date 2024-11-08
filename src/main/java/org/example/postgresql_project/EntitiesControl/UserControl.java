@@ -20,17 +20,17 @@ public class UserControl {
     }
 
     //Метод для добавления записи в таблицу users
-    public void insertUser(@NonNull User user) throws SQLException {
+    public boolean insertUser(@NonNull User user) throws SQLException {
         try{
             user_check.CheckUser(user);
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
-            return;
+            return false;
         }
 
         if (!isLoginUnique(user.getLogin())) {
             new ErrorClass().startError("Ошибка","Логин уже существует","Пожалуйста, выберите другой логин.");
-            return;
+            return false;
         }
         user.setUserId(UUID.randomUUID().toString());
         String sql = "INSERT INTO users (user_id, login, name, surname, password, email) VALUES (?, ?, ?, ?, ?, ?)";
@@ -45,7 +45,9 @@ public class UserControl {
             statement.executeUpdate();
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вставке пользователя",e.getMessage());
+            return false;
         }
+        return true;
     }
     //метод для проверки уникальности логина
     private boolean isLoginUnique(String login) throws SQLException {
@@ -76,6 +78,21 @@ public class UserControl {
             } else {
                 throw new SQLException("Пользователь с ID " + userId + " не найден.");
             }
+        }
+    }
+
+
+
+    //Метод для удаления записи из таблицы users по id
+    public boolean deleteUsersById(String userId) {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при удалении записи о пользователе",e.getMessage());
+            return false;
         }
     }
 }

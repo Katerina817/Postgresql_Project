@@ -91,7 +91,8 @@ public class HelloApplication extends Application {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
-
+            //ReportControl rC=new ReportControl(con);
+            //rC.deleteReportById("e5d9b673-c915-4aed-a1fd-a726839ca386");
             /*Recycling r=new Recycling();
             r.setRecyclingStatusId("4575fcad-f246-46c7-a929-6b6af491190d");
             r.setRuleId("12e38941-5cc6-4c29-b188-997388472560");
@@ -111,7 +112,11 @@ public class HelloApplication extends Application {
             } catch (SQLException et) {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
-            }*/
+            }
+
+            RecyclingControl rC=new RecyclingControl(con);
+            rC.deleteRecyclingById("1b61e0b2-361d-4034-93ba-8c37ecf53485");*/
+
             /*TrashInfo r=new TrashInfo();
             r.setUserId("9a4b72d1-6ea0-425a-8a87-b08e13f44ff3");
             r.setTrashTypeId("c386b62d-d133-4af2-9f16-da3b6d0433e0");
@@ -123,6 +128,10 @@ public class HelloApplication extends Application {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
+            //TrashInfoControl rC=new TrashInfoControl(con);
+            //rC.deleteTrashInfoById("51fe410f-32dc-4dd9-becf-6bc4a77929bd");
+
+
 
             /*RecyclingRule r=new RecyclingRule();
             RecyclingRuleControl rC=new RecyclingRuleControl(con);
@@ -131,8 +140,9 @@ public class HelloApplication extends Application {
             } catch (SQLException et) {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
-            }*/
-
+            }
+            RecyclingRuleControl rC=new RecyclingRuleControl(con);
+            rC.deleteRecyclingById("0b557805-a844-4eb8-bc58-8b423852b72b");*/
 
             /*RecyclingStatus r=new RecyclingStatus();
             r.setRecyclingStatusName("kkk");
@@ -144,12 +154,17 @@ public class HelloApplication extends Application {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
+            //RecyclingStatusControl rC=new RecyclingStatusControl(con);
+            //rC.deleteRecyclingStatusById("3015e30a-4b66-4e18-81d2-e879b8e7376b");
+
+
+
             /*User admin = new User();
             //admin.setAdminId("1234");
             admin.setLogin("111111111111111");
             admin.setName("bh");
             admin.setSurname("Doe");
-            //admin.setPassword("");
+            admin.setPassword("12345");
 
             UserControl adminC = new UserControl(con);
             try {
@@ -158,8 +173,12 @@ public class HelloApplication extends Application {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении gjkmpjdfntkmz: " + et.getMessage());
             }*/
+            //UserControl adminC = new UserControl(con);
+            //adminC.deleteUsersById("bc407c45-2cb7-41af-8059-2cf7c0395ca4");
+
+
             /*TrashType r=new TrashType();
-            r.setTrashTypeName("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+            r.setTrashTypeName("kkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
             TrashTypeControl rC=new TrashTypeControl(con);
             try {
                 rC.insertReportType(r);
@@ -167,6 +186,9 @@ public class HelloApplication extends Application {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
+            //TrashTypeControl rC=new TrashTypeControl(con);
+            //rC.deleteTrashTypeById("0cb35099-d391-4beb-9560-c0ed3a5af9fa");
+
 
             /*ReportType r=new ReportType();
             r.setReportTypeName("k");
@@ -177,20 +199,22 @@ public class HelloApplication extends Application {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
-
+            //ReportTypeControl rC=new ReportTypeControl(con);
+            //rC.deleteReportTypeById("21e17b14-df96-4acc-8814-fb32f63979ff");
 
             /*Admin admin = new Admin();
             //admin.setAdminId("1234");
-            admin.setLogin("11111111111111111111111111111111111111111111111");
+            admin.setLogin("11111111111");
             admin.setName("bh");
             admin.setSurname("Doe");
             admin.setPassword("password123");
             admin.setEmail("john.doe@example.com");
             admin.setAge(15);
-            admin.setBirthYear(2020);
+            admin.setBirthYear(2020);*/
 
-            AdminControl adminC = new AdminControl(con);
-            try {
+            //AdminControl adminC = new AdminControl(con);
+            //System.out.println(adminC.deleteAdminById("2bfa83c1-f04a-4893-8910-f3fbee16d883"));
+            /*try {
                 adminC.insertAdmin(admin);
             } catch (SQLException et) {
                 et.printStackTrace();
