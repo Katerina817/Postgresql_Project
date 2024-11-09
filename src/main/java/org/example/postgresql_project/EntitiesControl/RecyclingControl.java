@@ -105,6 +105,7 @@ public class RecyclingControl {
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
+
             new ErrorClass().startError("Ошибка","Ошибка при удалении записи о переработке",e.getMessage());
             return false;
         }
