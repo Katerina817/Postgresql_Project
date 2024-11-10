@@ -28,8 +28,13 @@ public class TrashInfoControl {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
             return false;
         }
-        if (!checkUserExists(trashInfo.getUserId()) || !checkTrashTypeExists(trashInfo.getTrashTypeId())) {
-            new ErrorClass().startError("Ошибка", "Пользователь или тип мусора не найден в базе данных");
+        try {
+            if (!checkUserExists(trashInfo.getUserId()) || !checkTrashTypeExists(trashInfo.getTrashTypeId())) {
+                new ErrorClass().startError("Ошибка", "Пользователь или тип мусора не найден в базе данных");
+                return false;
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при проверке существования элементов", e.getMessage());
             return false;
         }
         trashInfo.setTrashInfoId(UUID.randomUUID().toString());
@@ -97,6 +102,51 @@ public class TrashInfoControl {
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при удалении записи об информации о мусоре",e.getMessage());
+            return false;
+        }
+    }
+
+
+    // Метод для обновления записи в таблице trash_info по trash_info_id
+    public boolean updateTrashInfoField(String trashInfoId, String columnName, Object newValue) {
+        try {
+            trash_info_check.validateTrashInfoForUpdate(columnName, newValue.toString());
+        } catch (InvalidLengthException e) {
+            new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
+            return false;
+        }
+        try {
+            if (columnName.equals("user_id") && !checkUserExists(newValue.toString())) {
+                new ErrorClass().startError("Ошибка", "Пользователь не найден", "Указанный пользователь не существует.");
+                return false;
+            }
+            if (columnName.equals("trash_type_id") && !checkTrashTypeExists(newValue.toString())) {
+                new ErrorClass().startError("Ошибка", "Тип мусора не найден", "Указанный тип мусора не существует.");
+                return false;
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при проверке данных", e.getMessage());
+            return false;
+        }
+        String sql = "UPDATE trash_info SET " + columnName + " = ? WHERE trash_info_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (columnName.equals("trash_quantity")) {
+                try {
+                    int quantity = Integer.parseInt(newValue.toString());
+                    statement.setInt(1, quantity);
+                } catch (NumberFormatException e) {
+                    new ErrorClass().startError("Ошибка", "Неверный тип данных", "Количество должно быть целым числом.");
+                    return false;
+                }
+            } else {
+                statement.setString(1, newValue.toString());
+            }
+            statement.setString(2, trashInfoId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи информации о мусоре", e.getMessage());
             return false;
         }
     }

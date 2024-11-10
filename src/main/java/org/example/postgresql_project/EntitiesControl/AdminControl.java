@@ -28,9 +28,13 @@ public class AdminControl {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
             return false;
         }
-
-        if (!isLoginUnique(admin.getLogin())) {
-            new ErrorClass().startError("Ошибка","Логин уже существует","Пожалуйста, выберите другой логин.");
+        try {
+            if (!isLoginUnique(admin.getLogin())) {
+                new ErrorClass().startError("Ошибка","Логин уже существует","Пожалуйста, выберите другой логин.");
+                return false;
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности названия", e.getMessage());
             return false;
         }
         admin.setAdminId(UUID.randomUUID().toString());
@@ -100,4 +104,47 @@ public class AdminControl {
             return false;
         }
     }
+
+
+    //Метод для обновления записи в таблице админ по admin_id
+    public boolean updateAdminField(String adminId, String columnName, Object newValue) {
+        try {
+            admin_check.validateAdminForUpdate(columnName, newValue.toString());
+        } catch (InvalidLengthException e) {
+            new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
+            return false;
+        }
+        if (columnName.equals("login")) {
+            try {
+                if (!isLoginUnique(newValue.toString())) {
+                    new ErrorClass().startError("Ошибка", "Логин уже существует", "Пожалуйста, выберите другой логин.");
+                    return false;
+                }
+            } catch (SQLException e) {
+                new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности названия", e.getMessage());
+                return false;
+            }
+        }
+        String sql = "UPDATE admin SET " + columnName + " = ? WHERE admin_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (Objects.equals(columnName, "age") || Objects.equals(columnName, "birth_year")) {
+                try {
+                    int intValue = Integer.parseInt(newValue.toString());
+                    statement.setInt(1, intValue);
+                } catch (NumberFormatException e) {
+                    new ErrorClass().startError("Ошибка", "Неверный тип данных", "Значение должно быть целым числом");
+                    return false;
+                }
+            } else {
+                statement.setString(1, newValue.toString());
+            }
+            statement.setString(2, adminId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());
+            return false;
+        }
+    }
+
 }

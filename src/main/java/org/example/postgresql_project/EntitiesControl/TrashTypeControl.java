@@ -83,4 +83,37 @@ public class TrashTypeControl {
             return false;
         }
     }
+
+
+    // Метод для обновления записи в таблице trash_type по trash_type_id
+    public boolean updateTrashTypeField(String trashTypeId, String columnName, Object newValue) {
+        try {
+            trashType_check.validateTrashTypeForUpdate(columnName, newValue.toString());
+        } catch (InvalidLengthException e) {
+            new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
+            return false;
+        }
+        if (columnName.equals("trash_type_name")) {
+            try {
+                if (!isNameUnique(newValue.toString())) {
+                    new ErrorClass().startError("Ошибка", "Название уже существует", "Пожалуйста, выберите другое название.");
+                    return false;
+                }
+            } catch (SQLException e) {
+                new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности названия", e.getMessage());
+                return false;
+            }
+        }
+        String sql = "UPDATE trash_type SET " + columnName + " = ? WHERE trash_type_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, newValue.toString());
+            statement.setString(2, trashTypeId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при обновлении типа мусора", e.getMessage());
+            return false;
+        }
+    }
+
 }

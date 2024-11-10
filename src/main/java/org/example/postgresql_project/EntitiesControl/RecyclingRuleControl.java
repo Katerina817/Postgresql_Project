@@ -62,4 +62,25 @@ public class RecyclingRuleControl {
             return false;
         }
     }
+
+
+    // Метод для обновления записи в таблице recycling_rule по rule_id
+    public boolean updateRecyclingRuleField(String ruleId, String columnName, Object newValue) {
+        try {
+            recyclingRule_check.validateRecyclingRuleForUpdate(columnName, newValue.toString());
+        } catch (InvalidLengthException e) {
+            new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
+            return false;
+        }
+        String sql = "UPDATE recycling_rule SET " + columnName + " = ? WHERE rule_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, newValue.toString());
+            statement.setString(2, ruleId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());
+            return false;
+        }
+    }
 }

@@ -23,6 +23,15 @@ public class CheckClass{
                     + "tel_number: 14");
         }
     }
+    public void validateAdminForUpdate(String columnName, String value) throws InvalidLengthException {
+        if (columnName.equals("login") && value.length() > 20 ||
+                columnName.equals("name") && value.length() > 30 ||
+                columnName.equals("surname") && value.length() > 30 ||
+                columnName.equals("password") && value.length() > 34 ||
+                columnName.equals("email") && value.length() > 100) {
+            throw new InvalidLengthException("Недопустимая длина для поля " + columnName);
+        }
+    }
     public void CheckReportType(@NonNull ReportType reportType) throws InvalidLengthException{
         if(reportType.getReportTypeName()==null){
             throw new InvalidLengthException("Необходимо заполнить поле: report_type_name");
@@ -32,6 +41,11 @@ public class CheckClass{
                     + "report_type_name: 40");
         }
     }
+    public void validateReportTypeForUpdate(String columnName, String value) throws InvalidLengthException {
+        if (columnName.equals("report_type_name") && value.length() > 40) {
+            throw new InvalidLengthException("Недопустимая длина для поля " + columnName);
+        }
+    }
     public void CheckTrashType(@NonNull TrashType trashType) throws InvalidLengthException{
         if(trashType.getTrashTypeName()==null){
             throw new InvalidLengthException("Необходимо заполнить поле: tarsh_type_name");
@@ -39,6 +53,11 @@ public class CheckClass{
         if (trashType.getTrashTypeName().length()>60){
             throw new InvalidLengthException("Неверная длина строки.\n" + "Cверьтесь с максимальной допустимой длиной:\n"
                     + "trash_type_name: 60");
+        }
+    }
+    public void validateTrashTypeForUpdate(String columnName, String value) throws InvalidLengthException {
+        if (columnName.equals("trash_type_name") && value.length() > 60) {
+            throw new InvalidLengthException("Недопустимая длина для поля " + columnName);
         }
     }
     public void CheckUser(@NonNull User user) throws InvalidLengthException{
@@ -69,6 +88,12 @@ public class CheckClass{
                     + "current_process_description: 400");
         }
     }
+    public void validateRecyclingStatusForUpdate(String columnName, String value) throws InvalidLengthException {
+        if (columnName.equals("recycling_status_name") && value.length() > 40 ||
+                columnName.equals("current_process_description") && value.length() > 400) {
+            throw new InvalidLengthException("Недопустимая длина для поля " + columnName);
+        }
+    }
     public void CheckRecyclingRule(@NonNull RecyclingRule recyclingRule) throws InvalidLengthException{
         if(recyclingRule.getContent()==null){
             throw new InvalidLengthException("Необходимо заполнить поля:content");
@@ -76,6 +101,11 @@ public class CheckClass{
         if (recyclingRule.getContent().length()>500){
             throw new InvalidLengthException("Неверная длина строки.\n" + "Cверьтесь с максимальной допустимой длиной:\n"
                     + "content: 500");
+        }
+    }
+    public void validateRecyclingRuleForUpdate(String columnName, String value) throws InvalidLengthException {
+        if (columnName.equals("content") && value.length() > 500) {
+            throw new InvalidLengthException("Недопустимая длина для поля " + columnName);
         }
     }
     public void CheckTrashInfo(@NonNull TrashInfo trashInfo) throws InvalidLengthException{
@@ -86,6 +116,12 @@ public class CheckClass{
             throw new InvalidLengthException("Неверная длина строки.\n" + "Cверьтесь с максимальной допустимой длиной:\n"
                     + "user_id: 36\n"
                     + "trash_type_id: 36");
+        }
+    }
+    public void validateTrashInfoForUpdate(String columnName, String value) throws InvalidLengthException {
+        if (columnName.equals("user_id") && value.length() > 36 ||
+            columnName.equals("trash_type_id") && value.length() > 36) {
+            throw new InvalidLengthException("Недопустимая длина для поля " + columnName);
         }
     }
     public void CheckRecycling(@NonNull Recycling recycling) throws InvalidLengthException{
@@ -99,6 +135,13 @@ public class CheckClass{
                     + "trash_info_id: 36");
         }
     }
+    public void validateRecyclingForUpdate(String columnName, String value) throws InvalidLengthException {
+        if (columnName.equals("recycling_status_id") && value.length() > 36 ||
+                columnName.equals("rule_id") && value.length() > 36 ||
+                columnName.equals("trash_info_id") && value.length() > 36) {
+            throw new InvalidLengthException("Недопустимая длина для поля " + columnName);
+        }
+    }
     public void CheckReport(@NonNull Report report) throws InvalidLengthException{
         if(report.getReportTypeId()==null || report.getAdminId()==null || report.getContent()==null || report.getReportDate()==null || report.getRecyclingId()==null){
             throw new InvalidLengthException("Необходимо заполнить поля:report_type_id, admin_id, content, recycling_id и report_date");
@@ -109,6 +152,14 @@ public class CheckClass{
                     + "admin_id: 36\n"
                     + "content: 500\n"
                     + "recycling_id: 36");
+        }
+    }
+    public void validateReportForUpdate(String columnName, String value) throws InvalidLengthException {
+        if (columnName.equals("report_type_id") && value.length() > 36 ||
+                columnName.equals("admin_id") && value.length() > 36 ||
+                columnName.equals("content") && value.length() > 500||
+                columnName.equals("recycling_id") && value.length() > 36) {
+            throw new InvalidLengthException("Недопустимая длина для поля " + columnName);
         }
     }
 }

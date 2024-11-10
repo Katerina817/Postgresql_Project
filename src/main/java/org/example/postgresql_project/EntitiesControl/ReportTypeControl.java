@@ -27,9 +27,13 @@ public class ReportTypeControl {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
             return false;
         }
-
-        if (!isNameUnique(reportType.getReportTypeName())) {
-            new ErrorClass().startError("Ошибка","Название уже существует","Пожалуйста, выберите другое название.");
+        try {
+            if (!isNameUnique(reportType.getReportTypeName())) {
+                new ErrorClass().startError("Ошибка","Название уже существует","Пожалуйста, выберите другое название.");
+                return false;
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности", e.getMessage());
             return false;
         }
         reportType.setReportTypeId(UUID.randomUUID().toString());
@@ -78,6 +82,42 @@ public class ReportTypeControl {
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при удалении записи о типе отчета",e.getMessage());
+            return false;
+        }
+    }
+
+    // Метод для обновления записи в таблице report_type по report_type_id
+    public boolean updateReportTypeField(String reportTypeId, String columnName, Object newValue) {
+        try {
+            reportType_check.validateReportTypeForUpdate(columnName, newValue.toString());
+        } catch (InvalidLengthException e) {
+            new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
+            return false;
+        }
+        if (columnName.equals("report_type_name")) {
+            try {
+                if (!isNameUnique(newValue.toString())) {
+                    new ErrorClass().startError("Ошибка", "Название уже существует", "Пожалуйста, выберите другое название.");
+                    return false;
+                }
+            } catch (SQLException e) {
+                new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности названия", e.getMessage());
+                return false;
+            }
+        }
+        String sql = "UPDATE report_type SET " + columnName + " = ? WHERE report_type_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (columnName.equals("report_type_name")) {
+                statement.setString(1, newValue.toString());
+            } else {
+                new ErrorClass().startError("Ошибка", "Недопустимый тип данных", "Неподдерживаемое значение для данного столбца.");
+                return false;
+            }
+            statement.setString(2, reportTypeId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи типа отчета", e.getMessage());
             return false;
         }
     }

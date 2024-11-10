@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserControl {
@@ -27,9 +28,13 @@ public class UserControl {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
             return false;
         }
-
-        if (!isLoginUnique(user.getLogin())) {
-            new ErrorClass().startError("Ошибка","Логин уже существует","Пожалуйста, выберите другой логин.");
+        try {
+            if (!isLoginUnique(user.getLogin())) {
+                new ErrorClass().startError("Ошибка","Логин уже существует","Пожалуйста, выберите другой логин.");
+                return false;
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности названия", e.getMessage());
             return false;
         }
         user.setUserId(UUID.randomUUID().toString());
@@ -88,7 +93,7 @@ public class UserControl {
         String selectSql = "SELECT user_id FROM users WHERE " + column_name + " = ?";
         String sql = "DELETE FROM users WHERE "+column_name+" = ?";
         try (PreparedStatement selectStatement = connection.prepareStatement(selectSql);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+            PreparedStatement statement = connection.prepareStatement(sql)) {
             selectStatement.setString(1, value);
             statement.setString(1, value);
             ResultSet resultSet = selectStatement.executeQuery();
@@ -101,6 +106,40 @@ public class UserControl {
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при удалении записи о пользователе",e.getMessage());
+            return false;
+        }
+    }
+
+
+
+
+    //Метод для обновления записи в таблице пользователей по user_id
+    public boolean updateAdminField(String adminId, String columnName, Object newValue) {
+        try {
+            user_check.validateAdminForUpdate(columnName, newValue.toString());
+        } catch (InvalidLengthException e) {
+            new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
+            return false;
+        }
+        if (columnName.equals("login")) {
+            try {
+                if (!isLoginUnique(newValue.toString())) {
+                    new ErrorClass().startError("Ошибка", "Логин уже существует", "Пожалуйста, выберите другой логин.");
+                    return false;
+                }
+            } catch (SQLException e) {
+                new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности названия", e.getMessage());
+                return false;
+            }
+        }
+        String sql = "UPDATE users SET " + columnName + " = ? WHERE user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, newValue.toString());
+            statement.setString(2, adminId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());
             return false;
         }
     }

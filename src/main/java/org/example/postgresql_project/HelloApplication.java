@@ -28,7 +28,12 @@ public class HelloApplication extends Application {
     private static HashMap<String, String> admins = new HashMap<>();
     @Override
     public void start(Stage primaryStage) throws IOException {
-        primaryStage.setTitle("Вход в систему");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 700, 500); // или используйте нужный размер
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        /*primaryStage.setTitle("Вход в систему");
 
         // Создаем интерфейс
         GridPane grid = new GridPane();
@@ -65,7 +70,7 @@ public class HelloApplication extends Application {
         grid.add(userRadioButton, 2, 3);
         Connection con=connect_to_db("recyclingdb","postgres","");
         // Обработчик для кнопки "Войти"
-        loginButton.setOnAction(e -> {
+        loginButton.setOnAction(e -> {*/
             /*СЮДА ВСТАВЛЯЕМ ДЛЯ ТЕСТИРОВАНИЯ КЕК*/
 
 
@@ -92,7 +97,7 @@ public class HelloApplication extends Application {
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
             //ReportControl rC=new ReportControl(con);
-            //rC.deleteReportByColumnName("content", "\\x636f6e74656e7431");
+            //rC.updateReportField("49285583-1d92-4683-bf1d-cca04717e088", "content","content117");
             /*Recycling r=new Recycling();
             r.setRecyclingStatusId("4575fcad-f246-46c7-a929-6b6af491190d");
             r.setRuleId("12e38941-5cc6-4c29-b188-997388472560");
@@ -115,7 +120,7 @@ public class HelloApplication extends Application {
             }*/
 
             //RecyclingControl rC=new RecyclingControl(con);
-            //rC.deleteRecyclingByColumnName("recycling_date","2025-09-01");
+            //System.out.println(rC.updateRecyclingField("1f4ca7d4-9d13-44cc-82b5-32006a00bav3","recycling_date","199b04"));
 
             /*TrashInfo r=new TrashInfo();
             r.setUserId("9a4b72d1-6ea0-425a-8a87-b08e13f44ff3");
@@ -129,7 +134,7 @@ public class HelloApplication extends Application {
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
             //TrashInfoControl rC=new TrashInfoControl(con);
-            //rC.deleteTrashInfoByColumnName("trash_quantity", 6);
+            //rC.updateTrashInfoField("ce0cfa97-2ee8-45a7-9fb8-d9d444913a7c", "user_id","520609f6-00c2-433a-923c-a5f058e32bdf");
 
 
 
@@ -140,9 +145,9 @@ public class HelloApplication extends Application {
             } catch (SQLException et) {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
-            }
-            RecyclingRuleControl rC=new RecyclingRuleControl(con);
-            rC.deleteRecyclingById("0b557805-a844-4eb8-bc58-8b423852b72b");*/
+            }*/
+            //RecyclingRuleControl rC=new RecyclingRuleControl(con);
+            //rC.updateRecyclingRuleField("13e38941-5cc6-4c29-b188-997388472560","content", "Wash plastic containers before recycling.");
 
             /*RecyclingStatus r=new RecyclingStatus();
             r.setRecyclingStatusName("kkk");
@@ -155,7 +160,7 @@ public class HelloApplication extends Application {
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
             //RecyclingStatusControl rC=new RecyclingStatusControl(con);
-            //rC.deleteRecyclingStatusById("3015e30a-4b66-4e18-81d2-e879b8e7376b");
+            //rC.updateRecyclingStatusField("a8bfd48b-56f5-4874-88fe-0262da24a4a0","current_process_description","aaaaaaaaaaa");
 
 
 
@@ -174,7 +179,7 @@ public class HelloApplication extends Application {
                 System.err.println("Ошибка при добавлении gjkmpjdfntkmz: " + et.getMessage());
             }*/
             //UserControl adminC = new UserControl(con);
-            //adminC.deleteUsersById("bc407c45-2cb7-41af-8059-2cf7c0395ca4");
+            //adminC.updateAdminField("8a49efad-ee02-4ed1-841c-a6d51e33dfcb","login","veshenka!");
 
 
             /*TrashType r=new TrashType();
@@ -187,20 +192,21 @@ public class HelloApplication extends Application {
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
             //TrashTypeControl rC=new TrashTypeControl(con);
-            //rC.deleteTrashTypeById("0cb35099-d391-4beb-9560-c0ed3a5af9fa");
+            //rC.updateTrashTypeField("23604369-5dc9-4cba-8966-1bfaa93d6f0c","trash_type_name","Plastic.");
 
 
             /*ReportType r=new ReportType();
-            r.setReportTypeName("k");
-            ReportTypeControl rC=new ReportTypeControl(con);
-            try {
+            r.setReportTypeName("k");*/
+            //ReportTypeControl rC=new ReportTypeControl(con);
+            //rC.updateReportTypeField("0b344983-e87a-48c8-bdb9-450bb7a6bcfd","report_type_name","Monthly Recycling Report.");
+            /*try {
                 rC.insertReportType(r);
             } catch (SQLException et) {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
             }*/
             //RecyclingControl rC=new RecyclingControl(con);
-            //rC.deleteRecyclingByColumnName("recycling_id","0d1b8d3a-bc1e-4a25-b990-aa7cba4988bc");
+            //rC.updateRecyclingField("0b344983-e87a-48c8-bdb9-450bb7a6bcfd","report_type_name","Monthly Recycling Report.");
 
             /*Admin admin = new Admin();
             //admin.setAdminId("1234");
@@ -213,7 +219,7 @@ public class HelloApplication extends Application {
             admin.setBirthYear(2020);*/
 
             //AdminControl adminC = new AdminControl(con);
-            //System.out.println(adminC.deleteAdminByColumnName("age","7"));
+            //System.out.println(adminC.updateAdminField("2a994fab-7b4b-416a-bd59-69ef191c3b90","age", "57"));
             /*try {
                 adminC.insertAdmin(admin);
             } catch (SQLException et) {
@@ -223,7 +229,7 @@ public class HelloApplication extends Application {
 
 
 
-            String login = loginField.getText();
+            /*String login = loginField.getText();
             String password = passwordField.getText();
             loginField.clear();
             passwordField.clear();
@@ -279,7 +285,7 @@ public class HelloApplication extends Application {
 
         Scene scene = new Scene(grid, 700, 500);
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
     }
     public static void main(String[] args) {
         loadUsers(USERS_FILE, users);

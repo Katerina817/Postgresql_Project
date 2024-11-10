@@ -28,8 +28,13 @@ public class RecyclingControl {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
             return false;
         }
-        if (!checkStatusExists(recycling.getRecyclingStatusId()) || !checkRuleExists(recycling.getRuleId())|| !checkTrashInfoExists(recycling.getTrashInfoId())) {
-            new ErrorClass().startError("Ошибка", "Статус, правило или информация о мусоре не найдена в базе данных");
+        try {
+            if (!checkStatusExists(recycling.getRecyclingStatusId()) || !checkRuleExists(recycling.getRuleId())|| !checkTrashInfoExists(recycling.getTrashInfoId())) {
+                new ErrorClass().startError("Ошибка", "Статус, правило или информация о мусоре не найдена в базе данных");
+                return false;
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при проверке существования элементов", e.getMessage());
             return false;
         }
         recycling.setRecyclingId(UUID.randomUUID().toString());
@@ -48,34 +53,6 @@ public class RecyclingControl {
         }
         return true;
     }
-    // метод для проверки существования статуса
-    private boolean checkStatusExists(String recyclingStatusId) throws SQLException {
-        String sql = "SELECT 1 FROM recycling_status WHERE recycling_status_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, recyclingStatusId);
-            return statement.executeQuery().next();
-        }
-    }
-    //метод для проверки существования правила переработки
-    private boolean checkRuleExists(String ruleId) throws SQLException {
-        String sql = "SELECT 1 FROM recycling_rule WHERE rule_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, ruleId);
-            return statement.executeQuery().next();
-        }
-    }
-    //метод для проверки существования информации о мусоре
-    private boolean checkTrashInfoExists(String trashInfoId) throws SQLException {
-        String sql = "SELECT 1 FROM trash_info WHERE trash_info_id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, trashInfoId);
-            return statement.executeQuery().next();
-        }
-    }
-
-
-
-
 
     //Метод для удаления записи из таблицы recycling
     public boolean deleteRecyclingByColumnName(String column_name,Object value) {
@@ -110,4 +87,78 @@ public class RecyclingControl {
             return false;
         }
     }
+
+
+    public boolean updateRecyclingField(String recyclingId, String columnName, Object newValue) {
+        try {
+            recycling_check.validateRecyclingForUpdate(columnName, newValue.toString());
+        } catch (InvalidLengthException e) {
+            new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
+            return false;
+        }
+        try {
+            if (columnName.equals("recycling_status_id") && !checkStatusExists(newValue.toString())) {
+                new ErrorClass().startError("Ошибка", "Статус не найден", "Указанный статус не существует.");
+                return false;
+            }
+            if (columnName.equals("rule_id") && !checkRuleExists(newValue.toString())) {
+                new ErrorClass().startError("Ошибка", "Правило не найдено", "Указанное правило не существует.");
+                return false;
+            }
+            if (columnName.equals("trash_info_id") && !checkTrashInfoExists(newValue.toString())) {
+                new ErrorClass().startError("Ошибка", "Информация о мусоре не найдена", "Указанная информация о мусоре не существует.");
+                return false;
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при проверке статуса", e.getMessage());
+            return false;
+        }
+
+        String sql = "UPDATE recycling SET " + columnName + " = ? WHERE recycling_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (columnName.equals("recycling_date")) {
+                try {
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(newValue.toString());
+                    statement.setDate(1, sqlDate);
+                } catch (IllegalArgumentException e) {
+                    new ErrorClass().startError("Ошибка", "Неверный формат даты", "Значение должно соответствовать формату yyyy-MM-dd");
+                    return false;
+                }
+            } else {
+                statement.setString(1, newValue.toString());
+            }
+            statement.setString(2, recyclingId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());
+            return false;
+        }
+    }
+    // метод для проверки существования статуса
+    private boolean checkStatusExists(String recyclingStatusId) throws SQLException {
+        String sql = "SELECT 1 FROM recycling_status WHERE recycling_status_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, recyclingStatusId);
+            return statement.executeQuery().next();
+        }
+    }
+    //метод для проверки существования правила переработки
+    private boolean checkRuleExists(String ruleId) throws SQLException {
+        String sql = "SELECT 1 FROM recycling_rule WHERE rule_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, ruleId);
+            return statement.executeQuery().next();
+        }
+    }
+    //метод для проверки существования информации о мусоре
+    private boolean checkTrashInfoExists(String trashInfoId) throws SQLException {
+        String sql = "SELECT 1 FROM trash_info WHERE trash_info_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, trashInfoId);
+            return statement.executeQuery().next();
+        }
+    }
+
 }

@@ -27,9 +27,13 @@ public class RecyclingStatusControl {
             new ErrorClass().startError("Ошибка","Неверная длина",e.getMessage());
             return false;
         }
-
-        if (!isStatusNameUnique(recyclingStatus.getRecyclingStatusName())) {
-            new ErrorClass().startError("Ошибка","Название уже существует","Пожалуйста, выберите другое название.");
+        try {
+            if (!isStatusNameUnique(recyclingStatus.getRecyclingStatusName())) {
+                new ErrorClass().startError("Ошибка","Название уже существует","Пожалуйста, выберите другое название.");
+                return false;
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности", e.getMessage());
             return false;
         }
         recyclingStatus.setRecyclingStatusId(UUID.randomUUID().toString());
@@ -79,6 +83,37 @@ public class RecyclingStatusControl {
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при удалении записи о статусе переработки",e.getMessage());
+            return false;
+        }
+    }
+
+    // Метод для обновления записи в таблице recycling_status по recycling_status_id
+    public boolean updateRecyclingStatusField(String recyclingStatusId, String columnName, Object newValue) {
+        try {
+            recyclingStatus_check.validateRecyclingStatusForUpdate(columnName, newValue.toString());
+        } catch (InvalidLengthException e) {
+            new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
+            return false;
+        }
+        if (columnName.equals("recycling_status_name")) {
+            try {
+                if (!isStatusNameUnique(newValue.toString())) {
+                    new ErrorClass().startError("Ошибка", "Название уже существует", "Пожалуйста, выберите другое название.");
+                    return false;
+                }
+            } catch (SQLException e) {
+                new ErrorClass().startError("Ошибка", "Ошибка при проверке уникальности названия", e.getMessage());
+                return false;
+            }
+        }
+        String sql = "UPDATE recycling_status SET " + columnName + " = ? WHERE recycling_status_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, newValue.toString());
+            statement.setString(2, recyclingStatusId);
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());
             return false;
         }
     }
