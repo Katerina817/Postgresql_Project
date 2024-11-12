@@ -2,15 +2,16 @@ package org.example.postgresql_project.EntitiesControl;
 
 import lombok.NonNull;
 import org.example.postgresql_project.CheckClass;
+import org.example.postgresql_project.Entities.Recycling;
 import org.example.postgresql_project.Entities.Report;
 import org.example.postgresql_project.ErrorClass;
 import org.example.postgresql_project.InvalidLengthException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class ReportControl {
     private Connection connection;
@@ -149,5 +150,54 @@ public class ReportControl {
             statement.setString(1, recyclingId);
             return statement.executeQuery().next();
         }
+    }
+
+
+
+    //метод для поиска Report по нескольким параметрам
+    public List<Report> searchReportByParameters(Map<String, Object> params) {
+        List<Report> results = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM report WHERE ");
+        List<Object> values = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String column = entry.getKey();
+            Object value = entry.getValue();
+            sql.append(column).append(" = ? AND ");
+            if ("report_date".equals(column) && value instanceof String) {
+                try {
+                    value = java.sql.Date.valueOf(value.toString());
+                } catch (IllegalArgumentException e) {
+                    new ErrorClass().startError("Ошибка", "Неверный формат даты", "Значение должно соответствовать формату yyyy-MM-dd");
+                    return results;
+                }
+                //value = java.sql.Date.valueOf(value.toString());
+            }
+            values.add(value);
+        }
+        sql.delete(sql.length() - 4, sql.length());
+        try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            for (Object value : values) {
+                if (value instanceof java.sql.Date) {
+                    statement.setDate(index++, (java.sql.Date) value);
+                } else {
+                    statement.setString(index++, value.toString());
+                }
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Report report = new Report();
+                report.setReportId(resultSet.getString("report_id"));
+                report.setReportTypeId(resultSet.getString("report_type_id"));
+                report.setAdminId(resultSet.getString("admin_id"));
+                report.setContent(resultSet.getString("content"));
+                report.setReportDate(resultSet.getDate("report_date"));
+                report.setRecyclingId(resultSet.getString("recycling_id"));
+                results.add(report);
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при выполнении поиска", e.getMessage());
+        }
+        return results;
     }
 }

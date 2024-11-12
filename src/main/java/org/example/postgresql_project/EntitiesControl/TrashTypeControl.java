@@ -2,6 +2,7 @@ package org.example.postgresql_project.EntitiesControl;
 
 import lombok.NonNull;
 import org.example.postgresql_project.CheckClass;
+import org.example.postgresql_project.Entities.RecyclingRule;
 import org.example.postgresql_project.Entities.TrashType;
 import org.example.postgresql_project.ErrorClass;
 import org.example.postgresql_project.InvalidLengthException;
@@ -10,6 +11,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class TrashTypeControl {
@@ -116,4 +120,34 @@ public class TrashTypeControl {
         }
     }
 
+
+    //метод для поиска TrashType по нескольким параметрам
+    public List<TrashType> searchTrashTypeByParameters(Map<String, Object> params) {
+        List<TrashType> results = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM trash_type WHERE ");
+        List<Object> values = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String column = entry.getKey();
+            Object value = entry.getValue();
+            sql.append(column).append(" = ? AND ");
+            values.add(value);
+        }
+        sql.delete(sql.length() - 4, sql.length());
+        try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            for (Object value : values) {
+                statement.setString(index++, value.toString());
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                TrashType trashType = new TrashType();
+                trashType.setTrashTypeId(resultSet.getString("trash_type_id"));
+                trashType.setTrashTypeName(resultSet.getString("trash_type_name"));
+                results.add(trashType);
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при выполнении поиска", e.getMessage());
+        }
+        return results;
+    }
 }

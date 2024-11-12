@@ -2,6 +2,7 @@ package org.example.postgresql_project.EntitiesControl;
 
 import lombok.NonNull;
 import org.example.postgresql_project.CheckClass;
+import org.example.postgresql_project.Entities.Recycling;
 import org.example.postgresql_project.Entities.TrashInfo;
 import org.example.postgresql_project.ErrorClass;
 import org.example.postgresql_project.InvalidLengthException;
@@ -10,8 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class TrashInfoControl {
     private Connection connection;
@@ -149,5 +149,43 @@ public class TrashInfoControl {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи информации о мусоре", e.getMessage());
             return false;
         }
+    }
+
+
+
+    //метод для поиска TrashInfo по нескольким параметрам
+    public List<TrashInfo> searchTrashInfoByParameters(Map<String, Object> params) {
+        List<TrashInfo> results = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM trash_info WHERE ");
+        List<Object> values = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String column = entry.getKey();
+            Object value = entry.getValue();
+            sql.append(column).append(" = ? AND ");
+            values.add(value);
+        }
+        sql.delete(sql.length() - 4, sql.length());
+        try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            for (Object value : values) {
+                if (value instanceof Integer) {
+                    statement.setInt(index++, (Integer) value);
+                } else {
+                    statement.setString(index++, value.toString());
+                }
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                TrashInfo trashInfo = new TrashInfo();
+                trashInfo.setTrashInfoId(resultSet.getString("trash_info_id"));
+                trashInfo.setUserId(resultSet.getString("user_id"));
+                trashInfo.setTrashTypeId(resultSet.getString("trash_type_id"));
+                trashInfo.setTrashQuantity(resultSet.getInt("trash_quantity"));
+                results.add(trashInfo);
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при выполнении поиска", e.getMessage());
+        }
+        return results;
     }
 }

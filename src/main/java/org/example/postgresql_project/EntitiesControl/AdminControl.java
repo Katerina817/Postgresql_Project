@@ -10,12 +10,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class AdminControl {
-    private Connection connection;
-    private CheckClass admin_check= new CheckClass();
+    private final Connection connection;
+    private final CheckClass admin_check= new CheckClass();
     public AdminControl(Connection connection){
         this.connection=connection;
     }
@@ -108,7 +107,7 @@ public class AdminControl {
 
     //Метод для обновления записи в таблице админ по admin_id
     public boolean updateAdminField(String adminId, String columnName, Object newValue) {
-        try {
+        try{
             admin_check.validateAdminForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {
             new ErrorClass().startError("Ошибка", "Неверная длина строки", e.getMessage());
@@ -145,6 +144,53 @@ public class AdminControl {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());
             return false;
         }
+    }
+
+
+
+
+    //метод для поиска администратора по нескольким параметрам
+    public List<Admin> searchAdminByParameters(Map<String, Object> params) {
+        List<Admin> admins = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM admin WHERE ");
+        List<Object> values = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String column = entry.getKey();
+            Object value = entry.getValue();
+            if (value == "null") {
+                sql.append(column).append(" IS NULL AND ");
+            } else {
+                sql.append(column).append(" = ? AND ");
+                values.add(value);
+            }
+        }
+        sql.delete(sql.length() - 4, sql.length());
+        try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            for (Object value : values) {
+                if (value instanceof Integer) {
+                    statement.setInt(index++, (Integer) value);
+                } else {
+                    statement.setString(index++, value.toString());
+                }
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Admin admin = new Admin();
+                admin.setAdminId(resultSet.getString("admin_id"));
+                admin.setLogin(resultSet.getString("login"));
+                admin.setName(resultSet.getString("name"));
+                admin.setSurname(resultSet.getString("surname"));
+                admin.setPassword(resultSet.getString("password"));
+                admin.setEmail(resultSet.getString("email"));
+                admin.setAge(resultSet.getInt("age"));
+                admin.setBirthYear(resultSet.getInt("birth_year"));
+                admins.add(admin);
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при выполнении поиска", e.getMessage());
+        }
+        return admins;
     }
 
 }

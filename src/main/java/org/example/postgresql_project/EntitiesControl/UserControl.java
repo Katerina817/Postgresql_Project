@@ -10,8 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class UserControl {
     private Connection connection;
@@ -114,7 +113,7 @@ public class UserControl {
 
 
     //Метод для обновления записи в таблице пользователей по user_id
-    public boolean updateAdminField(String adminId, String columnName, Object newValue) {
+    public boolean updateUserField(String userId, String columnName, Object newValue) {
         try {
             user_check.validateAdminForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {
@@ -135,12 +134,59 @@ public class UserControl {
         String sql = "UPDATE users SET " + columnName + " = ? WHERE user_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, newValue.toString());
-            statement.setString(2, adminId);
+            statement.setString(2, userId);
             int rowsAffected = statement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());
             return false;
         }
+    }
+
+
+
+
+
+
+
+
+
+
+    // Метод для поиска пользователей по нескольким параметрам
+    public List<User> searchUserByParameters(Map<String, Object> params) {
+        List<User> users = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE ");
+        List<Object> values = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String column = entry.getKey();
+            Object value = entry.getValue();
+            if (value == "null") {
+                sql.append(column).append(" IS NULL AND ");
+            } else {
+                sql.append(column).append(" = ? AND ");
+                values.add(value);
+            }
+        }
+        sql.delete(sql.length() - 4, sql.length());
+        try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            for (Object value : values) {
+                statement.setString(index++, value.toString());
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setUserId(resultSet.getString("user_id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setName(resultSet.getString("name"));
+                user.setSurname(resultSet.getString("surname"));
+                user.setPassword(resultSet.getString("password"));
+                user.setEmail(resultSet.getString("email"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при выполнении поиска", e.getMessage());
+        }
+        return users;
     }
 }

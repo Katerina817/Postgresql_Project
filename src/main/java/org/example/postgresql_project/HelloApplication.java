@@ -20,6 +20,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HelloApplication extends Application {
     private static final String USERS_FILE = "users.txt";
@@ -28,12 +30,12 @@ public class HelloApplication extends Application {
     private static HashMap<String, String> admins = new HashMap<>();
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+        /*FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 700, 500); // или используйте нужный размер
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
 
-        /*primaryStage.setTitle("Вход в систему");
+        primaryStage.setTitle("Вход в систему");
 
         // Создаем интерфейс
         GridPane grid = new GridPane();
@@ -70,8 +72,20 @@ public class HelloApplication extends Application {
         grid.add(userRadioButton, 2, 3);
         Connection con=connect_to_db("recyclingdb","postgres","");
         // Обработчик для кнопки "Войти"
-        loginButton.setOnAction(e -> {*/
+        loginButton.setOnAction(e -> {
             /*СЮДА ВСТАВЛЯЕМ ДЛЯ ТЕСТИРОВАНИЯ КЕК*/
+
+
+
+            TrashTypeControl adminControl=new TrashTypeControl(con);
+            Map<String, Object> params = new HashMap<>();
+            //params.put("trash_type_name", "Glass");
+           // params.put("report_date", "2025-09-05");
+
+            List<TrashType> results = adminControl.searchTrashTypeByParameters(params);
+            for(TrashType admin:results){
+                System.out.println(admin);
+            }
 
 
 
@@ -229,7 +243,7 @@ public class HelloApplication extends Application {
 
 
 
-            /*String login = loginField.getText();
+            String login = loginField.getText();
             String password = passwordField.getText();
             loginField.clear();
             passwordField.clear();
@@ -285,7 +299,7 @@ public class HelloApplication extends Application {
 
         Scene scene = new Scene(grid, 700, 500);
         primaryStage.setScene(scene);
-        primaryStage.show();*/
+        primaryStage.show();
     }
     public static void main(String[] args) {
         loadUsers(USERS_FILE, users);

@@ -2,6 +2,7 @@ package org.example.postgresql_project.EntitiesControl;
 
 import lombok.NonNull;
 import org.example.postgresql_project.CheckClass;
+import org.example.postgresql_project.Entities.Admin;
 import org.example.postgresql_project.Entities.Recycling;
 import org.example.postgresql_project.ErrorClass;
 import org.example.postgresql_project.InvalidLengthException;
@@ -10,8 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class RecyclingControl {
     private Connection connection;
@@ -161,4 +161,50 @@ public class RecyclingControl {
         }
     }
 
+
+    //метод для поиска Recycling по нескольким параметрам
+    public List<Recycling> searchRecyclingByParameters(Map<String, Object> params) {
+        List<Recycling> results = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM recycling WHERE ");
+        List<Object> values = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String column = entry.getKey();
+            Object value = entry.getValue();
+            sql.append(column).append(" = ? AND ");
+            if ("recycling_date".equals(column) && value instanceof String) {
+                try {
+                    value = java.sql.Date.valueOf(value.toString());
+                } catch (IllegalArgumentException e) {
+                    new ErrorClass().startError("Ошибка", "Неверный формат даты", "Значение должно соответствовать формату yyyy-MM-dd");
+                    return results;
+                }
+                //value = java.sql.Date.valueOf(value.toString());
+            }
+            values.add(value);
+        }
+        sql.delete(sql.length() - 4, sql.length());
+        try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            for (Object value : values) {
+                if (value instanceof java.sql.Date) {
+                    statement.setDate(index++, (java.sql.Date) value);
+                } else {
+                    statement.setString(index++, value.toString());
+                }
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Recycling recycling = new Recycling();
+                recycling.setRecyclingId(resultSet.getString("recycling_id"));
+                recycling.setRecyclingStatusId(resultSet.getString("recycling_status_id"));
+                recycling.setRuleId(resultSet.getString("rule_id"));
+                recycling.setTrashInfoId(resultSet.getString("trash_info_id"));
+                recycling.setRecyclingDate(resultSet.getDate("recycling_date"));
+                results.add(recycling);
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при выполнении поиска", e.getMessage());
+        }
+        return results;
+    }
 }

@@ -2,6 +2,7 @@ package org.example.postgresql_project.EntitiesControl;
 
 import lombok.NonNull;
 import org.example.postgresql_project.CheckClass;
+import org.example.postgresql_project.Entities.RecyclingRule;
 import org.example.postgresql_project.Entities.RecyclingStatus;
 import org.example.postgresql_project.ErrorClass;
 import org.example.postgresql_project.InvalidLengthException;
@@ -10,10 +11,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class RecyclingStatusControl {
-    private Connection connection;
+    private final Connection connection;
     private CheckClass recyclingStatus_check= new CheckClass();
     public RecyclingStatusControl(Connection connection){
         this.connection=connection;
@@ -116,5 +120,39 @@ public class RecyclingStatusControl {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());
             return false;
         }
+    }
+
+
+
+
+    //метод для поиска RecyclingStatus по нескольким параметрам
+    public List<RecyclingStatus> searchRecyclingStatusByParameters(Map<String, Object> params) {
+        List<RecyclingStatus> results = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM recycling_status WHERE ");
+        List<Object> values = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String column = entry.getKey();
+            Object value = entry.getValue();
+            sql.append(column).append(" = ? AND ");
+            values.add(value);
+        }
+        sql.delete(sql.length() - 4, sql.length());
+        try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            for (Object value : values) {
+                statement.setString(index++, value.toString());
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                RecyclingStatus recyclingStatus = new RecyclingStatus();
+                recyclingStatus.setRecyclingStatusId(resultSet.getString("recycling_status_id"));
+                recyclingStatus.setRecyclingStatusName(resultSet.getString("recycling_status_name"));
+                recyclingStatus.setCurrentProcessDescription(resultSet.getString("current_process_description"));
+                results.add(recyclingStatus);
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при выполнении поиска", e.getMessage());
+        }
+        return results;
     }
 }
