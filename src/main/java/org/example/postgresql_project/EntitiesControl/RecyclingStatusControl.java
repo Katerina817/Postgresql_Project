@@ -7,10 +7,7 @@ import org.example.postgresql_project.Entities.RecyclingStatus;
 import org.example.postgresql_project.ErrorClass;
 import org.example.postgresql_project.InvalidLengthException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +133,7 @@ public class RecyclingStatusControl {
             sql.append(column).append(" = ? AND ");
             values.add(value);
         }
-        sql.delete(sql.length() - 4, sql.length());
+        sql.delete(sql.length() - 4, sql.length()-1); //8 0-7
         try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
             int index = 1;
             for (Object value : values) {
@@ -155,4 +152,6 @@ public class RecyclingStatusControl {
         }
         return results;
     }
+
+
 }

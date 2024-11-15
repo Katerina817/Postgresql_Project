@@ -7,11 +7,9 @@ import org.example.postgresql_project.Entities.Report;
 import org.example.postgresql_project.ErrorClass;
 import org.example.postgresql_project.InvalidLengthException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class ReportControl {
     private Connection connection;
@@ -200,4 +198,8 @@ public class ReportControl {
         }
         return results;
     }
+
+
+
+
 }

@@ -50,7 +50,11 @@ public class AdminControl {
             statement.setInt(8, admin.getBirthYear());
             statement.executeUpdate();
         } catch (SQLException e) {
-            new ErrorClass().startError("Ошибка","Ошибка при вставке пользователя",e.getMessage());
+            if (e.getMessage().contains("Age") && e.getMessage().contains("cannot be greater than or equal to Birth Year")) {
+                new ErrorClass().startError("Ошибка","Возраст не может быть больше или равен году рождения.");
+            } else {
+                new ErrorClass().startError("Ошибка","Ошибка при вставке пользователя",e.getMessage());
+            }
             return false;
         }
         return true;
@@ -171,20 +175,25 @@ public class AdminControl {
                 if (value instanceof Integer) {
                     statement.setInt(index++, (Integer) value);
                 } else {
-                    statement.setString(index++, value.toString());
+                    statement.setString(index++, value.toString()); //to retest
                 }
             }
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Admin admin = new Admin();
-                admin.setAdminId(resultSet.getString("admin_id"));
-                admin.setLogin(resultSet.getString("login"));
-                admin.setName(resultSet.getString("name"));
-                admin.setSurname(resultSet.getString("surname"));
-                admin.setPassword(resultSet.getString("password"));
-                admin.setEmail(resultSet.getString("email"));
-                admin.setAge(resultSet.getInt("age"));
-                admin.setBirthYear(resultSet.getInt("birth_year"));
+                /*admins.add(new Admin.AdminBuilder()
+                        .adminId()
+                        .login()
+                                .
+                        .build());*/
+                admin.setAdminId(resultSet.getString(1));
+                admin.setLogin(resultSet.getString(2));
+                admin.setName(resultSet.getString(3));
+                admin.setSurname(resultSet.getString(4));
+                admin.setPassword(resultSet.getString(5));
+                admin.setEmail(resultSet.getString(6));
+                admin.setAge(resultSet.getInt(7));
+                admin.setBirthYear(resultSet.getInt(8));
                 admins.add(admin);
             }
         } catch (SQLException e) {

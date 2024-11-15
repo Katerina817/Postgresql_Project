@@ -77,7 +77,7 @@ public class HelloApplication extends Application {
 
 
 
-            TrashTypeControl adminControl=new TrashTypeControl(con);
+            /*TrashTypeControl adminControl=new TrashTypeControl(con);
             Map<String, Object> params = new HashMap<>();
             //params.put("trash_type_name", "Glass");
            // params.put("report_date", "2025-09-05");
@@ -85,7 +85,7 @@ public class HelloApplication extends Application {
             List<TrashType> results = adminControl.searchTrashTypeByParameters(params);
             for(TrashType admin:results){
                 System.out.println(admin);
-            }
+            }*/
 
 
 
@@ -224,24 +224,46 @@ public class HelloApplication extends Application {
 
             /*Admin admin = new Admin();
             //admin.setAdminId("1234");
-            admin.setLogin("11111111111");
+            admin.setLogin("111111115111");
             admin.setName("bh");
             admin.setSurname("Doe");
             admin.setPassword("password123");
             admin.setEmail("john.doe@example.com");
-            admin.setAge(15);
-            admin.setBirthYear(2020);*/
+            admin.setAge(1566);
+            admin.setBirthYear(20);
 
-            //AdminControl adminC = new AdminControl(con);
+            AdminControl adminC = new AdminControl(con);
             //System.out.println(adminC.updateAdminField("2a994fab-7b4b-416a-bd59-69ef191c3b90","age", "57"));
-            /*try {
+            try {
                 adminC.insertAdmin(admin);
             } catch (SQLException et) {
                 et.printStackTrace();
                 System.err.println("Ошибка при добавлении администратора: " + et.getMessage());
+            }
+            /*TrashTypeControl manager = new TrashTypeControl(con);
+            try {
+                manager.callAddTrashTypeProcedure("Cardboard9");
+                manager.callAddTrashTypeProcedure("Cardboard8");
+            } catch (SQLException y) {
+                y.printStackTrace();
             }*/
 
+            /*ProceduresAndFunctions manager = new ProceduresAndFunctions(con);
 
+            try {
+                manager.callUpdateRecyclingStatusProcedure("4575fcad-f246-46c7-a929-6b6af491190d", "Description111");
+            } catch (SQLException er) {
+                er.printStackTrace();
+            }*/
+            /*try {
+                ProceduresAndFunctions trashService = new ProceduresAndFunctions(con);
+                String userId = "8a49efad-e602-4efcb";
+
+                int totalTrashQuantity = trashService.getTotalTrashQuantityByUser(userId);
+                new ErrorClass().startError("Результат","Общее количество мусора для пользователя с ID " + userId + ": " + totalTrashQuantity);
+            } catch (SQLException eee) {
+                eee.printStackTrace();
+            }*/
 
             String login = loginField.getText();
             String password = passwordField.getText();
