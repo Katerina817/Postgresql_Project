@@ -8,4 +8,6 @@ module org.example.postgresql_project {
 
     opens org.example.postgresql_project to javafx.fxml;
     exports org.example.postgresql_project;
+    exports org.example.postgresql_project.FXControllers;
+    opens org.example.postgresql_project.FXControllers to javafx.fxml;
 }
