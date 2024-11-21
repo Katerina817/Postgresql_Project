@@ -1,12 +1,17 @@
 package org.example.postgresql_project.Entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 /*@Entity
 @Table(name = "users")*/

@@ -35,7 +35,7 @@ public class LoginController {
         toggleGroup1.selectToggle(AdminRadioButton);
     }
     @FXML
-    protected void onEnterButtonClick() {
+    protected void onEnterButtonClick()throws IOException {
         String login=LoginTextField.getText();
         String password=PasswordTextField.getText();
         if(login.isEmpty()|| password.isEmpty()){
@@ -53,7 +53,13 @@ public class LoginController {
                 errorClass.startError("Ошибка поиска", "Пользователь с такими данными не найден","Пожалуйста, проверьте корректность введенных данных");
             }
             else{
-                //ТИПА ДОБРО ПОЖАЛОВАТЬ И ПЕРЕХОД НА НОВУЮ СТРАНИЦУ С ДАННЫМИ "ПОЛЬЗОВАТЕЛЬ"
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/postgresql_project/mainPage.fxml"));
+                Parent root = loader.load();
+                MainPageController mainPageController = loader.getController();
+                mainPageController.setInfo(true);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
             }
         }
         else{
@@ -68,7 +74,13 @@ public class LoginController {
                 errorClass.startError("Ошибка поиска", "Администратор с такими данными не найден","Пожалуйста, проверьте корректность введенных данных");
             }
             else{
-                //ТИПА ДОБРО ПОЖАЛОВАТЬ И ПЕРЕХОД НА НОВУЮ СТРАНИЦУ С ДАННЫМИ "АДМИН"
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/postgresql_project/mainPage.fxml"));
+                Parent root = loader.load();
+                MainPageController mainPageController = loader.getController();
+                mainPageController.setInfo(false);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
             }
         }
     }

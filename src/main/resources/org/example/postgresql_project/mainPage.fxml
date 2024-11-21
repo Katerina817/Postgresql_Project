@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="841.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.postgresql_project.FXControllers.MainPageController">
+  <tabs>
+    <Tab fx:id="AdminTab" text="Админ">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="842.0">
+               <children>
+                  <TableView fx:id="AdminTableView" layoutX="24.0" layoutY="26.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="Admin1" prefWidth="107.99999618530273" text="ID" />
+                      <TableColumn fx:id="Admin2" prefWidth="99.19998168945312" text="Логин" />
+                        <TableColumn fx:id="Admin3" minWidth="6.20001220703125" prefWidth="98.00001525878906" text="Имя" />
+                        <TableColumn fx:id="Admin4" prefWidth="106.0" text="Фамилия" />
+                        <TableColumn fx:id="Admin5" prefWidth="86.5999755859375" text="Пароль" />
+                        <TableColumn fx:id="Admin6" minWidth="9.5999755859375" prefWidth="95.0" text="Почта" />
+                        <TableColumn fx:id="Admin7" prefWidth="90.79998779296875" text="Возраст" />
+                        <TableColumn fx:id="Admin8" prefWidth="113.00006103515625" text="Год рождения" />
+                    </columns>
+                  </TableView>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="1.0" layoutY="235.0" prefHeight="18.0" prefWidth="100.0" text="ID">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="107.0" layoutY="235.0" prefHeight="18.0" prefWidth="100.0" text="Логин">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="213.0" layoutY="235.0" prefHeight="18.0" prefWidth="100.0" text="Имя">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="319.0" layoutY="235.0" prefHeight="18.0" prefWidth="100.0" text="Фамилия">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="425.0" layoutY="235.0" prefHeight="18.0" prefWidth="100.0" text="Пароль">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="531.0" layoutY="235.0" prefHeight="18.0" prefWidth="100.0" text="Почта">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="637.0" layoutY="235.0" prefHeight="18.0" prefWidth="100.0" text="Возраст">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="TOP" layoutX="740.0" layoutY="235.0" prefHeight="18.0" prefWidth="100.0" text="Год рождения">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="429.0" layoutY="304.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Button>
+                  <Button layoutX="580.0" layoutY="304.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Button>
+                  <Button layoutX="280.0" layoutY="304.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Button>
+                  <Button layoutX="14.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Button>
+                  <ComboBox editable="true" layoutX="1.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <ComboBox editable="true" layoutX="107.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <ComboBox editable="true" layoutX="213.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <ComboBox editable="true" layoutX="319.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <ComboBox editable="true" layoutX="425.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <ComboBox editable="true" layoutX="637.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <ComboBox editable="true" layoutX="531.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <ComboBox editable="true" layoutX="740.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <Button layoutX="1.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="209.0" text="Очистить ячейки">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="ReportTypeTab" text="Тип отчета">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="ReportTypeTableView" layoutX="22.0" layoutY="23.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="ReportType1" prefWidth="401.20000076293945" text="ID" />
+                      <TableColumn fx:id="ReportType2" prefWidth="385.99993896484375" text="Наименование типа отчета" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab fx:id="ReportTab" text="Отчет">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="ReportTableView" layoutX="25.0" layoutY="25.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="Report1" prefWidth="121.79999160766602" text="ID" />
+                      <TableColumn fx:id="Report2" prefWidth="130.99998474121094" text="ID типа отчета" />
+                        <TableColumn fx:id="Report3" prefWidth="126.60003662109375" text="ID админа" />
+                        <TableColumn fx:id="Report4" prefWidth="134.60003662109375" text="Содержание" />
+                        <TableColumn fx:id="Report5" prefWidth="132.5999755859375" text="Дата создания отчета" />
+                        <TableColumn fx:id="Report6" prefWidth="146.0" text="ID переработки" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+    </Tab>
+    <Tab fx:id="RecyclingRuleTab" text="Правило переработки">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="RecyclingRuleTableView" layoutX="27.0" layoutY="23.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="RecyclingRule1" prefWidth="386.20000076293945" text="ID" />
+                      <TableColumn fx:id="RecyclingRule2" prefWidth="400.99993896484375" text="Содержание" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+    </Tab>
+    <Tab fx:id="RecyclingTab" text="Переработка">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="RecyclingTableView" layoutX="28.0" layoutY="30.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="Recycling1" prefWidth="143.00000381469727" text="ID" />
+                      <TableColumn fx:id="Recycling2" prefWidth="166.99998474121094" text="ID статуса переработки" />
+                        <TableColumn fx:id="Recycling3" prefWidth="180.39996337890625" text="ID правила переработки" />
+                        <TableColumn fx:id="Recycling4" prefWidth="175.60003662109375" text="ID информации о мусоре" />
+                        <TableColumn fx:id="Recycling5" prefWidth="127.800048828125" text="Дата переработки" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+    </Tab>
+    <Tab fx:id="RecyclingStatusTab" text="Статус переработки">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="RecyclingStatusTableView" layoutX="27.0" layoutY="28.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="RecyclingStatus1" prefWidth="234.20000076293945" text="ID" />
+                      <TableColumn fx:id="RecyclingStatus2" prefWidth="286.5999755859375" text="Наименование статуса переработки" />
+                        <TableColumn fx:id="RecyclingStatus3" prefWidth="266.39996337890625" text="Описание текущего процесса" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+    </Tab>
+    <Tab fx:id="TrashInfoTab" text="Информация о мусоре">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="TrashInfoTableView" layoutX="26.0" layoutY="25.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="TrashInfo1" prefWidth="225.6000099182129" text="ID" />
+                      <TableColumn fx:id="TrashInfo2" prefWidth="214.3999786376953" text="ID пользователя" />
+                        <TableColumn fx:id="TrashInfo3" prefWidth="184.79998779296875" text="ID типа мусора" />
+                        <TableColumn fx:id="TrashInfo4" prefWidth="167.5999755859375" text="Количество мусора" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+    </Tab>
+    <Tab fx:id="TrashTypeTab" text="Тип мусора">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="TrashTypeTableView" layoutX="27.0" layoutY="26.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="TrashType1" prefWidth="387.20000076293945" text="ID" />
+                      <TableColumn fx:id="TrashType2" prefWidth="399.99993896484375" text="Наименование типа мусора" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+    </Tab>
+    <Tab fx:id="UserTab" text="Пользователь">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TableView fx:id="UserTableView" layoutX="27.0" layoutY="27.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="User1" prefWidth="119.79999160766602" text="ID" />
+                      <TableColumn fx:id="User2" prefWidth="110.60002136230469" text="Логин" />
+                        <TableColumn fx:id="User3" prefWidth="123.79998779296875" text="Имя" />
+                        <TableColumn fx:id="User4" prefWidth="141.79998779296875" text="Фамилия" />
+                        <TableColumn fx:id="User5" prefWidth="152.79998779296875" text="Пароль" />
+                        <TableColumn fx:id="User6" prefWidth="144.00006103515625" text="Почта" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+    </Tab>
+  </tabs>
+</TabPane>
