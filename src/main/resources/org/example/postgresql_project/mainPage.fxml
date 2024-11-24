@@ -62,23 +62,23 @@
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxAdmin" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToAdmin" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -106,7 +106,7 @@
                   </TableView>
                   <ComboBox fx:id="IDReportTypeComboBox" editable="true" layoutX="22.0" layoutY="260.0" prefHeight="30.0" prefWidth="390.0" />
                   <ComboBox fx:id="ReportTypeNameComboBox" editable="true" layoutX="421.0" layoutY="260.0" prefHeight="30.0" prefWidth="390.0" />
-                  <Label alignment="CENTER" layoutX="22.0" layoutY="233.0" prefHeight="20.0" prefWidth="390.0" text="ID">
+                  <Label alignment="CENTER" layoutX="22.0" layoutY="235.0" prefHeight="20.0" prefWidth="390.0" text="ID">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
@@ -116,23 +116,23 @@
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxReportType" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToReportType" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -154,30 +154,30 @@
                         <TableColumn fx:id="Report6" prefWidth="146.0" text="ID переработки" />
                     </columns>
                   </TableView>
-                  <Label alignment="CENTER" layoutX="25.0" layoutY="231.0" prefHeight="18.0" prefWidth="131.0" text="ID">
+                  <Label alignment="CENTER" layoutX="25.0" layoutY="235.0" prefHeight="18.0" prefWidth="131.0" text="ID">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="156.0" layoutY="232.0" prefHeight="18.0" prefWidth="131.0" text="ID типа отчета">
+                  <Label alignment="CENTER" layoutX="156.0" layoutY="235.0" prefHeight="18.0" prefWidth="131.0" text="ID типа отчета">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="287.0" layoutY="232.0" prefHeight="18.0" prefWidth="131.0" text="ID админа">
+                  <Label alignment="CENTER" layoutX="287.0" layoutY="235.0" prefHeight="18.0" prefWidth="131.0" text="ID админа">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="408.0" layoutY="233.0" prefHeight="20.0" prefWidth="134.0" text="Содержание">
+                  <Label alignment="CENTER" layoutX="408.0" layoutY="235.0" prefHeight="20.0" prefWidth="134.0" text="Содержание">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="534.0" layoutY="234.0" prefHeight="20.0" prefWidth="146.0" text="Дата создания отчета">
+                  <Label alignment="CENTER" layoutX="534.0" layoutY="235.0" prefHeight="20.0" prefWidth="146.0" text="Дата создания отчета">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="680.0" layoutY="234.0" prefHeight="18.0" prefWidth="131.0" text="ID переработки">
+                  <Label alignment="CENTER" layoutX="680.0" layoutY="235.0" prefHeight="18.0" prefWidth="131.0" text="ID переработки">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
@@ -188,23 +188,23 @@
                   <ComboBox fx:id="ReportContentComboBox" editable="true" layoutX="420.0" layoutY="261.0" prefHeight="26.0" prefWidth="109.0" />
                   <ComboBox fx:id="ReportDateComboBox" editable="true" layoutX="532.0" layoutY="261.0" prefHeight="26.0" prefWidth="156.0" />
                   <ComboBox fx:id="ReportIdRecyclingComboBox" editable="true" layoutX="692.0" layoutY="261.0" prefHeight="26.0" prefWidth="125.0" />
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxReport" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToReport" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -222,35 +222,35 @@
                       <TableColumn fx:id="RecyclingRule2" prefWidth="400.99993896484375" text="Содержание" />
                     </columns>
                   </TableView>
-                  <Label alignment="CENTER" layoutX="27.0" layoutY="229.0" prefHeight="18.0" prefWidth="390.0" text="ID">
+                  <Label alignment="CENTER" layoutX="27.0" layoutY="235.0" prefHeight="18.0" prefWidth="390.0" text="ID">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="425.0" layoutY="230.0" prefHeight="18.0" prefWidth="390.0" text="Содержание">
+                  <Label alignment="CENTER" layoutX="425.0" layoutY="235.0" prefHeight="18.0" prefWidth="390.0" text="Содержание">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="RecyclingRuleIDComboBox" editable="true" layoutX="25.0" layoutY="261.0" prefHeight="26.0" prefWidth="390.0" />
                   <ComboBox fx:id="RecyclingRuleContentComboBox" editable="true" layoutX="425.0" layoutY="262.0" prefHeight="26.0" prefWidth="390.0" />
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxRecyclingRule" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToRecyclingRule" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -296,23 +296,23 @@
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxRecycling" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToRecycling" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -329,23 +329,23 @@
         <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxRecyclingStatus" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToRecyclingStatus" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -357,6 +357,24 @@
                         <TableColumn fx:id="RecyclingStatus3" prefWidth="266.39996337890625" text="Описание текущего процесса" />
                     </columns>
                   </TableView>
+                  <Label alignment="CENTER" layoutX="28.0" layoutY="235.0" prefHeight="22.0" prefWidth="261.0" text="ID">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="289.0" layoutY="235.0" prefHeight="21.0" prefWidth="261.0" text="Наименование статуса переработки">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="550.0" layoutY="235.0" prefHeight="21.0" prefWidth="265.0" text="Описание текущего процесса">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="RecyclingStatusIDComboBox" editable="true" layoutX="28.0" layoutY="261.0" prefHeight="26.0" prefWidth="250.0" />
+                  <ComboBox fx:id="RecyclingStatusNameComboBox" editable="true" layoutX="286.0" layoutY="261.0" prefHeight="26.0" prefWidth="269.0" />
+                  <ComboBox fx:id="RecyclingStatusContentComboBox" editable="true" layoutX="562.0" layoutY="261.0" prefHeight="26.0" prefWidth="254.0" />
                </children></AnchorPane>
         </content>
     </Tab>
@@ -364,23 +382,23 @@
         <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxTrashInfo" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToRecyclingInfo" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -393,40 +411,26 @@
                         <TableColumn fx:id="TrashInfo4" prefWidth="167.5999755859375" text="Количество мусора" />
                     </columns>
                   </TableView>
-               </children></AnchorPane>
-        </content>
-    </Tab>
-    <Tab fx:id="TrashTypeTab" text="Тип мусора">
-        <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
-                       <font>
-                           <Font name="Roboto Light" size="14.0" />
-                       </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
-                       <font>
-                           <Font name="Roboto Light" size="14.0" />
-                       </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
-                       <font>
-                           <Font name="Roboto Light" size="14.0" />
-                       </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
-                       <font>
-                           <Font name="Roboto Light" size="14.0" />
-                       </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
-                       <font>
-                           <Font name="Roboto Light" size="14.0" />
-                       </font>
-                   </Button>
-                  <TableView fx:id="TrashTypeTableView" layoutX="27.0" layoutY="26.0" prefHeight="200.0" prefWidth="788.0">
-                    <columns>
-                      <TableColumn fx:id="TrashType1" prefWidth="387.20000076293945" text="ID" />
-                      <TableColumn fx:id="TrashType2" prefWidth="399.99993896484375" text="Наименование типа мусора" />
-                    </columns>
-                  </TableView>
+                  <Label alignment="CENTER" layoutX="28.0" layoutY="235.0" prefHeight="22.0" prefWidth="197.0" text="ID">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="223.0" layoutY="235.0" prefHeight="22.0" prefWidth="197.0" text="ID пользователя">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="420.0" layoutY="235.0" prefHeight="22.0" prefWidth="197.0" text="ID типа мусора">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Label>
+                  <Label alignment="CENTER" layoutX="617.0" layoutY="235.0" prefHeight="22.0" prefWidth="197.0" text="Количество мусора">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Label>
+                  <ComboBox fx:id="TrashInfoIDComboBox" editable="true" layoutX="28.0" layoutY="261.0" prefHeight="26.0" prefWidth="200.0" />
+                  <ComboBox fx:id="TrashInfoComboBoxIDUser" editable="true" layoutX="232.0" layoutY="261.0" prefHeight="26.0" prefWidth="195.0" />
+                  <ComboBox fx:id="TrashInfoComboBoxIDTrashType" editable="true" layoutX="430.0" layoutY="261.0" prefHeight="26.0" prefWidth="194.0" />
+                  <ComboBox fx:id="TrashInfoComboBoxTrashQuantity" editable="true" layoutX="628.0" layoutY="261.0" prefHeight="26.0" prefWidth="188.0" />
                </children></AnchorPane>
         </content>
     </Tab>
@@ -468,23 +472,23 @@
                    <ComboBox fx:id="UserSurnameComboBox" editable="true" layoutX="420.0" layoutY="261.0" prefHeight="26.0" prefWidth="109.0" />
                    <ComboBox fx:id="UserPasswordComboBox" editable="true" layoutX="532.0" layoutY="261.0" prefHeight="26.0" prefWidth="156.0" />
                    <ComboBox fx:id="UserEmailComboBjx" editable="true" layoutX="692.0" layoutY="261.0" prefHeight="26.0" prefWidth="125.0" />
-                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxUser" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="280.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToUser" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="429.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="580.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="432.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -497,6 +501,52 @@
                         <TableColumn fx:id="User4" prefWidth="141.79998779296875" text="Фамилия" />
                         <TableColumn fx:id="User5" prefWidth="152.79998779296875" text="Пароль" />
                         <TableColumn fx:id="User6" prefWidth="144.00006103515625" text="Почта" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
+        </content>
+    </Tab>
+    <Tab fx:id="TrashTypeTab" text="Тип мусора">
+        <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                   <ComboBox fx:id="TrashTypeComboBoxID" editable="true" layoutX="22.0" layoutY="260.0" prefHeight="30.0" prefWidth="390.0" />
+                   <ComboBox fx:id="TrashTypeComboBoxName" editable="true" layoutX="421.0" layoutY="260.0" prefHeight="30.0" prefWidth="390.0" />
+                   <Label alignment="CENTER" layoutX="22.0" layoutY="235.0" prefHeight="20.0" prefWidth="390.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="421.0" layoutY="235.0" prefHeight="20.0" prefWidth="390.0" text="Наименование типа мусора">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Button layoutX="22.0" layoutY="320.0" mnemonicParsing="false" onAction="#CleanComboBoxTrashType" prefHeight="30.0" prefWidth="210.0" text="Очистить ячейки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Button>
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToTrashType" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Button>
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Button>
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Button>
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Button>
+                  <TableView fx:id="TrashTypeTableView" layoutX="27.0" layoutY="26.0" prefHeight="200.0" prefWidth="788.0">
+                    <columns>
+                      <TableColumn fx:id="TrashType1" prefWidth="387.20000076293945" text="ID" />
+                      <TableColumn fx:id="TrashType2" prefWidth="399.99993896484375" text="Наименование типа мусора" />
                     </columns>
                   </TableView>
                </children></AnchorPane>

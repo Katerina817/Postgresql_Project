@@ -34,7 +34,11 @@ public class LoginController {
     private final ErrorClass errorClass=new ErrorClass();
     @FXML
     private AnchorPane anchorPane;
-    public void initialize() {
+    public void initialize() throws IOException {
+        LoginTextField.setText("admin");
+        PasswordTextField.setText("admin");
+        onEnterButtonClick();
+
         toggleGroup1.selectToggle(AdminRadioButton);
         anchorPane.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {

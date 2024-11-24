@@ -88,10 +88,10 @@ public class AuthorizationController {
             }
         }
         else{
-            if(ageField.getValue()==null || birthYearField.getValue()==null){
+            /*if(ageField.getValue()==null || birthYearField.getValue()==null){
                 new ErrorClass().startError("Ошибка", "Поля возраст и год рождения не могут быть пустыми","Заполните необходимые поля для авторизации");
                 return;
-            }
+            }*/
             Admin admin1 = Admin.builder()
                     .login(loginField.getText())
                     .name(nameField.getText())

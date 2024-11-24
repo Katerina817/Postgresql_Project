@@ -8,9 +8,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.example.postgresql_project.DataBaseConnection;
 import org.example.postgresql_project.Entities.*;
+import org.example.postgresql_project.EntitiesControl.AdminControl;
 import org.example.postgresql_project.EntitiesControl.ForAllEntities;
+import org.example.postgresql_project.EntitiesControl.ReportControl;
+import org.example.postgresql_project.EntitiesControl.ReportTypeControl;
+import org.example.postgresql_project.ErrorClass;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 public class MainPageController {
@@ -95,7 +100,7 @@ public class MainPageController {
     @FXML
     private ComboBox<String> ReportIDComboBox, ReportTypeIDComboBox, IDAdminComboBox, ReportContentComboBox,ReportIdRecyclingComboBox;
     @FXML
-    private ComboBox<Date> ReportDateComboBox;
+    private ComboBox<String> ReportDateComboBox;
 //ONLY FOR RecyclingRule
     @FXML
     private ComboBox<String> RecyclingRuleIDComboBox, RecyclingRuleContentComboBox;
@@ -103,22 +108,21 @@ public class MainPageController {
     @FXML
     private ComboBox<String> RecyclingIDComboBox, RecyclingStatusIdComboBox, RecyclingRecyclingRuleIDComboBox, RecyclingIDTrashInfoComboBox;
     @FXML
-    private ComboBox<Date> RecyclingDateComboBox;
-/*//ONLY FOR RecyclingStatus
+    private ComboBox<String> RecyclingDateComboBox;
+//ONLY FOR RecyclingStatus
     @FXML
-    private ComboBox<String> ;
+    private ComboBox<String> RecyclingStatusIDComboBox, RecyclingStatusNameComboBox, RecyclingStatusContentComboBox;
 //ONLY FOR TrashInfo
     @FXML
-    private ComboBox<String> ;
+    private ComboBox<String> TrashInfoIDComboBox, TrashInfoComboBoxIDUser, TrashInfoComboBoxIDTrashType;
     @FXML
-    private ComboBox<Integer> ;
+    private ComboBox<Integer> TrashInfoComboBoxTrashQuantity;
 //ONLY FOR TrashType
     @FXML
-    private ComboBox<String> ;*/
+    private ComboBox<String> TrashTypeComboBoxID,TrashTypeComboBoxName;
 //ONLY FOR User
     @FXML
     private ComboBox<String> UserIDComboBox,UserLoginComboBox, UserNameComboBox, UserSurnameComboBox, UserPasswordComboBox, UserEmailComboBjx;
-
 
 
     private final ForAllEntities forAllEntities = new ForAllEntities(DataBaseConnection.getConnection());
@@ -134,8 +138,321 @@ public class MainPageController {
         setupTab7();
         setupTab8();
         setupTab9();
+        //Слушатель для переноса строк таблицы
+        AdminTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowAdmin(newValue);
+            }
+        });
+        ReportTypeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowReportType(newValue);
+            }
+        });
+        ReportTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowReport(newValue);
+            }
+        });
+        RecyclingRuleTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowRecyclingRule(newValue);
+            }
+        });
+        RecyclingTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowRecycling(newValue);
+            }
+        });
+        RecyclingStatusTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowRecyclingStatus(newValue);
+            }
+        });
+        TrashInfoTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowTrashInfo(newValue);
+            }
+        });
+        TrashTypeTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowTrashType(newValue);
+            }
+        });
+        UserTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fillFieldsFromSelectedRowUser(newValue);
+            }
+        });
+    }
+    //обработчики для добавления строки в таблицу
+    @FXML
+    private void AddRowToAdmin(){
+        if (IDComboBox.getValue() != null && !IDComboBox.getValue().trim().isEmpty()) {
+            new ErrorClass().startError("ID генерируется автоматически", "Пожалуйста, очистите ячейку ID для выполнения операции и попробуйте еще раз");
+            return;
+        }
+        try {
+            Integer age = Integer.parseInt(AgeComboBox.getEditor().getText());
+            Integer birthYear = Integer.parseInt(BirthYearComboBox.getEditor().getText());
+            Admin admin = Admin.builder()
+                    .login(LoginComboBox.getValue())
+                    .name(NameComboBox.getValue())
+                    .surname(SurnameComboBox.getValue())
+                    .password(PasswordComboBox.getValue())
+                    .email(EmailComboBox.getValue())
+                    .age(age)
+                    .birthYear(birthYear)
+                    .build();
+            AdminControl adminC = new AdminControl(DataBaseConnection.getConnection());
+            boolean res = adminC.insertAdmin(admin);
+            if(res){
+                new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
+                setupTab1();
+            }
+        } catch (NumberFormatException e) {
+            new ErrorClass().startError("Ошибка ввода", "Пожалуйста, введите корректное числовое значение.");
+        }catch (SQLException et) {
+            System.err.println("Ошибка при добавлении администратора: " + et.getMessage());
+        }
+    }
+    @FXML
+    private void AddRowToReportType(){
+        if (IDReportTypeComboBox.getValue() != null && !IDReportTypeComboBox.getValue().trim().isEmpty()) {
+            new ErrorClass().startError("ID генерируется автоматически", "Пожалуйста, очистите ячейку ID для выполнения операции и попробуйте еще раз");
+            return;
+        }
+        try {
+            ReportType reportType = ReportType.builder()
+                    .reportTypeName(ReportTypeNameComboBox.getValue())
+                    .build();
+            ReportTypeControl control = new ReportTypeControl(DataBaseConnection.getConnection());
+            boolean res = control.insertReportType(reportType);
+            if(res){
+                new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
+                setupTab2();
+            }
+        }catch (SQLException et) {
+            System.err.println("Ошибка при добавлении типа отчета: " + et.getMessage());
+        }
+    }
+    @FXML
+    private void AddRowToReport(){
+        //ReportIDComboBox, ReportTypeIDComboBox, IDAdminComboBox, ReportContentComboBox,ReportIdRecyclingComboBox;
+        //@FXML
+        //private ComboBox<Date> ReportDateComboBox;
+        if (ReportIDComboBox.getValue() != null && !ReportIDComboBox.getValue().trim().isEmpty()) {
+            new ErrorClass().startError("ID генерируется автоматически", "Пожалуйста, очистите ячейку ID для выполнения операции и попробуйте еще раз");
+            return;
+        }
+        try {
+            java.sql.Date sqlDate = null;
+            if (ReportDateComboBox.getValue() != null) {
+                sqlDate = java.sql.Date.valueOf(ReportDateComboBox.getValue());
+            }
+            Report report = Report.builder()
+                    .reportTypeId(ReportTypeIDComboBox.getValue())
+                    .adminId(IDAdminComboBox.getValue())
+                    .content(ReportContentComboBox.getValue())
+                    .recyclingId(ReportIdRecyclingComboBox.getValue())
+                    .reportDate(sqlDate)
+                    .build();
+            ReportControl control = new ReportControl(DataBaseConnection.getConnection());
+            boolean res = control.insertReport(report);
+            if(res){
+                new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
+                setupTab3();
+            }
+        }catch (IllegalArgumentException e) {
+            new ErrorClass().startError("Ошибка", "Неверный тип данных", "Значение должно соответствовать формату yyyy-MM-dd");
+        }catch (SQLException et) {
+            System.err.println("Ошибка при добавлении отчета: " + et.getMessage());
+        }
+    }
+    @FXML
+    private void AddRowToRecyclingRule(){
+    }
+    @FXML
+    private void AddRowToRecycling(){
+    }
+    @FXML
+    private void AddRowToRecyclingStatus(){
+    }
+    @FXML
+    private void AddRowToRecyclingInfo(){
+    }
+    @FXML
+    private void AddRowToUser(){
+    }
+    @FXML
+    private void AddRowToTrashType(){
     }
 
+
+
+
+
+    //для метода поиска, главное не забыть вставить его в самом обработчике...
+    private boolean flag=false;
+    //Обработчики кнопок очищения ячеек
+    @FXML
+    private void CleanComboBoxTrashType(){
+        TrashTypeComboBoxID.setValue(null);
+        TrashTypeComboBoxName.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab8();
+        }
+    }
+    @FXML
+    private void CleanComboBoxUser(){
+        UserIDComboBox.setValue(null);
+        UserLoginComboBox.setValue(null);
+        UserNameComboBox.setValue(null);
+        UserSurnameComboBox.setValue(null);
+        UserPasswordComboBox.setValue(null);
+        UserEmailComboBjx.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab9();
+        }
+    }
+    @FXML
+    private void CleanComboBoxTrashInfo(){
+        TrashInfoIDComboBox.setValue(null);
+        TrashInfoComboBoxIDUser.setValue(null);
+        TrashInfoComboBoxIDTrashType.setValue(null);
+        TrashInfoComboBoxTrashQuantity.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab7();
+        }
+    }
+    @FXML
+    private void CleanComboBoxRecyclingStatus(){
+        RecyclingStatusIDComboBox.setValue(null);
+        RecyclingStatusNameComboBox.setValue(null);
+        RecyclingStatusContentComboBox.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab6();
+        }
+    }
+    @FXML
+    private void CleanComboBoxRecycling(){
+        RecyclingIDComboBox.setValue(null);
+        RecyclingStatusIdComboBox.setValue(null);
+        RecyclingRecyclingRuleIDComboBox.setValue(null);
+        RecyclingIDTrashInfoComboBox.setValue(null);
+        RecyclingDateComboBox.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab5();
+        }
+    }
+    @FXML
+    private void CleanComboBoxRecyclingRule(){
+        RecyclingRuleIDComboBox.setValue(null);
+        RecyclingRuleContentComboBox.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab4();
+        }
+    }
+    @FXML
+    private void CleanComboBoxAdmin(){
+        IDComboBox.setValue(null);
+        LoginComboBox.setValue(null);
+        NameComboBox.setValue(null);
+        SurnameComboBox.setValue(null);
+        PasswordComboBox.setValue(null);
+        EmailComboBox.setValue(null);
+        AgeComboBox.setValue(null);
+        BirthYearComboBox.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab1();
+        }
+    }
+    @FXML
+    private void CleanComboBoxReportType(){
+        IDReportTypeComboBox.setValue(null);
+        ReportTypeNameComboBox.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab2();
+        }
+    }
+    @FXML
+    private void CleanComboBoxReport(){
+        ReportIDComboBox.setValue(null);
+        ReportTypeIDComboBox.setValue(null);
+        IDAdminComboBox.setValue(null);
+        ReportContentComboBox.setValue(null);
+        ReportIdRecyclingComboBox.setValue(null);
+        ReportDateComboBox.setValue(null);
+        if(flag){
+            flag=false;
+            setupTab3();
+        }
+    }
+    //Заполнение ячеек при нажатии на строку таблицы
+    private void fillFieldsFromSelectedRowUser(User selected) {
+        UserIDComboBox.setValue(selected.getUserId());
+        UserLoginComboBox.setValue(selected.getLogin());
+        UserNameComboBox.setValue(selected.getName());
+        UserSurnameComboBox.setValue(selected.getSurname());
+        UserPasswordComboBox.setValue(selected.getPassword());
+        UserEmailComboBjx.setValue(selected.getEmail());
+    }
+    private void fillFieldsFromSelectedRowTrashType(TrashType selected) {
+        TrashTypeComboBoxID.setValue(selected.getTrashTypeId());
+        TrashTypeComboBoxName.setValue(selected.getTrashTypeName());
+    }
+    private void fillFieldsFromSelectedRowTrashInfo(TrashInfo selected) {
+        TrashInfoIDComboBox.setValue(selected.getTrashInfoId());
+        TrashInfoComboBoxIDUser.setValue(selected.getUserId());
+        TrashInfoComboBoxIDTrashType.setValue(selected.getTrashTypeId());
+        TrashInfoComboBoxTrashQuantity.setValue(selected.getTrashQuantity());
+    }
+    private void fillFieldsFromSelectedRowRecyclingStatus(RecyclingStatus selected) {
+        RecyclingStatusIDComboBox.setValue(selected.getRecyclingStatusId());
+        RecyclingStatusNameComboBox.setValue(selected.getRecyclingStatusName());
+        RecyclingStatusContentComboBox.setValue(selected.getCurrentProcessDescription());
+    }
+    private void fillFieldsFromSelectedRowRecycling(Recycling selected) {
+        RecyclingIDComboBox.setValue(selected.getRecyclingId());
+        RecyclingStatusIdComboBox.setValue(selected.getRecyclingStatusId());
+        RecyclingRecyclingRuleIDComboBox.setValue(selected.getRuleId());
+        RecyclingIDTrashInfoComboBox.setValue(selected.getTrashInfoId());
+        RecyclingDateComboBox.setValue(String.valueOf(selected.getRecyclingDate()));
+    }
+    private void fillFieldsFromSelectedRowRecyclingRule(RecyclingRule selected) {
+        RecyclingRuleIDComboBox.setValue(selected.getRuleId());
+        RecyclingRuleContentComboBox.setValue(selected.getContent());
+    }
+    private void fillFieldsFromSelectedRowReport(Report selected) {
+        ReportIDComboBox.setValue(selected.getReportId());
+        ReportTypeIDComboBox.setValue(selected.getReportTypeId());
+        IDAdminComboBox.setValue(selected.getAdminId());
+        ReportContentComboBox.setValue(selected.getContent());
+        ReportIdRecyclingComboBox.setValue(selected.getRecyclingId());
+        ReportDateComboBox.setValue(String.valueOf(selected.getReportDate()));
+    }
+    private void fillFieldsFromSelectedRowReportType(ReportType selected) {
+        IDReportTypeComboBox.setValue(selected.getReportTypeId());
+        ReportTypeNameComboBox.setValue(selected.getReportTypeName());
+    }
+    private void fillFieldsFromSelectedRowAdmin(Admin selected) {
+        IDComboBox.setValue(selected.getAdminId());
+        LoginComboBox.setValue(selected.getLogin());
+        NameComboBox.setValue(selected.getName());
+        SurnameComboBox.setValue(selected.getSurname());
+        PasswordComboBox.setValue(selected.getPassword());
+        EmailComboBox.setValue(selected.getEmail());
+        AgeComboBox.setValue(selected.getAge());
+        BirthYearComboBox.setValue(selected.getBirthYear());
+    }
     private void setupTab1() {
         @SuppressWarnings("unchecked")
         List<Admin> admins = (List<Admin>) forAllEntities.getAllRows("admin");
@@ -190,7 +507,7 @@ public class MainPageController {
             IDAdminComboBox.getItems().add(row.getAdminId());
             ReportContentComboBox.getItems().add(row.getContent());
             ReportIdRecyclingComboBox.getItems().add(row.getRecyclingId());
-            ReportDateComboBox.getItems().add(row.getReportDate());
+            ReportDateComboBox.getItems().add(String.valueOf(row.getReportDate()));
         }
     }
     private void setupTab4() {
@@ -220,7 +537,7 @@ public class MainPageController {
             RecyclingStatusIdComboBox.getItems().add(row.getRecyclingStatusId());
             RecyclingRecyclingRuleIDComboBox.getItems().add(row.getRuleId());
             RecyclingIDTrashInfoComboBox.getItems().add(row.getTrashInfoId());
-            RecyclingDateComboBox.getItems().add(row.getRecyclingDate());
+            RecyclingDateComboBox.getItems().add(String.valueOf(row.getRecyclingDate()));
 
         }
     }
@@ -233,6 +550,11 @@ public class MainPageController {
         RecyclingStatus3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCurrentProcessDescription()));
 
         RecyclingStatusTableView.setItems(observableList);
+        for (RecyclingStatus row : rows) {
+            RecyclingStatusIDComboBox.getItems().add(row.getRecyclingStatusId());
+            RecyclingStatusNameComboBox.getItems().add(row.getRecyclingStatusName());
+            RecyclingStatusContentComboBox.getItems().add(row.getCurrentProcessDescription());
+        }
     }
     private void setupTab7() {
         @SuppressWarnings("unchecked")
@@ -244,6 +566,12 @@ public class MainPageController {
         TrashInfo4.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getTrashQuantity()));
 
         TrashInfoTableView.setItems(observableList);
+        for (TrashInfo row : rows) {
+            TrashInfoIDComboBox.getItems().add(row.getTrashInfoId());
+            TrashInfoComboBoxIDUser.getItems().add(row.getUserId());
+            TrashInfoComboBoxIDTrashType.getItems().add(row.getTrashTypeId());
+            TrashInfoComboBoxTrashQuantity.getItems().add(row.getTrashQuantity());
+        }
     }
     private void setupTab8() {
         @SuppressWarnings("unchecked")
@@ -253,6 +581,10 @@ public class MainPageController {
         TrashType2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashTypeName()));
 
         TrashTypeTableView.setItems(observableList);
+        for (TrashType row : rows) {
+            TrashTypeComboBoxID.getItems().add(row.getTrashTypeId());
+            TrashTypeComboBoxName.getItems().add(row.getTrashTypeName());
+        }
     }
     private void setupTab9() {
         @SuppressWarnings("unchecked")
