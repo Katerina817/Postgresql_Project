@@ -90,6 +90,10 @@ public class RecyclingStatusControl {
 
     // Метод для обновления записи в таблице recycling_status по recycling_status_id
     public boolean updateRecyclingStatusField(String recyclingStatusId, String columnName, Object newValue) {
+        if(columnName.equals("recycling_status_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try {
             recyclingStatus_check.validateRecyclingStatusForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {

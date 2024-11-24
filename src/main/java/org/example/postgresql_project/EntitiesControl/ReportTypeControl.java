@@ -92,6 +92,10 @@ public class ReportTypeControl {
 
     // Метод для обновления записи в таблице report_type по report_type_id
     public boolean updateReportTypeField(String reportTypeId, String columnName, Object newValue) {
+        if(columnName.equals("report_type_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try {
             reportType_check.validateReportTypeForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {

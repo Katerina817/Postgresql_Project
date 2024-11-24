@@ -5,10 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import org.example.postgresql_project.DataBaseConnection;
 import org.example.postgresql_project.Entities.*;
 import org.example.postgresql_project.EntitiesControl.ForAllEntities;
@@ -86,9 +83,48 @@ public class MainPageController {
         @FXML
         private TableColumn<User,String> User1,User2,User3,User4,User5,User6;
 
+//ONLY FOR ADMIN
+    @FXML
+    private ComboBox<String> IDComboBox, LoginComboBox, NameComboBox,SurnameComboBox,PasswordComboBox, EmailComboBox;
+    @FXML
+    private ComboBox<Integer> AgeComboBox, BirthYearComboBox;
+//ONLY FOR ReportType
+    @FXML
+    private ComboBox<String> IDReportTypeComboBox,ReportTypeNameComboBox;
+//ONLY FOR Report
+    @FXML
+    private ComboBox<String> ReportIDComboBox, ReportTypeIDComboBox, IDAdminComboBox, ReportContentComboBox,ReportIdRecyclingComboBox;
+    @FXML
+    private ComboBox<Date> ReportDateComboBox;
+//ONLY FOR RecyclingRule
+    @FXML
+    private ComboBox<String> RecyclingRuleIDComboBox, RecyclingRuleContentComboBox;
+//ONLY FOR Recycling
+    @FXML
+    private ComboBox<String> RecyclingIDComboBox, RecyclingStatusIdComboBox, RecyclingRecyclingRuleIDComboBox, RecyclingIDTrashInfoComboBox;
+    @FXML
+    private ComboBox<Date> RecyclingDateComboBox;
+/*//ONLY FOR RecyclingStatus
+    @FXML
+    private ComboBox<String> ;
+//ONLY FOR TrashInfo
+    @FXML
+    private ComboBox<String> ;
+    @FXML
+    private ComboBox<Integer> ;
+//ONLY FOR TrashType
+    @FXML
+    private ComboBox<String> ;*/
+//ONLY FOR User
+    @FXML
+    private ComboBox<String> UserIDComboBox,UserLoginComboBox, UserNameComboBox, UserSurnameComboBox, UserPasswordComboBox, UserEmailComboBjx;
+
+
+
     private final ForAllEntities forAllEntities = new ForAllEntities(DataBaseConnection.getConnection());
     @FXML
     public void initialize() {
+        //Установка данных в таблице
         setupTab1();
         setupTab2();
         setupTab3();
@@ -113,6 +149,16 @@ public class MainPageController {
         Admin7.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getAge()));
         Admin8.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getBirthYear()));
         AdminTableView.setItems(adminObservableList);
+        for (Admin admin : admins) {
+            IDComboBox.getItems().add(admin.getAdminId());
+            LoginComboBox.getItems().add(admin.getLogin());
+            if(!admin.getName().isEmpty())NameComboBox.getItems().add(admin.getName());
+            if(!admin.getSurname().isEmpty())SurnameComboBox.getItems().add(admin.getSurname());
+            PasswordComboBox.getItems().add(admin.getPassword());
+            if(!admin.getEmail().isEmpty())EmailComboBox.getItems().add(admin.getEmail());
+            AgeComboBox.getItems().add(admin.getAge());
+            BirthYearComboBox.getItems().add(admin.getBirthYear());
+        }
     }
 
     private void setupTab2() {
@@ -122,6 +168,10 @@ public class MainPageController {
         ReportType1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeId()));
         ReportType2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeName()));
         ReportTypeTableView.setItems(observableList);
+        for (ReportType row : rows) {
+            IDReportTypeComboBox.getItems().add(row.getReportTypeId());
+            ReportTypeNameComboBox.getItems().add(row.getReportTypeName());
+        }
     }
     private void setupTab3() {
         @SuppressWarnings("unchecked")
@@ -133,8 +183,15 @@ public class MainPageController {
         Report4.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
         Report5.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReportDate()));
         Report6.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingId()));
-
         ReportTableView.setItems(observableList);
+        for (Report row : rows) {
+            ReportIDComboBox.getItems().add(row.getReportId());
+            ReportTypeIDComboBox.getItems().add(row.getReportTypeId());
+            IDAdminComboBox.getItems().add(row.getAdminId());
+            ReportContentComboBox.getItems().add(row.getContent());
+            ReportIdRecyclingComboBox.getItems().add(row.getRecyclingId());
+            ReportDateComboBox.getItems().add(row.getReportDate());
+        }
     }
     private void setupTab4() {
         @SuppressWarnings("unchecked")
@@ -143,6 +200,10 @@ public class MainPageController {
         RecyclingRule1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRuleId()));
         RecyclingRule2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
         RecyclingRuleTableView.setItems(observableList);
+        for (RecyclingRule row : rows) {
+            RecyclingRuleIDComboBox.getItems().add(row.getRuleId());
+            RecyclingRuleContentComboBox.getItems().add(row.getContent());
+        }
     }
     private void setupTab5() {
         @SuppressWarnings("unchecked")
@@ -153,8 +214,15 @@ public class MainPageController {
         Recycling3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRuleId()));
         Recycling4.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashInfoId()));
         Recycling5.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getRecyclingDate()));
-
         RecyclingTableView.setItems(observableList);
+        for (Recycling row : rows) {
+            RecyclingIDComboBox.getItems().add(row.getRecyclingId());
+            RecyclingStatusIdComboBox.getItems().add(row.getRecyclingStatusId());
+            RecyclingRecyclingRuleIDComboBox.getItems().add(row.getRuleId());
+            RecyclingIDTrashInfoComboBox.getItems().add(row.getTrashInfoId());
+            RecyclingDateComboBox.getItems().add(row.getRecyclingDate());
+
+        }
     }
     private void setupTab6() {
         @SuppressWarnings("unchecked")
@@ -188,8 +256,8 @@ public class MainPageController {
     }
     private void setupTab9() {
         @SuppressWarnings("unchecked")
-        List<User> admins = (List<User>) forAllEntities.getAllRows("users");
-        ObservableList<User> adminObservableList = FXCollections.observableArrayList(admins);
+        List<User> rows = (List<User>) forAllEntities.getAllRows("users");
+        ObservableList<User> adminObservableList = FXCollections.observableArrayList(rows);
         User1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserId()));
         User2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLogin()));
         User3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
@@ -197,5 +265,13 @@ public class MainPageController {
         User5.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPassword()));
         User6.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
         UserTableView.setItems(adminObservableList);
+        for (User row : rows) {
+            UserIDComboBox.getItems().add(row.getUserId());
+            UserLoginComboBox.getItems().add(row.getLogin());
+            if(!row.getName().isEmpty())UserNameComboBox.getItems().add(row.getName());
+            if(!row.getSurname().isEmpty())UserSurnameComboBox.getItems().add(row.getSurname());
+            UserPasswordComboBox.getItems().add(row.getPassword());
+            if(!row.getEmail().isEmpty())UserEmailComboBjx.getItems().add(row.getEmail());
+        }
     }
 }

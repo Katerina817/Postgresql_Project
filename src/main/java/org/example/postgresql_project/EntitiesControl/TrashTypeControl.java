@@ -88,6 +88,10 @@ public class TrashTypeControl {
 
     // Метод для обновления записи в таблице trash_type по trash_type_id
     public boolean updateTrashTypeField(String trashTypeId, String columnName, Object newValue) {
+        if(columnName.equals("trash_type_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try {
             trashType_check.validateTrashTypeForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {

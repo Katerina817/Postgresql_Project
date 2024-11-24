@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.example.postgresql_project.DataBaseConnection;
 import org.example.postgresql_project.Entities.Admin;
@@ -30,9 +32,19 @@ public class LoginController {
     @FXML
     private ToggleGroup toggleGroup1;
     private final ErrorClass errorClass=new ErrorClass();
-
+    @FXML
+    private AnchorPane anchorPane;
     public void initialize() {
         toggleGroup1.selectToggle(AdminRadioButton);
+        anchorPane.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                try {
+                    onEnterButtonClick();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     @FXML
     protected void onEnterButtonClick()throws IOException {

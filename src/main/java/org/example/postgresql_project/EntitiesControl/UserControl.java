@@ -114,6 +114,10 @@ public class UserControl {
 
     //Метод для обновления записи в таблице пользователей по user_id
     public boolean updateUserField(String userId, String columnName, Object newValue) {
+        if(columnName.equals("user_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try {
             user_check.validateAdminForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {

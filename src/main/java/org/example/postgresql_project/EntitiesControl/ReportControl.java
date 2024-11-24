@@ -80,6 +80,10 @@ public class ReportControl {
 
     // Метод для обновления записи в таблице report по report_id
     public boolean updateReportField(String reportId, String columnName, Object newValue) {
+        if(columnName.equals("report_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try {
             report_check.validateReportForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {

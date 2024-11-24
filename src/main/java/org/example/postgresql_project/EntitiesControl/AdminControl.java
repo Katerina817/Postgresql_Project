@@ -111,6 +111,10 @@ public class AdminControl {
 
     //Метод для обновления записи в таблице админ по admin_id
     public boolean updateAdminField(String adminId, String columnName, Object newValue) {
+        if(columnName.equals("admin_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try{
             admin_check.validateAdminForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {

@@ -109,6 +109,10 @@ public class TrashInfoControl {
 
     // Метод для обновления записи в таблице trash_info по trash_info_id
     public boolean updateTrashInfoField(String trashInfoId, String columnName, Object newValue) {
+        if(columnName.equals("trash_info_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try {
             trash_info_check.validateTrashInfoForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {

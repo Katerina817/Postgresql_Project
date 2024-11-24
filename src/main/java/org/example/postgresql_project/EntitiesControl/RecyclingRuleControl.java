@@ -70,6 +70,10 @@ public class RecyclingRuleControl {
 
     // Метод для обновления записи в таблице recycling_rule по rule_id
     public boolean updateRecyclingRuleField(String ruleId, String columnName, Object newValue) {
+        if(columnName.equals("rule_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try {
             recyclingRule_check.validateRecyclingRuleForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {

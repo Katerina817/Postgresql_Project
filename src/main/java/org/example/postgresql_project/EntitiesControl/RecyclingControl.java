@@ -90,6 +90,10 @@ public class RecyclingControl {
 
 
     public boolean updateRecyclingField(String recyclingId, String columnName, Object newValue) {
+        if(columnName.equals("recycling_id")){
+            new ErrorClass().startError("Ошибка", "Нельзя изменить значение ID");
+            return false;
+        }
         try {
             recycling_check.validateRecyclingForUpdate(columnName, newValue.toString());
         } catch (InvalidLengthException e) {
