@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="841.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.postgresql_project.FXControllers.MainPageController">
+<TabPane fx:id="mainTabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="841.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.postgresql_project.FXControllers.MainPageController">
   <tabs>
     <Tab fx:id="AdminTab" text="Админ">
       <content>
@@ -74,7 +74,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findAdmin" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -128,7 +128,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findReportType" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -200,7 +200,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findReport" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -246,7 +246,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findRecyclingRule" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -308,7 +308,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findRecycling" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -341,7 +341,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findRecyclingStatus" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -386,7 +386,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToRecyclingInfo" prefHeight="45.0" prefWidth="90.0" text="Добавить">
+                   <Button layoutX="319.0" layoutY="307.0" mnemonicParsing="false" onAction="#AddRowToTrashInfo" prefHeight="45.0" prefWidth="90.0" text="Добавить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -394,7 +394,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findTrashInfo" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -484,7 +484,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findUser" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -534,7 +534,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Поиск">
+                   <Button layoutX="508.0" layoutY="307.0" mnemonicParsing="false" onAction="#findTrashType" prefHeight="45.0" prefWidth="90.0" text="Поиск">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>

@@ -165,8 +165,8 @@ public class AdminControl {
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             String column = entry.getKey();
             Object value = entry.getValue();
-            if (value == "null") {
-                sql.append(column).append(" IS NULL AND ");
+            if (value.equals("null") ) {
+                sql.append(column).append(" IS NULL OR ").append(column).append(" = '' AND ");
             } else {
                 sql.append(column).append(" = ? AND ");
                 values.add(value);

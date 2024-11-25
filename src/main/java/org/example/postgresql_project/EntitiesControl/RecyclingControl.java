@@ -175,7 +175,7 @@ public class RecyclingControl {
             String column = entry.getKey();
             Object value = entry.getValue();
             sql.append(column).append(" = ? AND ");
-            if ("recycling_date".equals(column) && value instanceof String) {
+            /*if ("recycling_date".equals(column) && value instanceof String) {
                 try {
                     value = java.sql.Date.valueOf(value.toString());
                 } catch (IllegalArgumentException e) {
@@ -183,7 +183,7 @@ public class RecyclingControl {
                     return results;
                 }
                 //value = java.sql.Date.valueOf(value.toString());
-            }
+            }*/
             values.add(value);
         }
         sql.delete(sql.length() - 4, sql.length());

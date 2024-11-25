@@ -92,7 +92,7 @@ public class UserControl {
         String selectSql = "SELECT user_id FROM users WHERE " + column_name + " = ?";
         String sql = "DELETE FROM users WHERE "+column_name+" = ?";
         try (PreparedStatement selectStatement = connection.prepareStatement(selectSql);
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             selectStatement.setString(1, value);
             statement.setString(1, value);
             ResultSet resultSet = selectStatement.executeQuery();
@@ -164,8 +164,8 @@ public class UserControl {
         for (Map.Entry<String, Object> entry : params.entrySet()) {
             String column = entry.getKey();
             Object value = entry.getValue();
-            if (value == "null") {
-                sql.append(column).append(" IS NULL AND ");
+            if (value.equals("null")) {
+                sql.append(column).append(" IS NULL OR ").append(column).append(" = '' AND ");
             } else {
                 sql.append(column).append(" = ? AND ");
                 values.add(value);

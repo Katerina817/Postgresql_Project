@@ -28,7 +28,7 @@ public class ReportControl {
         }
         try {
             if (!checkReportTypeExists(report.getReportTypeId()) || !checkAdminExists(report.getAdminId())|| !checkRecyclingExists(report.getRecyclingId())) {
-                new ErrorClass().startError("Ошибка", "Тип мусора, админ или информация о переработке не найдены в базе данных");
+                new ErrorClass().startError("Ошибка", "Тип отчета, админ или информация о переработке не найдены в базе данных");
                 return false;
             }
         } catch (SQLException e) {
@@ -165,7 +165,7 @@ public class ReportControl {
             String column = entry.getKey();
             Object value = entry.getValue();
             sql.append(column).append(" = ? AND ");
-            if ("report_date".equals(column) && value instanceof String) {
+            /*if ("report_date".equals(column) && value instanceof String) {
                 try {
                     value = java.sql.Date.valueOf(value.toString());
                 } catch (IllegalArgumentException e) {
@@ -173,7 +173,7 @@ public class ReportControl {
                     return results;
                 }
                 //value = java.sql.Date.valueOf(value.toString());
-            }
+            }*/
             values.add(value);
         }
         sql.delete(sql.length() - 4, sql.length());
