@@ -76,7 +76,47 @@ public class AdminControl {
 
     //Метод для удаления записи из таблицы админ
     public boolean deleteAdminByColumnName(String column_name,Object value) {
-        String selectSql = "SELECT admin_id FROM admin WHERE " + column_name + " = ?";
+        String selectSql = "SELECT admin_id FROM admin WHERE ";
+        String sql = "DELETE FROM admin WHERE ";
+        boolean isNullOrEmptyCheck = false;
+        if (value.equals("null")) {
+            selectSql += column_name + " IS NULL OR " + column_name + " = ''";
+            sql += column_name + " IS NULL OR " + column_name + " = ''";
+            isNullOrEmptyCheck = true;
+        } else {
+            selectSql += column_name + " = ?";
+            sql += column_name + " = ?";
+        }
+        try (PreparedStatement selectStatement = connection.prepareStatement(selectSql);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (!isNullOrEmptyCheck) {
+                if (Objects.equals(column_name, "age") || Objects.equals(column_name, "birth_year")) {
+                    try {
+                        int intValue = Integer.parseInt(value.toString());
+                        selectStatement.setInt(1, intValue);
+                        statement.setInt(1, intValue);
+                    } catch (NumberFormatException e) {
+                        new ErrorClass().startError("Ошибка", "Неверный тип данных", "Значение должно быть целым числом");
+                        return false;
+                    }
+                } else {
+                    selectStatement.setString(1, value.toString());
+                    statement.setString(1, value.toString());
+                }
+            }
+            ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                String adminId = resultSet.getString("admin_id");
+                ReportControl reportControl = new ReportControl(connection);
+                reportControl.deleteReportByColumnName("admin_id", adminId);
+            }
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при удалении админа", e.getMessage());
+            return false;
+        }
+        /*String selectSql = "SELECT admin_id FROM admin WHERE " + column_name + " = ?";
         String sql = "DELETE FROM admin WHERE "+column_name+" = ?";
         try (PreparedStatement selectStatement = connection.prepareStatement(selectSql);
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -105,7 +145,7 @@ public class AdminControl {
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при удалении админа",e.getMessage());
             return false;
-        }
+        }*/
     }
 
 

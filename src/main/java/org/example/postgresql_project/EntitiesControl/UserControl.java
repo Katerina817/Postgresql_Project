@@ -89,7 +89,37 @@ public class UserControl {
 
     //Метод для удаления записи из таблицы users
     public boolean deleteUsersByColumnName(String column_name,String value) {
-        String selectSql = "SELECT user_id FROM users WHERE " + column_name + " = ?";
+        String selectSql = "SELECT user_id FROM users WHERE ";
+        String sql = "DELETE FROM users WHERE ";
+        boolean isNullOrEmptyCheck = false;
+
+        if (value.equals("null")) {
+            selectSql += column_name + " IS NULL OR " + column_name + " = ''";
+            sql += column_name + " IS NULL OR " + column_name + " = ''";
+            isNullOrEmptyCheck = true;
+        } else {
+            selectSql += column_name + " = ?";
+            sql += column_name + " = ?";
+        }
+        try (PreparedStatement selectStatement = connection.prepareStatement(selectSql);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            if (!isNullOrEmptyCheck) {
+                selectStatement.setString(1, value);
+                statement.setString(1, value);
+            }
+            ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                String userId = resultSet.getString("user_id");
+                TrashInfoControl trashInfoControl = new TrashInfoControl(connection);
+                trashInfoControl.deleteTrashInfoByColumnName("user_id", userId);
+            }
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при удалении записи о пользователе", e.getMessage());
+            return false;
+        }
+        /*String selectSql = "SELECT user_id FROM users WHERE " + column_name + " = ?";
         String sql = "DELETE FROM users WHERE "+column_name+" = ?";
         try (PreparedStatement selectStatement = connection.prepareStatement(selectSql);
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -106,7 +136,7 @@ public class UserControl {
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при удалении записи о пользователе",e.getMessage());
             return false;
-        }
+        }*/
     }
 
 
