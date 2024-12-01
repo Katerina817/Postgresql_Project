@@ -170,6 +170,7 @@ public class UserControl {
             statement.setString(1, newValue.toString());
             statement.setString(2, userId);
             int rowsAffected = statement.executeUpdate();
+            new ErrorClass().startSuccess("Успех", "Запись успешно обновлена");
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());

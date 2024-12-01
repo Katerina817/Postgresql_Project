@@ -35,9 +35,9 @@ public class LoginController {
     @FXML
     private AnchorPane anchorPane;
     public void initialize() throws IOException {
-        LoginTextField.setText("admin");
+        /*LoginTextField.setText("admin");
         PasswordTextField.setText("admin");
-        onEnterButtonClick();
+        onEnterButtonClick();*/
 
         toggleGroup1.selectToggle(AdminRadioButton);
         anchorPane.setOnKeyPressed(event -> {

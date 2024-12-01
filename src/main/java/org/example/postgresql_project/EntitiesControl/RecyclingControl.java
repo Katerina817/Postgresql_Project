@@ -134,6 +134,7 @@ public class RecyclingControl {
             statement.setString(2, recyclingId);
 
             int rowsAffected = statement.executeUpdate();
+            new ErrorClass().startSuccess("Успех", "Запись успешно обновлена");
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());

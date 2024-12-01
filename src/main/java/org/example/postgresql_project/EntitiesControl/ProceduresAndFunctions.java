@@ -16,7 +16,7 @@ public class ProceduresAndFunctions {
 
 
     // Метод для вызова процедуры update_recycling_status_description
-    public boolean callUpdateRecyclingStatusProcedure(String recyclingId, String newDesc) throws SQLException {
+    public boolean callUpdateRecyclingStatusProcedure(String recyclingId, String newDesc){
         String sql = "CALL update_recycling_status_description(?, ?)";
         if(newDesc.length()>400){
             new ErrorClass().startError("Ошибка","Описание должно состоять не более чем из 400 символов");
@@ -26,13 +26,12 @@ public class ProceduresAndFunctions {
             statement.setString(1, recyclingId);
             statement.setString(2, newDesc);
             statement.execute();
-            System.out.println("Процедура update_recycling_status_description успешно выполнена для recycling_id: " + recyclingId);
+            new ErrorClass().startSuccess("Успех", "Запись успешно обновлена");
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вызове процедуры update_recycling_status_description: " + e.getMessage());
             return false;
         }
         return true;
-
     }
 
     //метод для проверки уникальности названия
@@ -61,6 +60,7 @@ public class ProceduresAndFunctions {
         try (CallableStatement statement = connection.prepareCall(sql)) {
             statement.setString(1, trashTypeName);
             statement.execute();
+            new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка","Ошибка при вызове процедуры add_trash_type: " + e.getMessage());
             return false;
@@ -69,7 +69,7 @@ public class ProceduresAndFunctions {
     }
 
     //метод для поиска TrashQuantity по юзерId
-    public int getTotalTrashQuantityByUser(String userId) throws SQLException {
+    public int getTotalTrashQuantityByUser(String userId) {
         String sql = "SELECT get_total_trash_quantity_by_user(?)";
         int totalQuantity = 0;
 
@@ -82,13 +82,14 @@ public class ProceduresAndFunctions {
             }catch (SQLException e) {
                 new ErrorClass().startError("Ошибка","Ошибка при вызове процедуры get_total_trash_quantity_by_user: " + e.getMessage());
             }
+        }catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при вызове процедуры get_total_trash_quantity_by_user: " + e.getMessage());
         }
-
         return totalQuantity;
     }
 
     //метод для подсчета количества отчетов по типу
-    public List<ReportAndAdmin> getReportsByType(String reportTypeName) throws SQLException {
+    public List<ReportAndAdmin> getReportsByType(String reportTypeName) {
         //String sql = "SELECT get_reports_by_type(?)";
         String sql = "SELECT * FROM get_reports_by_type(?)";
         List<ReportAndAdmin> reportAndAdmins=new ArrayList<>();
@@ -108,8 +109,9 @@ public class ProceduresAndFunctions {
             }catch (SQLException e) {
                 new ErrorClass().startError("Ошибка","Ошибка при вызове процедуры get_reports_by_type: " + e.getMessage());
             }
+        }catch (SQLException e) {
+            new ErrorClass().startError("Ошибка","Ошибка при вызове процедуры get_reports_by_type: " + e.getMessage());
         }
-
         return reportAndAdmins;
     }
 }

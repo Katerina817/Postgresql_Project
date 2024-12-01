@@ -137,6 +137,10 @@ public class TrashInfoControl {
             if (columnName.equals("trash_quantity")) {
                 try {
                     int quantity = Integer.parseInt(newValue.toString());
+                    if(quantity<1){
+                        new ErrorClass().startError("Ошибка", "Количество мусора не может быть меньше 1");
+                        return false;
+                    }
                     statement.setInt(1, quantity);
                 } catch (NumberFormatException e) {
                     new ErrorClass().startError("Ошибка", "Неверный тип данных", "Количество должно быть целым числом.");
@@ -147,8 +151,8 @@ public class TrashInfoControl {
             }
             statement.setString(2, trashInfoId);
             int rowsAffected = statement.executeUpdate();
+            new ErrorClass().startSuccess("Успех", "Запись успешно обновлена");
             return rowsAffected > 0;
-
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи информации о мусоре", e.getMessage());
             return false;

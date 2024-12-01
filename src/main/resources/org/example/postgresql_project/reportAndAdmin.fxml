@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.postgresql_project.FXControllers.ReportAndAdminController">
+   <children>
+      <TableView fx:id="ReportAndAdminTableView" layoutX="23.0" layoutY="31.0" prefHeight="200.0" prefWidth="555.0">
+        <columns>
+          <TableColumn fx:id="ReportIDTab" prefWidth="112.39999771118164" text="ID отчета" />
+            <TableColumn fx:id="ContentTab" prefWidth="105.0" text="Содержание" />
+            <TableColumn fx:id="reportDateTab" prefWidth="138.00001525878906" text="Дата создания отчета" />
+            <TableColumn fx:id="adminNameTab" prefWidth="79.4000244140625" text="Имя админа" />
+            <TableColumn fx:id="adminSurnameTab" prefWidth="127.0" text="Фамилия админа" />
+        </columns>
+      </TableView>
+      <Button layoutX="261.0" layoutY="251.0" mnemonicParsing="false" text="ОК">
+         <font>
+            <Font name="Roboto Light" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

@@ -177,6 +177,10 @@ public class AdminControl {
             if (Objects.equals(columnName, "age") || Objects.equals(columnName, "birth_year")) {
                 try {
                     int intValue = Integer.parseInt(newValue.toString());
+                    if(intValue<1){
+                        new ErrorClass().startError("Ошибка", "Год рождения и возраст не могут быть меньше 1");
+                        return false;
+                    }
                     statement.setInt(1, intValue);
                 } catch (NumberFormatException e) {
                     new ErrorClass().startError("Ошибка", "Неверный тип данных", "Значение должно быть целым числом");
@@ -187,6 +191,7 @@ public class AdminControl {
             }
             statement.setString(2, adminId);
             int rowsAffected = statement.executeUpdate();
+            new ErrorClass().startSuccess("Успех", "Запись успешно обновлена");
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении записи", e.getMessage());

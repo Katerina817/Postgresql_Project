@@ -70,7 +70,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteAdmin" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -78,7 +78,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateAdmin" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -91,6 +91,35 @@
                   <ComboBox fx:id="AgeComboBox" editable="true" layoutX="637.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
                   <ComboBox fx:id="EmailComboBox" editable="true" layoutX="531.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
                   <ComboBox fx:id="BirthYearComboBox" editable="true" layoutX="740.0" layoutY="261.0" prefHeight="26.0" prefWidth="100.0" />
+                  <ComboBox fx:id="updateAdminID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                  <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="updateAdminColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                  <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font></Label>
+                  <TextField fx:id="newValueAdmin" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                  <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="deleteAdminColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                  <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Удаляемое значение">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="delValueAdmin" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -124,7 +153,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteReportType" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -132,7 +161,41 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateReportType" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Button>
+                   <ComboBox fx:id="updateReportTypeID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ComboBox fx:id="updateReportTypeColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                   <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Label>
+                   <TextField fx:id="newValueReportType" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ChoiceBox fx:id="deleteReportTypeColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Значение ячейки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <TextField fx:id="delValueReportType" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Button alignment="CENTER" contentDisplay="CENTER" layoutX="599.0" layoutY="455.0" mnemonicParsing="false" onAction="#getReportsByRecyclingType" prefHeight="51.0" prefWidth="182.0" text="Получить отчеты по типу переработки" textAlignment="CENTER" wrapText="true">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -196,7 +259,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteReport" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -204,11 +267,40 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateReport" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
                    </Button>
+                   <ComboBox fx:id="updateReportID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ComboBox fx:id="updateReportColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                   <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Label>
+                   <TextField fx:id="newValueReport" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ChoiceBox fx:id="deleteReportColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Удаляемое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <TextField fx:id="delValueReport" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
                </children></AnchorPane>
         </content>
     </Tab>
@@ -242,7 +334,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteRecyclingRule" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -250,11 +342,40 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateRecyclingRule" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
                    </Button>
+                   <ComboBox fx:id="updateRecyclingRuleID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ComboBox fx:id="updateRecyclingRuleColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                   <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Label>
+                   <TextField fx:id="newValueRecyclingRule" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ChoiceBox fx:id="deleteRecyclingRuleColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Удаляемое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <TextField fx:id="delValueRecyclingRule" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
                </children></AnchorPane>
         </content>
     </Tab>
@@ -304,7 +425,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteRecycling" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -312,7 +433,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateRecycling" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -322,6 +443,35 @@
                   <ComboBox fx:id="RecyclingRecyclingRuleIDComboBox" editable="true" layoutX="332.0" layoutY="261.0" prefHeight="26.0" prefWidth="157.0" />
                   <ComboBox fx:id="RecyclingIDTrashInfoComboBox" editable="true" layoutX="495.0" layoutY="261.0" prefHeight="26.0" prefWidth="184.0" />
                   <ComboBox fx:id="RecyclingDateComboBox" editable="true" layoutX="683.0" layoutY="261.0" prefHeight="26.0" prefWidth="138.0" />
+                   <ComboBox fx:id="updateRecyclingID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ComboBox fx:id="updateRecyclingColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                   <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Label>
+                   <TextField fx:id="newValueRecycling" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ChoiceBox fx:id="deleteRecyclingColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Удаляемое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <TextField fx:id="delValueRecycling" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
                </children></AnchorPane>
         </content>
     </Tab>
@@ -337,7 +487,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteRecyclingStatus" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -345,7 +495,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateRecyclingStatus" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -374,7 +524,36 @@
                   </Label>
                   <ComboBox fx:id="RecyclingStatusIDComboBox" editable="true" layoutX="28.0" layoutY="261.0" prefHeight="26.0" prefWidth="250.0" />
                   <ComboBox fx:id="RecyclingStatusNameComboBox" editable="true" layoutX="286.0" layoutY="261.0" prefHeight="26.0" prefWidth="269.0" />
-                  <ComboBox fx:id="RecyclingStatusContentComboBox" editable="true" layoutX="562.0" layoutY="261.0" prefHeight="26.0" prefWidth="254.0" />
+                   <ComboBox fx:id="RecyclingStatusContentComboBox" editable="true" layoutX="562.0" layoutY="261.0" prefHeight="26.0" prefWidth="254.0" />
+                   <ComboBox fx:id="updateRecyclingStatusID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ComboBox fx:id="updateRecyclingStatusColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                   <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Label>
+                   <TextField fx:id="newValueRecyclingStatus" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ChoiceBox fx:id="deleteRecyclingStatusColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Удаляемое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <TextField fx:id="delValueRecyclingStatus" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
                </children></AnchorPane>
         </content>
     </Tab>
@@ -390,7 +569,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteTrashInfo" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -398,7 +577,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateTrashInfo" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -431,6 +610,40 @@
                   <ComboBox fx:id="TrashInfoComboBoxIDUser" editable="true" layoutX="232.0" layoutY="261.0" prefHeight="26.0" prefWidth="195.0" />
                   <ComboBox fx:id="TrashInfoComboBoxIDTrashType" editable="true" layoutX="430.0" layoutY="261.0" prefHeight="26.0" prefWidth="194.0" />
                   <ComboBox fx:id="TrashInfoComboBoxTrashQuantity" editable="true" layoutX="628.0" layoutY="261.0" prefHeight="26.0" prefWidth="188.0" />
+                   <ComboBox fx:id="updateTrashInfoID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ComboBox fx:id="updateTrashInfoColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                   <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Label>
+                   <TextField fx:id="newValueTrashInfo" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ChoiceBox fx:id="deleteTrashInfoColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Значение ячейки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <TextField fx:id="delValueTrashInfo" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="602.0" layoutY="452.0" mnemonicParsing="false" onAction="#getTotalQuantity" prefHeight="55.0" prefWidth="182.0" text="Получить суммарное количество мусора по ID" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                     <font>
+                        <Font name="Roboto Light" size="14.0" />
+                     </font>
+                  </Button>
                </children></AnchorPane>
         </content>
     </Tab>
@@ -480,7 +693,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteUser" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -488,7 +701,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateUser" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -503,6 +716,35 @@
                         <TableColumn fx:id="User6" prefWidth="144.00006103515625" text="Почта" />
                     </columns>
                   </TableView>
+                   <ComboBox fx:id="updateUserID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ComboBox fx:id="updateUserColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                   <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Label>
+                   <TextField fx:id="newValueUser" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ChoiceBox fx:id="deleteUserColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Удаляемое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <TextField fx:id="delValueUser" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
                </children></AnchorPane>
         </content>
     </Tab>
@@ -530,7 +772,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Удалить">
+                   <Button layoutX="22.0" layoutY="460.0" mnemonicParsing="false" onAction="#onDeleteTrashType" prefHeight="45.0" prefWidth="90.0" text="Удалить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
@@ -538,7 +780,7 @@
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font></Button>
-                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="90.0" text="Изменить">
+                   <Button layoutX="22.0" layoutY="382.0" mnemonicParsing="false" onAction="#onUpdateTrashType" prefHeight="45.0" prefWidth="90.0" text="Изменить">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>
@@ -549,6 +791,35 @@
                       <TableColumn fx:id="TrashType2" prefWidth="399.99993896484375" text="Наименование типа мусора" />
                     </columns>
                   </TableView>
+                   <ComboBox fx:id="updateTrashTypeID" editable="true" layoutX="132.0" layoutY="402.0" prefHeight="26.0" prefWidth="179.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="380.0" prefHeight="21.0" prefWidth="179.0" text="ID">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ComboBox fx:id="updateTrashTypeColumnName" layoutX="343.0" layoutY="402.0" prefHeight="26.0" prefWidth="170.0" />
+                   <Label alignment="CENTER" layoutX="343.0" layoutY="375.0" prefHeight="26.0" prefWidth="170.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font></Label>
+                   <TextField fx:id="newValueTrashType" layoutX="544.0" layoutY="402.0" prefHeight="26.0" prefWidth="241.0" />
+                   <Label alignment="CENTER" layoutX="544.0" layoutY="375.0" prefHeight="26.0" prefWidth="241.0" text="Новое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <ChoiceBox fx:id="deleteTrashTypeColumnName" layoutX="132.0" layoutY="480.0" prefHeight="26.0" prefWidth="183.0" />
+                   <Label alignment="CENTER" layoutX="132.0" layoutY="453.0" prefHeight="26.0" prefWidth="183.0" text="Название колонки">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <Label alignment="CENTER" layoutX="339.0" layoutY="453.0" prefHeight="26.0" prefWidth="242.0" text="Удаляемое значение">
+                       <font>
+                           <Font name="Roboto Light" size="14.0" />
+                       </font>
+                   </Label>
+                   <TextField fx:id="delValueTrashType" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
                </children></AnchorPane>
         </content>
     </Tab>

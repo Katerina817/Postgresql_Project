@@ -114,6 +114,7 @@ public class TrashTypeControl {
             statement.setString(1, newValue.toString());
             statement.setString(2, trashTypeId);
             int rowsAffected = statement.executeUpdate();
+            new ErrorClass().startSuccess("Успех", "Запись успешно обновлена");
             return rowsAffected > 0;
         } catch (SQLException e) {
             new ErrorClass().startError("Ошибка", "Ошибка при обновлении типа мусора", e.getMessage());
