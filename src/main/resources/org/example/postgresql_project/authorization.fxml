@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.postgresql_project.FXControllers.AuthorizationController">
    <children>
-      <Label layoutX="178.0" layoutY="27.0" prefHeight="63.0" prefWidth="246.0" text="Заполните необходимые данные для авторизации в системе" textAlignment="CENTER" wrapText="true">
+      <Label layoutX="178.0" layoutY="27.0" prefHeight="63.0" prefWidth="246.0" text="Заполните необходимые данные для регистрации в системе" textAlignment="CENTER" wrapText="true">
          <font>
             <Font name="Roboto Light" size="14.0" />
          </font>

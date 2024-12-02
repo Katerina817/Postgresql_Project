@@ -165,6 +165,9 @@ public class UserControl {
                 return false;
             }
         }
+        if(newValue.toString().equals("null") && (columnName.equals("name")|| columnName.equals("surname")|| columnName.equals("email"))){
+            newValue="";
+        }
         String sql = "UPDATE users SET " + columnName + " = ? WHERE user_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, newValue.toString());

@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="tabPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.postgresql_project.FXControllers.ReportAndAdminController">
    <children>
@@ -15,10 +14,5 @@
             <TableColumn fx:id="adminSurnameTab" prefWidth="127.0" text="Фамилия админа" />
         </columns>
       </TableView>
-      <Button layoutX="261.0" layoutY="251.0" mnemonicParsing="false" text="ОК">
-         <font>
-            <Font name="Roboto Light" size="14.0" />
-         </font>
-      </Button>
    </children>
 </AnchorPane>

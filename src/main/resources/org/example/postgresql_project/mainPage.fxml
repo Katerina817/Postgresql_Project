@@ -195,7 +195,7 @@
                        </font>
                    </Label>
                    <TextField fx:id="delValueReportType" layoutX="339.0" layoutY="480.0" prefHeight="26.0" prefWidth="241.0" />
-                   <Button alignment="CENTER" contentDisplay="CENTER" layoutX="599.0" layoutY="455.0" mnemonicParsing="false" onAction="#getReportsByRecyclingType" prefHeight="51.0" prefWidth="182.0" text="Получить отчеты по типу переработки" textAlignment="CENTER" wrapText="true">
+                   <Button alignment="CENTER" contentDisplay="CENTER" layoutX="599.0" layoutY="455.0" mnemonicParsing="false" onAction="#getReportsByRecyclingType" prefHeight="51.0" prefWidth="182.0" text="Получить отчеты по типу отчета" textAlignment="CENTER" wrapText="true">
                        <font>
                            <Font name="Roboto Light" size="14.0" />
                        </font>

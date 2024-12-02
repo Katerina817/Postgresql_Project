@@ -342,6 +342,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
         }
+        if(delValueAdmin.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (deleteAdminColumnName.getValue()) {
             case "ID" -> "admin_id";
             case "Логин" -> "login";
@@ -365,6 +368,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
         }
+        if(delValueReportType.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (deleteReportTypeColumnName.getValue()) {
             case "ID" -> "report_type_id";
             case "Наименование типа отчета" -> "report_type_name";
@@ -380,6 +386,9 @@ public class MainPageController {
         if (deleteReportColumnName.getValue()==null || delValueReport.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
+        }
+        if(delValueReport.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         String columnName = switch (deleteReportColumnName.getValue()) {
             case "ID" -> "report_id";
@@ -401,6 +410,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
         }
+        if(delValueRecyclingRule.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (deleteRecyclingRuleColumnName.getValue()) {
             case "ID" -> "rule_id";
             case "Содержание" -> "content";
@@ -416,6 +428,9 @@ public class MainPageController {
         if (deleteRecyclingColumnName.getValue()==null || delValueRecycling.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
+        }
+        if(delValueRecycling.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         String columnName = switch (deleteRecyclingColumnName.getValue()) {
             case "ID" -> "recycling_id";
@@ -436,6 +451,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
         }
+        if(delValueRecyclingStatus.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (deleteRecyclingStatusColumnName.getValue()) {
             case "ID" -> "recycling_status_id";
             case "Наименование статуса переработки" -> "recycling_status_name";
@@ -452,6 +470,9 @@ public class MainPageController {
         if (deleteTrashInfoColumnName.getValue()==null || delValueTrashInfo.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
+        }
+        if(delValueTrashInfo.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         String columnName = switch (deleteTrashInfoColumnName.getValue()) {
             case "ID" -> "trash_info_id";
@@ -471,6 +492,9 @@ public class MainPageController {
         if (deleteTrashInfoColumnName.getValue()==null || delValueTrashInfo.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
+        }
+        if(delValueTrashInfo.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         if(deleteTrashInfoColumnName.getValue().equals("ID пользователя")){
             ProceduresAndFunctions proceduresAndFunctions=new ProceduresAndFunctions(DataBaseConnection.getConnection());
@@ -492,6 +516,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
         }
+        if(delValueUser.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (deleteUserColumnName.getValue()) {
             case "ID" -> "user_id";
             case "Логин" -> "login";
@@ -512,6 +539,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
         }
+        if(delValueTrashType.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (deleteTrashTypeColumnName.getValue()) {
             case "ID" -> "trash_type_id";
             case "Наименование типа мусора" -> "trash_type_name";
@@ -529,6 +559,9 @@ public class MainPageController {
         if (updateAdminID.getValue()==null || updateAdminColumnName.getValue()==null || newValueAdmin.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
+        }
+        if(newValueAdmin.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         String columnName = switch (updateAdminColumnName.getValue()) {
             case "Логин" -> "login";
@@ -550,6 +583,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
         }
+        if(newValueReportType.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (updateReportTypeColumnName.getValue()) {
             case "Наименование типа отчета" -> "report_type_name";
             default -> "";
@@ -562,6 +598,9 @@ public class MainPageController {
         if (updateReportID.getValue()==null || updateReportColumnName.getValue()==null || newValueReport.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
+        }
+        if(newValueReport.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         String columnName = switch (updateReportColumnName.getValue()) {
             case "ID типа отчета" -> "report_type_id";
@@ -580,6 +619,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
         }
+        if(newValueRecyclingRule.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (updateRecyclingRuleColumnName.getValue()) {
             case "Содержание" -> "content";
             default -> "";
@@ -592,6 +634,9 @@ public class MainPageController {
         if (updateRecyclingID.getValue()==null || updateRecyclingColumnName.getValue()==null || newValueRecycling.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
+        }
+        if(newValueRecycling.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         String columnName = switch (updateRecyclingColumnName.getValue()) {
             case "ID статуса переработки" -> "recycling_status_id";
@@ -608,6 +653,9 @@ public class MainPageController {
         if (updateRecyclingStatusID.getValue()==null || updateRecyclingStatusColumnName.getValue()==null || newValueRecyclingStatus.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
+        }
+        if(newValueRecyclingStatus.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         String columnName = switch (updateRecyclingStatusColumnName.getValue()) {
             case "Наименование статуса переработки" -> "recycling_status_name";
@@ -630,6 +678,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
         }
+        if(newValueTrashInfo.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (updateTrashInfoColumnName.getValue()) {
             case "ID пользователя" -> "user_id";
             case "ID типа мусора" -> "trash_type_id";
@@ -644,6 +695,9 @@ public class MainPageController {
         if (updateUserID.getValue()==null || updateUserColumnName.getValue()==null || newValueUser.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
+        }
+        if(newValueUser.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         String columnName = switch (updateUserColumnName.getValue()) {
             case "Логин" -> "login";
@@ -662,6 +716,9 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
         }
+        if(newValueTrashType.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
         String columnName = switch (updateTrashTypeColumnName.getValue()) {
             case "Наименование типа мусора" -> "trash_type_name";
             default -> "";
@@ -675,6 +732,9 @@ public class MainPageController {
         if (deleteReportTypeColumnName.getValue()==null || delValueReportType.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции");
             return;
+        }
+        if(delValueReportType.getText().length()==0){
+            new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         if(deleteReportTypeColumnName.getValue().equals("Наименование типа отчета")){
             ProceduresAndFunctions proceduresAndFunctions=new ProceduresAndFunctions(DataBaseConnection.getConnection());
@@ -972,16 +1032,6 @@ public class MainPageController {
 
 
 
-
-
-
-
-
-
-
-
-
-
     //обработчики для добавления строки в таблицу
     @FXML
     private void AddRowToAdmin(){
@@ -996,6 +1046,10 @@ public class MainPageController {
                 new ErrorClass().startError("Ошибка", "Год рождения и возраст не могут быть меньше 1");
                 return;
             }
+            if(LoginComboBox.getValue().length()==0 || PasswordComboBox.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
+            System.out.println(PasswordComboBox.getValue().length());
             Admin admin = Admin.builder()
                     .login(LoginComboBox.getValue())
                     .name(NameComboBox.getValue())
@@ -1025,6 +1079,9 @@ public class MainPageController {
             return;
         }
         try {
+            if(ReportTypeNameComboBox.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
             ReportType reportType = ReportType.builder()
                     .reportTypeName(ReportTypeNameComboBox.getValue())
                     .build();
@@ -1046,6 +1103,9 @@ public class MainPageController {
             return;
         }
         try {
+            if(IDAdminComboBox.getValue().length()==0 || ReportContentComboBox.getValue().length()==0 || ReportIdRecyclingComboBox.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
             java.sql.Date sqlDate = null;
             if (ReportDateComboBox.getValue() != null) {
                 sqlDate = java.sql.Date.valueOf(ReportDateComboBox.getValue());
@@ -1075,6 +1135,9 @@ public class MainPageController {
             return;
         }
         try {
+            if(RecyclingRuleContentComboBox.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
             RecyclingRule recyclingRule = RecyclingRule.builder()
                     .content(RecyclingRuleContentComboBox.getValue())
                     .build();
@@ -1096,6 +1159,9 @@ public class MainPageController {
             return;
         }
         try {
+            if(RecyclingStatusIdComboBox.getValue().length()==0 || RecyclingRecyclingRuleIDComboBox.getValue().length()==0 || RecyclingIDTrashInfoComboBox.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
             java.sql.Date sqlDate = null;
             if (RecyclingDateComboBox.getValue() != null) {
                 sqlDate = java.sql.Date.valueOf(RecyclingDateComboBox.getValue());
@@ -1127,6 +1193,9 @@ public class MainPageController {
             return;
         }
         try {
+            if(RecyclingStatusNameComboBox.getValue().length()==0 || RecyclingStatusContentComboBox.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
             RecyclingStatus recyclingStatus = RecyclingStatus.builder()
                     .recyclingStatusName(RecyclingStatusNameComboBox.getValue())
                     .currentProcessDescription(RecyclingStatusContentComboBox.getValue())
@@ -1152,6 +1221,9 @@ public class MainPageController {
             return;
         }
         try {
+            if(TrashInfoComboBoxIDUser.getValue().length()==0 || TrashInfoComboBoxIDTrashType.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
             int quantity = Integer.parseInt(TrashInfoComboBoxTrashQuantity.getEditor().getText());
             if(quantity<1){
                 new ErrorClass().startError("Ошибка", "Количество мусора не может быть меньше 1");
@@ -1184,6 +1256,10 @@ public class MainPageController {
             return;
         }
         try {
+            if(UserLoginComboBox.getValue().length()==0 || UserPasswordComboBox.getValue().length()==0 ||
+                    UserNameComboBox.getValue().length()==0 || UserSurnameComboBox.getValue().length()==0|| UserEmailComboBjx.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
             User user1 = User.builder()
                     .login(UserLoginComboBox.getValue())
                     .name(UserNameComboBox.getValue())
@@ -1212,6 +1288,9 @@ public class MainPageController {
             /*TrashType trashType = TrashType.builder()
                     .trashTypeName(TrashTypeComboBoxName.getValue())
                     .build();*/
+            if(TrashTypeComboBoxName.getValue().length()==0){
+                new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
             ProceduresAndFunctions proceduresAndFunctions=new ProceduresAndFunctions(DataBaseConnection.getConnection());
             proceduresAndFunctions.callAddTrashTypeProcedure(TrashTypeComboBoxName.getValue());
             f8=false;setupTab8();CleanComboBoxTrashType();

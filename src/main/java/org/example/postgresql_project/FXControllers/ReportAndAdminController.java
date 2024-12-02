@@ -5,14 +5,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import org.example.postgresql_project.Entities.ReportAndAdmin;
-import org.example.postgresql_project.ErrorClass;
+
 
 import java.sql.Date;
 import java.util.List;

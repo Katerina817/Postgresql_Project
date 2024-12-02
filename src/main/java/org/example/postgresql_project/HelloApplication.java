@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import lombok.extern.java.Log;
 import org.example.postgresql_project.Entities.*;
 import org.example.postgresql_project.EntitiesControl.*;
 
@@ -23,10 +24,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Log
 public class HelloApplication extends Application {
+    private class Помощь {
+        public void помочь() {
+            log.info("помощь оказана");
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        Object помогите;
+
+        помогите = new Помощь();
+        if (помогите instanceof Помощь) {
+            ((Помощь) помогите).помочь();
+        }
+
         Connection con=connect_to_db("recyclingdb","postgres","");
         DataBaseConnection.setConnection(con);
         /*ProceduresAndFunctions pr= new ProceduresAndFunctions(con);
