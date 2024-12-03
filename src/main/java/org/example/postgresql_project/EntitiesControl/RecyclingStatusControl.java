@@ -157,6 +157,33 @@ public class RecyclingStatusControl {
         }
         return results;
     }
-
+    public String getRecyclingStatusIdByName(String recyclingStatusName) {
+        String recyclingStatusId = null;
+        String sql = "SELECT recycling_status_id FROM recycling_status WHERE recycling_status_name = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, recyclingStatusName);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                recyclingStatusId = resultSet.getString("recycling_status_id");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске recycling_status_id", e.getMessage());
+        }
+        return recyclingStatusId;
+    }
+    public String getRecyclingStatusNameById(String recyclingStatusId) {
+        String recyclingStatusName = null;
+        String sql = "SELECT recycling_status_name FROM recycling_status WHERE recycling_status_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, recyclingStatusId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                recyclingStatusName = resultSet.getString("recycling_status_name");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске recycling_status_name", e.getMessage());
+        }
+        return recyclingStatusName;
+    }
 
 }

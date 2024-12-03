@@ -307,14 +307,14 @@ public class MainPageController {
         updateAdminColumnName.getItems().add("Фамилия");updateAdminColumnName.getItems().add("Пароль");updateAdminColumnName.getItems().add("Почта");
         updateAdminColumnName.getItems().add("Возраст");updateAdminColumnName.getItems().add("Год рождения");
         updateReportTypeColumnName.getItems().add("Наименование типа отчета");
-        updateReportColumnName.getItems().add("ID типа отчета");updateReportColumnName.getItems().add("ID админа");
+        updateReportColumnName.getItems().add("Тип отчета");updateReportColumnName.getItems().add("Логин админа");
         updateReportColumnName.getItems().add("Содержание");updateReportColumnName.getItems().add("Дата создания отчета");updateReportColumnName.getItems().add("ID переработки");
         updateRecyclingRuleColumnName.getItems().add("Содержание");
-        updateRecyclingColumnName.getItems().add("ID статуса переработки");
+        updateRecyclingColumnName.getItems().add("Статус переработки");
         updateRecyclingColumnName.getItems().add("ID правила переработки");updateRecyclingColumnName.getItems().add("ID информации о мусоре");updateRecyclingColumnName.getItems().add("Дата переработки");
         updateRecyclingStatusColumnName.getItems().add("Наименование статуса переработки");updateRecyclingStatusColumnName.getItems().add("Описание текущего процесса");
-        updateTrashInfoColumnName.getItems().add("ID пользователя");
-        updateTrashInfoColumnName.getItems().add("ID типа мусора");updateTrashInfoColumnName.getItems().add("Количество мусора");
+        updateTrashInfoColumnName.getItems().add("Логин пользователя");
+        updateTrashInfoColumnName.getItems().add("Тип мусора");updateTrashInfoColumnName.getItems().add("Количество мусора");
         updateUserColumnName.getItems().add("Логин");updateUserColumnName.getItems().add("Имя");
         updateUserColumnName.getItems().add("Фамилия");updateUserColumnName.getItems().add("Пароль");updateUserColumnName.getItems().add("Почта");
         updateTrashTypeColumnName.getItems().add("Наименование типа мусора");
@@ -323,14 +323,14 @@ public class MainPageController {
         deleteAdminColumnName.getItems().add("Фамилия");deleteAdminColumnName.getItems().add("Пароль");deleteAdminColumnName.getItems().add("Почта");
         deleteAdminColumnName.getItems().add("Возраст");deleteAdminColumnName.getItems().add("Год рождения");
         deleteReportTypeColumnName.getItems().add("ID");deleteReportTypeColumnName.getItems().add("Наименование типа отчета");
-        deleteReportColumnName.getItems().add("ID");deleteReportColumnName.getItems().add("ID типа отчета");deleteReportColumnName.getItems().add("ID админа");
+        deleteReportColumnName.getItems().add("ID");deleteReportColumnName.getItems().add("Тип отчета");deleteReportColumnName.getItems().add("Логин админа");
         deleteReportColumnName.getItems().add("Содержание");deleteReportColumnName.getItems().add("Дата создания отчета");deleteReportColumnName.getItems().add("ID переработки");
         deleteRecyclingRuleColumnName.getItems().add("ID");deleteRecyclingRuleColumnName.getItems().add("Содержание");
-        deleteRecyclingColumnName.getItems().add("ID");deleteRecyclingColumnName.getItems().add("ID статуса переработки");
+        deleteRecyclingColumnName.getItems().add("ID");deleteRecyclingColumnName.getItems().add("Статус переработки");
         deleteRecyclingColumnName.getItems().add("ID правила переработки");deleteRecyclingColumnName.getItems().add("ID информации о мусоре");deleteRecyclingColumnName.getItems().add("Дата переработки");
         deleteRecyclingStatusColumnName.getItems().add("ID");deleteRecyclingStatusColumnName.getItems().add("Наименование статуса переработки");deleteRecyclingStatusColumnName.getItems().add("Описание текущего процесса");
-        deleteTrashInfoColumnName.getItems().add("ID");deleteTrashInfoColumnName.getItems().add("ID пользователя");
-        deleteTrashInfoColumnName.getItems().add("ID типа мусора");deleteTrashInfoColumnName.getItems().add("Количество мусора");
+        deleteTrashInfoColumnName.getItems().add("ID");deleteTrashInfoColumnName.getItems().add("Логин пользователя");
+        deleteTrashInfoColumnName.getItems().add("Тип мусора");deleteTrashInfoColumnName.getItems().add("Количество мусора");
         deleteUserColumnName.getItems().add("ID");deleteUserColumnName.getItems().add("Логин");deleteUserColumnName.getItems().add("Имя");
         deleteUserColumnName.getItems().add("Фамилия");deleteUserColumnName.getItems().add("Пароль");deleteUserColumnName.getItems().add("Почта");
         deleteTrashTypeColumnName.getItems().add("ID");deleteTrashTypeColumnName.getItems().add("Наименование типа мусора");
@@ -356,8 +356,8 @@ public class MainPageController {
             case "Год рождения" -> "birth_year";
             default -> "";
         };
-        AdminControl control=new AdminControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteAdminByColumnName(columnName, delValueAdmin.getText());
+        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
+        boolean res=adminControl.deleteAdminByColumnName(columnName, delValueAdmin.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }
@@ -376,8 +376,8 @@ public class MainPageController {
             case "Наименование типа отчета" -> "report_type_name";
             default -> "";
         };
-        ReportTypeControl control=new ReportTypeControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteReportTypeByColumnName(columnName, delValueReportType.getText());
+        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+        boolean res=reportTypeControl.deleteReportTypeByColumnName(columnName, delValueReportType.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }f2=false;setupTab2();CleanComboBoxReportType();
@@ -390,17 +390,50 @@ public class MainPageController {
         if(delValueReport.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        String columnName = switch (deleteReportColumnName.getValue()) {
-            case "ID" -> "report_id";
-            case "ID типа отчета" -> "report_type_id";
-            case "ID админа" -> "admin_id";
-            case "Содержание" -> "content";
-            case "Дата создания отчета" -> "report_date";
-            case "ID переработки" -> "recycling_id";
-            default -> "";
+        String columnName;ReportControl reportControl=new ReportControl(DataBaseConnection.getConnection());boolean res=false;
+        switch (deleteReportColumnName.getValue()) {
+            case "ID" :{
+                columnName="report_id";res=reportControl.deleteReportByColumnName(columnName, delValueReport.getText());break;
+            }
+            case "Тип отчета":{
+                columnName="report_type_id";
+                ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+                String reportType=delValueReport.getText();
+                String reportTypeID=reportTypeControl.getReportTypeIdByName(reportType);
+                if(reportTypeID==null){
+                    new ErrorClass().startError("Ошибка","Тип отчета не найден");return;
+                }
+                res=reportControl.deleteReportByColumnName(columnName, reportTypeID);
+                break;
+                //columnName="user_id";break;
+            }
+            //case "ID типа отчета" -> "report_type_id";
+            case "Логин админа":{
+                columnName="admin_id";
+                AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
+                String login=delValueReport.getText();
+                String adminID=adminControl.getAdminIdByLogin(login);
+                if(adminID==null){
+                    new ErrorClass().startError("Ошибка","Админ не найден");return;
+                }
+                res=reportControl.deleteReportByColumnName(columnName, adminID);
+                break;
+                //columnName="user_id";break;
+            }
+            //case "ID админа" -> "admin_id";
+            case "Содержание":{
+                columnName="content";res=reportControl.deleteReportByColumnName(columnName, delValueReport.getText());break;
+            }
+            case "Дата создания отчета":{
+                columnName="report_date";res=reportControl.deleteReportByColumnName(columnName, delValueReport.getText());break;
+            }
+            case "ID переработки":{
+                columnName="recycling_id";res=reportControl.deleteReportByColumnName(columnName, delValueReport.getText());break;
+            }
+            default:{
+                columnName="";break;
+            }
         };
-        ReportControl control=new ReportControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteReportByColumnName(columnName, delValueReport.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }f3=false;setupTab3();CleanComboBoxReport();
@@ -418,8 +451,8 @@ public class MainPageController {
             case "Содержание" -> "content";
             default -> "";
         };
-        RecyclingRuleControl control=new RecyclingRuleControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteRecyclingRuleByColumnName(columnName, delValueRecyclingRule.getText());
+        RecyclingRuleControl recyclingRuleControl=new RecyclingRuleControl(DataBaseConnection.getConnection());
+        boolean res=recyclingRuleControl.deleteRecyclingRuleByColumnName(columnName, delValueRecyclingRule.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }f4=false;setupTab4();CleanComboBoxRecyclingRule();
@@ -432,16 +465,38 @@ public class MainPageController {
         if(delValueRecycling.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        String columnName = switch (deleteRecyclingColumnName.getValue()) {
-            case "ID" -> "recycling_id";
-            case "ID статуса переработки" -> "recycling_status_id";
-            case "ID правила переработки" -> "rule_id";
-            case "ID информации о мусоре" -> "trash_info_id";
-            case "Дата переработки" -> "recycling_date";
-            default -> "";
+        RecyclingControl recyclingControl=new RecyclingControl(DataBaseConnection.getConnection());
+        String columnName;boolean res=false;
+        switch (deleteRecyclingColumnName.getValue()) {
+            case "ID":{
+                columnName="recycling_id";recyclingControl.deleteRecyclingByColumnName(columnName, delValueRecycling.getText());break;
+            }
+            case "Статус переработки":{
+                columnName="recycling_status_id";
+                RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
+                String recyclingStatus=delValueRecycling.getText();
+                String recyclingStatusID=recyclingStatusControl.getRecyclingStatusIdByName(recyclingStatus);
+                if(recyclingStatusID==null){
+                    new ErrorClass().startError("Ошибка","Статус переработки не найден");return;
+                }
+                res=recyclingControl.deleteRecyclingByColumnName(columnName, recyclingStatusID);
+                break;
+                //columnName="user_id";break;
+            }
+            //case "ID статуса переработки" -> "recycling_status_id";
+            case "ID правила переработки":{
+                columnName="rule_id";res=recyclingControl.deleteRecyclingByColumnName(columnName, delValueRecycling.getText());break;
+            }
+            case "ID информации о мусоре":{
+                columnName="trash_info_id";res=recyclingControl.deleteRecyclingByColumnName(columnName, delValueRecycling.getText());break;
+            }
+            case "Дата переработки":{
+                columnName="recycling_date";res=recyclingControl.deleteRecyclingByColumnName(columnName, delValueRecycling.getText());break;
+            }
+            default:{
+                columnName="";break;
+            }
         };
-        RecyclingControl control=new RecyclingControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteRecyclingByColumnName(columnName, delValueRecycling.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }f5=false;setupTab5();CleanComboBoxRecycling();
@@ -460,8 +515,8 @@ public class MainPageController {
             case "Описание текущего процесса" -> "current_process_description";
             default -> "";
         };
-        RecyclingStatusControl control=new RecyclingStatusControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteRecyclingStatusByColumnName(columnName, delValueRecyclingStatus.getText());
+        RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
+        boolean res=recyclingStatusControl.deleteRecyclingStatusByColumnName(columnName, delValueRecyclingStatus.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }f6=false;setupTab6();CleanComboBoxRecyclingStatus();
@@ -474,15 +529,46 @@ public class MainPageController {
         if(delValueTrashInfo.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        String columnName = switch (deleteTrashInfoColumnName.getValue()) {
-            case "ID" -> "trash_info_id";
-            case "ID пользователя" -> "user_id";
-            case "ID типа мусора" -> "trash_type_id";
-            case "Количество мусора" -> "trash_quantity";
-            default -> "";
+        TrashInfoControl trashInfoControl=new TrashInfoControl(DataBaseConnection.getConnection());
+        String columnName;boolean res=false;
+        switch (deleteTrashInfoColumnName.getValue()) {
+            case "ID":{
+                columnName="trash_info_id";res=trashInfoControl.deleteTrashInfoByColumnName(columnName, delValueTrashInfo.getText());break;
+            }
+            case "Логин пользователя":{
+                columnName="user_id";
+                UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+                String login=delValueTrashInfo.getText();
+                String userID=userControl.getUserIdByLogin(login);
+                if(userID==null){
+                    new ErrorClass().startError("Ошибка","Пользователь не найден");return;
+                }
+                res=trashInfoControl.deleteTrashInfoByColumnName(columnName, userID);
+                break;
+                //columnName="user_id";break;
+            }
+            case "Тип мусора":{
+                columnName="trash_type_id";
+                TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
+                String trashType=delValueTrashInfo.getText();
+                String trashTypeID=trashTypeControl.getTrashTypeIdByName(trashType);
+                if(trashTypeID==null){
+                    new ErrorClass().startError("Ошибка","Тип мусора не найден");return;
+                }
+                res=trashInfoControl.deleteTrashInfoByColumnName(columnName, trashTypeID);
+                break;
+                //columnName="trash_type_id";break;
+            }
+            case "Количество мусора":{
+                columnName="trash_quantity";res=trashInfoControl.deleteTrashInfoByColumnName(columnName, delValueTrashInfo.getText());
+                break;
+            }
+            default:{
+                columnName="";
+            }
         };
-        TrashInfoControl control=new TrashInfoControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteTrashInfoByColumnName(columnName, delValueTrashInfo.getText());
+        //TrashInfoControl control=new TrashInfoControl(DataBaseConnection.getConnection());
+        //boolean res=control.deleteTrashInfoByColumnName(columnName, delValueTrashInfo.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }f7=false;setupTab7();CleanComboBoxTrashInfo();
@@ -496,9 +582,14 @@ public class MainPageController {
         if(delValueTrashInfo.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        if(deleteTrashInfoColumnName.getValue().equals("ID пользователя")){
+        if(deleteTrashInfoColumnName.getValue().equals("Логин пользователя")){
             ProceduresAndFunctions proceduresAndFunctions=new ProceduresAndFunctions(DataBaseConnection.getConnection());
-            int res=proceduresAndFunctions.getTotalTrashQuantityByUser(delValueTrashInfo.getText());
+            UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+            String userID=userControl.getUserIdByLogin(delValueTrashInfo.getText());
+            if(userID==null){
+                new ErrorClass().startError("Ошибка","Пользователь не найден");return;
+            }
+            int res=proceduresAndFunctions.getTotalTrashQuantityByUser(userID);
             if (res==0){
                 new ErrorClass().startSuccess("Успех","Общее количество мусора пользователя с ID "+delValueTrashInfo.getText()+" равно: "+res,"Возможно вы ввели неверное значение ID пользователя. Для получения результата введите верное значение.");
             }
@@ -528,8 +619,8 @@ public class MainPageController {
             case "Почта" -> "email";
             default -> "";
         };
-        UserControl control=new UserControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteUsersByColumnName(columnName, delValueUser.getText());
+        UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+        boolean res=userControl.deleteUsersByColumnName(columnName, delValueUser.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }f9=false;setupTab9();CleanComboBoxUser();
@@ -547,8 +638,8 @@ public class MainPageController {
             case "Наименование типа мусора" -> "trash_type_name";
             default -> "";
         };
-        TrashTypeControl control=new TrashTypeControl(DataBaseConnection.getConnection());
-        boolean res=control.deleteTrashTypeByColumnName(columnName, delValueTrashType.getText());
+        TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
+        boolean res=trashTypeControl.deleteTrashTypeByColumnName(columnName, delValueTrashType.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
         }f8=false;setupTab8();CleanComboBoxTrashType();
@@ -573,8 +664,8 @@ public class MainPageController {
             case "Год рождения" -> "birth_year";
             default -> "";
         };
-        AdminControl control=new AdminControl(DataBaseConnection.getConnection());
-        control.updateAdminField(updateAdminID.getValue(),columnName, newValueAdmin.getText());f1=false;setupTab1();
+        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
+        adminControl.updateAdminField(updateAdminID.getValue(),columnName, newValueAdmin.getText());f1=false;setupTab1();
         CleanComboBoxAdmin();
     }
     @FXML
@@ -590,8 +681,8 @@ public class MainPageController {
             case "Наименование типа отчета" -> "report_type_name";
             default -> "";
         };
-        ReportTypeControl control=new ReportTypeControl(DataBaseConnection.getConnection());
-        control.updateReportTypeField(updateReportTypeID.getValue(),columnName, newValueReportType.getText());f2=false;setupTab2();
+        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+        reportTypeControl.updateReportTypeField(updateReportTypeID.getValue(),columnName, newValueReportType.getText());f2=false;setupTab2();
         CleanComboBoxReportType();
     }@FXML
     private void onUpdateReport(){
@@ -602,16 +693,48 @@ public class MainPageController {
         if(newValueReport.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        String columnName = switch (updateReportColumnName.getValue()) {
-            case "ID типа отчета" -> "report_type_id";
-            case "ID админа" -> "admin_id";
-            case "Содержание" -> "content";
-            case "Дата создания отчета" -> "report_date";
-            case "ID переработки" -> "recycling_id";
-            default -> "";
+        ReportControl reportControl=new ReportControl(DataBaseConnection.getConnection());
+        String columnName;
+        switch (updateReportColumnName.getValue()) {
+            case "Тип отчета":{
+                columnName="report_type_id";
+                ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+                String reportType=newValueReport.getText();
+                String reportTypeID=reportTypeControl.getReportTypeIdByName(reportType);
+                if(reportTypeID==null){
+                    new ErrorClass().startError("Ошибка","Тип отчета не найден");return;
+                }
+                reportControl.updateReportField(updateReportID.getValue(),columnName, reportTypeID);
+                break;
+            }
+            //case "ID типа отчета" -> "report_type_id";
+            case "Логин админа":{
+                columnName="admin_id";
+                AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
+                String login=newValueReport.getText();
+                String adminId=adminControl.getAdminIdByLogin(login);
+                if(adminId==null){
+                    new ErrorClass().startError("Ошибка","Админ не найден");return;
+                }
+                reportControl.updateReportField(updateReportID.getValue(),columnName, adminId);
+                break;
+            }
+            //case "ID админа" -> "admin_id";
+            case "Содержание":{
+                columnName="content";
+                reportControl.updateReportField(updateReportID.getValue(),columnName, newValueReport.getText());break;
+            }
+            case "Дата создания отчета":{
+                columnName="report_date";reportControl.updateReportField(updateReportID.getValue(),columnName, newValueReport.getText());break;
+            }
+            case "ID переработки":{
+                columnName="recycling_id";reportControl.updateReportField(updateReportID.getValue(),columnName, newValueReport.getText());break;
+            }
+            default: {
+                columnName="";break;
+            }
         };
-        ReportControl control=new ReportControl(DataBaseConnection.getConnection());
-        control.updateReportField(updateReportID.getValue(),columnName, newValueReport.getText());f3=false;setupTab3();
+        f3=false;setupTab3();
         CleanComboBoxReport();
     }@FXML
     private void onUpdateRecyclingRule(){
@@ -626,8 +749,8 @@ public class MainPageController {
             case "Содержание" -> "content";
             default -> "";
         };
-        RecyclingRuleControl control=new RecyclingRuleControl(DataBaseConnection.getConnection());
-        control.updateRecyclingRuleField(updateRecyclingRuleID.getValue(),columnName, newValueRecyclingRule.getText());f4=false;setupTab4();
+        RecyclingRuleControl recyclingRuleControl=new RecyclingRuleControl(DataBaseConnection.getConnection());
+        recyclingRuleControl.updateRecyclingRuleField(updateRecyclingRuleID.getValue(),columnName, newValueRecyclingRule.getText());f4=false;setupTab4();
         CleanComboBoxRecyclingRule();
     }@FXML
     private void onUpdateRecycling(){
@@ -638,15 +761,38 @@ public class MainPageController {
         if(newValueRecycling.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        String columnName = switch (updateRecyclingColumnName.getValue()) {
-            case "ID статуса переработки" -> "recycling_status_id";
-            case "ID правила переработки" -> "rule_id";
-            case "ID информации о мусоре" -> "trash_info_id";
-            case "Дата переработки" -> "recycling_date";
-            default -> "";
+        RecyclingControl recyclingControl=new RecyclingControl(DataBaseConnection.getConnection());
+        String columnName;
+        switch (updateRecyclingColumnName.getValue()) {
+            case "Статус переработки":{
+                columnName="recycling_status_id";
+                RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
+                String recyclingStatus=newValueRecycling.getText();
+                String recyclingStatusID=recyclingStatusControl.getRecyclingStatusIdByName(recyclingStatus);
+                if(recyclingStatusID==null){
+                    new ErrorClass().startError("Ошибка","Статус не найден");return;
+                }
+                recyclingControl.updateRecyclingField(updateRecyclingID.getValue(),columnName, recyclingStatusID);
+                break;
+            }
+            //case "ID статуса переработки" -> "recycling_status_id";
+            case "ID правила переработки": {
+                columnName="rule_id";
+                recyclingControl.updateRecyclingField(updateRecyclingID.getValue(),columnName, newValueRecycling.getText());break;
+            }
+            case "ID информации о мусоре":{
+                columnName="trash_info_id";
+                recyclingControl.updateRecyclingField(updateRecyclingID.getValue(),columnName, newValueRecycling.getText());break;
+            }
+            case "Дата переработки":{
+                columnName="recycling_date";
+                recyclingControl.updateRecyclingField(updateRecyclingID.getValue(),columnName, newValueRecycling.getText());break;
+            }
+            default:{
+                columnName="";break;
+            }
         };
-        RecyclingControl control=new RecyclingControl(DataBaseConnection.getConnection());
-        control.updateRecyclingField(updateRecyclingID.getValue(),columnName, newValueRecycling.getText());f5=false;setupTab5();
+        f5=false;setupTab5();
         CleanComboBoxRecycling();
     }@FXML
     private void onUpdateRecyclingStatus(){
@@ -667,8 +813,8 @@ public class MainPageController {
             proceduresAndFunctions.callUpdateRecyclingStatusProcedure(updateRecyclingStatusID.getValue(),newValueRecyclingStatus.getText());
         }
         else{
-            RecyclingStatusControl control=new RecyclingStatusControl(DataBaseConnection.getConnection());
-            control.updateRecyclingStatusField(updateRecyclingStatusID.getValue(),columnName, newValueRecyclingStatus.getText());
+            RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
+            recyclingStatusControl.updateRecyclingStatusField(updateRecyclingStatusID.getValue(),columnName, newValueRecyclingStatus.getText());
         }
         f6=false;setupTab6();
         CleanComboBoxRecyclingStatus();
@@ -681,14 +827,41 @@ public class MainPageController {
         if(newValueTrashInfo.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        String columnName = switch (updateTrashInfoColumnName.getValue()) {
-            case "ID пользователя" -> "user_id";
-            case "ID типа мусора" -> "trash_type_id";
-            case "Количество мусора" -> "trash_quantity";
-            default -> "";
-        };
-        TrashInfoControl control=new TrashInfoControl(DataBaseConnection.getConnection());
-        control.updateTrashInfoField(updateTrashInfoID.getValue(),columnName, newValueTrashInfo.getText());f7=false;setupTab7();
+        String columnName;TrashInfoControl trashInfoControl=new TrashInfoControl(DataBaseConnection.getConnection());
+        switch (updateTrashInfoColumnName.getValue()) {
+            case "Логин пользователя":{
+                columnName="user_id";
+                UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+                String login=newValueTrashInfo.getText();
+                String userID=userControl.getUserIdByLogin(login);
+                if(userID==null){
+                    new ErrorClass().startError("Ошибка","Пользователь с таким логином не найден");return;
+                }
+                trashInfoControl.updateTrashInfoField(updateTrashInfoID.getValue(),columnName, userID);
+                break;
+            }
+            case "Тип мусора":{
+                columnName="trash_type_id";
+                TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
+                String trashType=newValueTrashInfo.getText();
+                String trashTypeID=trashTypeControl.getTrashTypeIdByName(trashType);
+                if(trashTypeID==null){
+                    new ErrorClass().startError("Ошибка","Тип мусора не найден");return;
+                }
+                trashInfoControl.updateTrashInfoField(updateTrashInfoID.getValue(),columnName, trashTypeID);
+                break;
+                //columnName="trash_type_id";break;
+            }
+            case "Количество мусора":{
+                columnName="trash_quantity";
+                trashInfoControl.updateTrashInfoField(updateTrashInfoID.getValue(),columnName, newValueTrashInfo.getText());
+                break;
+            }
+            default:{
+                columnName="";break;
+            }
+        }
+        f7=false;setupTab7();
         CleanComboBoxTrashInfo();
     }@FXML
     private void onUpdateUser(){
@@ -707,8 +880,8 @@ public class MainPageController {
             case "Почта" -> "email";
             default -> "";
         };
-        UserControl control=new UserControl(DataBaseConnection.getConnection());
-        control.updateUserField(updateUserID.getValue(),columnName, newValueUser.getText());f9=false;setupTab9();
+        UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+        userControl.updateUserField(updateUserID.getValue(),columnName, newValueUser.getText());f9=false;setupTab9();
         CleanComboBoxUser();
     }@FXML
     private void onUpdateTrashType(){
@@ -723,8 +896,8 @@ public class MainPageController {
             case "Наименование типа мусора" -> "trash_type_name";
             default -> "";
         };
-        TrashTypeControl control=new TrashTypeControl(DataBaseConnection.getConnection());
-        control.updateTrashTypeField(updateTrashTypeID.getValue(),columnName, newValueTrashType.getText());f8=false;setupTab8();
+        TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
+        trashTypeControl.updateTrashTypeField(updateTrashTypeID.getValue(),columnName, newValueTrashType.getText());f8=false;setupTab8();
         CleanComboBoxTrashType();
     }
     @FXML
@@ -822,12 +995,14 @@ public class MainPageController {
     }@FXML
     private void findReport(){
         Map<String, Object> params = new HashMap<>();
+        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
         if (ReportIDComboBox.getValue() != null && !ReportIDComboBox.getValue().isEmpty()) {
             params.put("report_id", ReportIDComboBox.getValue());
         }if (ReportTypeIDComboBox.getValue() != null && !ReportTypeIDComboBox.getValue().isEmpty()) {
-            params.put("report_type_id", ReportTypeIDComboBox.getValue());
+            params.put("report_type_id", reportTypeControl.getReportTypeIdByName(ReportTypeIDComboBox.getValue()));
         }if (IDAdminComboBox.getValue() != null && !IDAdminComboBox.getValue().isEmpty()) {
-            params.put("admin_id", IDAdminComboBox.getValue());
+            params.put("admin_id", adminControl.getAdminIdByLogin(IDAdminComboBox.getValue()));
         }if (ReportContentComboBox.getValue() != null && !ReportContentComboBox.getValue().isEmpty()) {
             params.put("content", ReportContentComboBox.getValue());
         }if (ReportIdRecyclingComboBox.getValue() != null && !ReportIdRecyclingComboBox.getValue().isEmpty()) {
@@ -848,8 +1023,18 @@ public class MainPageController {
         if (!reports.isEmpty()) {
             ObservableList<Report> observableList = FXCollections.observableArrayList(reports);
             Report1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportId()));
-            Report2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeId()));
-            Report3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAdminId()));
+            Report2.setCellValueFactory(cellData -> {
+                String reportTypeId = cellData.getValue().getReportTypeId();
+                String reportType = reportTypeControl.getReportTypeNameById(reportTypeId);
+                return new SimpleStringProperty(reportType);
+            });
+            //Report2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeId()));
+            Report3.setCellValueFactory(cellData -> {
+                String adminId = cellData.getValue().getAdminId();
+                String login = adminControl.getLoginByAdminId(adminId);
+                return new SimpleStringProperty(login);
+            });
+            //Report3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAdminId()));
             Report4.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
             Report5.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReportDate()));
             Report6.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingId()));
@@ -882,10 +1067,11 @@ public class MainPageController {
     }@FXML
     private void findRecycling(){
         Map<String, Object> params = new HashMap<>();
+        RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
         if (RecyclingIDComboBox.getValue() != null && !RecyclingIDComboBox.getValue().isEmpty()) {
             params.put("recycling_id", RecyclingIDComboBox.getValue());
         }if (RecyclingStatusIdComboBox.getValue() != null && !RecyclingStatusIdComboBox.getValue().isEmpty()) {
-            params.put("recycling_status_id", RecyclingStatusIdComboBox.getValue());
+            params.put("recycling_status_id", recyclingStatusControl.getRecyclingStatusIdByName(RecyclingStatusIdComboBox.getValue()));
         }if (RecyclingRecyclingRuleIDComboBox.getValue() != null && !RecyclingRecyclingRuleIDComboBox.getValue().isEmpty()) {
             params.put("rule_id", RecyclingRecyclingRuleIDComboBox.getValue());
         }if (RecyclingIDTrashInfoComboBox.getValue() != null && !RecyclingIDTrashInfoComboBox.getValue().isEmpty()) {
@@ -906,7 +1092,12 @@ public class MainPageController {
         if (!recyclings.isEmpty()) {
             ObservableList<Recycling> observableList = FXCollections.observableArrayList(recyclings);
             Recycling1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingId()));
-            Recycling2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingStatusId()));
+            Recycling2.setCellValueFactory(cellData -> {
+                String statusId = cellData.getValue().getRecyclingStatusId();
+                String status = recyclingStatusControl.getRecyclingStatusNameById(statusId);
+                return new SimpleStringProperty(status);
+            });
+            //Recycling2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingStatusId()));
             Recycling3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRuleId()));
             Recycling4.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashInfoId()));
             Recycling5.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getRecyclingDate()));
@@ -943,12 +1134,14 @@ public class MainPageController {
     private void findTrashInfo(){
         try {
             Map<String, Object> params = new HashMap<>();
+            UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+            TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
             if (TrashInfoIDComboBox.getValue() != null && !TrashInfoIDComboBox.getValue().isEmpty()) {
                 params.put("trash_info_id", TrashInfoIDComboBox.getValue());
             }if (TrashInfoComboBoxIDUser.getValue() != null && !TrashInfoComboBoxIDUser.getValue().isEmpty()) {
-                params.put("user_id", TrashInfoComboBoxIDUser.getValue());
+                params.put("user_id", userControl.getUserIdByLogin(TrashInfoComboBoxIDUser.getValue()));
             }if (TrashInfoComboBoxIDTrashType.getValue() != null && !TrashInfoComboBoxIDTrashType.getValue().isEmpty()) {
-                params.put("trash_type_id", TrashInfoComboBoxIDTrashType.getValue());
+                params.put("trash_type_id", trashTypeControl.getTrashTypeIdByName(TrashInfoComboBoxIDTrashType.getValue()));
             }if (TrashInfoComboBoxTrashQuantity.getValue() != null && !TrashInfoComboBoxTrashQuantity.getEditor().getText().isEmpty()) {
                 params.put("trash_quantity", Integer.parseInt(TrashInfoComboBoxTrashQuantity.getEditor().getText()));
             }if (params.isEmpty()) {
@@ -959,8 +1152,18 @@ public class MainPageController {
             if (!trashInfos.isEmpty()) {
                 ObservableList<TrashInfo> observableList = FXCollections.observableArrayList(trashInfos);
                 TrashInfo1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashInfoId()));
-                TrashInfo2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserId()));
-                TrashInfo3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashTypeId()));
+                TrashInfo2.setCellValueFactory(cellData -> {
+                    String userId = cellData.getValue().getUserId();
+                    String login = userControl.getLoginByUserId(userId);
+                    return new SimpleStringProperty(login);
+                });
+                //TrashInfo2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserId()));
+                TrashInfo3.setCellValueFactory(cellData -> {
+                    String trashTypeId = cellData.getValue().getTrashTypeId();
+                    String trashTypeName = trashTypeControl.getTrashTypeNameById(trashTypeId);
+                    return new SimpleStringProperty(trashTypeName);
+                });
+                //TrashInfo3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashTypeId()));
                 TrashInfo4.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getTrashQuantity()));
                 TrashInfoTableView.setItems(observableList);
                 new ErrorClass().startSuccess("Успех", "Найдены " + trashInfos.size() + " запись(и/ей).");
@@ -1046,7 +1249,7 @@ public class MainPageController {
                 new ErrorClass().startError("Ошибка", "Год рождения и возраст не могут быть меньше 1");
                 return;
             }
-            if(LoginComboBox.getValue().length()==0 || PasswordComboBox.getValue().length()==0){
+            if(LoginComboBox.getValue()==null || PasswordComboBox.getValue()==null || LoginComboBox.getValue().length()==0 || PasswordComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
             System.out.println(PasswordComboBox.getValue().length());
@@ -1059,8 +1262,8 @@ public class MainPageController {
                     .age(age)
                     .birthYear(birthYear)
                     .build();
-            AdminControl adminC = new AdminControl(DataBaseConnection.getConnection());
-            boolean res = adminC.insertAdmin(admin);
+            AdminControl adminControl = new AdminControl(DataBaseConnection.getConnection());
+            boolean res = adminControl.insertAdmin(admin);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
                 f1=false;setupTab1();CleanComboBoxAdmin();//IDAdminComboBox.getItems().add(admin.getAdminId());
@@ -1079,14 +1282,14 @@ public class MainPageController {
             return;
         }
         try {
-            if(ReportTypeNameComboBox.getValue().length()==0){
+            if(ReportTypeNameComboBox.getValue()==null ||ReportTypeNameComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
             ReportType reportType = ReportType.builder()
                     .reportTypeName(ReportTypeNameComboBox.getValue())
                     .build();
-            ReportTypeControl control = new ReportTypeControl(DataBaseConnection.getConnection());
-            boolean res = control.insertReportType(reportType);
+            ReportTypeControl reportTypeControl = new ReportTypeControl(DataBaseConnection.getConnection());
+            boolean res = reportTypeControl.insertReportType(reportType);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
                 f2=false;setupTab2();CleanComboBoxReportType();//ReportTypeIDComboBox.getItems().add(reportType.getReportTypeId());
@@ -1103,21 +1306,29 @@ public class MainPageController {
             return;
         }
         try {
-            if(IDAdminComboBox.getValue().length()==0 || ReportContentComboBox.getValue().length()==0 || ReportIdRecyclingComboBox.getValue().length()==0){
+            if(IDAdminComboBox.getValue()==null || ReportContentComboBox.getValue()==null || ReportIdRecyclingComboBox.getValue()==null || IDAdminComboBox.getValue().length()==0 || ReportContentComboBox.getValue().length()==0 || ReportIdRecyclingComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
             java.sql.Date sqlDate = null;
             if (ReportDateComboBox.getValue() != null) {
                 sqlDate = java.sql.Date.valueOf(ReportDateComboBox.getValue());
             }
+            AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
+            String adminID=adminControl.getAdminIdByLogin(IDAdminComboBox.getValue());
+            ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+            String reportTypeId=reportTypeControl.getReportTypeIdByName(ReportTypeIDComboBox.getValue());
+            if(adminID==null || reportTypeId==null){
+                new ErrorClass().startError("Ошибка","Тип отчета, админ или информация о переработке не найдены в базе данных");return;
+            }
             Report report = Report.builder()
-                    .adminId(IDAdminComboBox.getValue())
+                    .reportTypeId(reportTypeId)
+                    .adminId(adminID)
                     .content(ReportContentComboBox.getValue())
                     .recyclingId(ReportIdRecyclingComboBox.getValue())
                     .reportDate(sqlDate)
                     .build();
-            ReportControl control = new ReportControl(DataBaseConnection.getConnection());
-            boolean res = control.insertReport(report);
+            ReportControl reportControl = new ReportControl(DataBaseConnection.getConnection());
+            boolean res = reportControl.insertReport(report);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
                 f3=false;setupTab3();CleanComboBoxReport();//ReportIDComboBox.getItems().add(report.getReportId());updateReportID.getItems().add(report.getReportId());
@@ -1135,14 +1346,14 @@ public class MainPageController {
             return;
         }
         try {
-            if(RecyclingRuleContentComboBox.getValue().length()==0){
+            if(RecyclingRuleContentComboBox.getValue()==null || RecyclingRuleContentComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
             RecyclingRule recyclingRule = RecyclingRule.builder()
                     .content(RecyclingRuleContentComboBox.getValue())
                     .build();
-            RecyclingRuleControl control = new RecyclingRuleControl(DataBaseConnection.getConnection());
-            boolean res = control.insertRecyclingRule(recyclingRule);
+            RecyclingRuleControl recyclingRuleControl = new RecyclingRuleControl(DataBaseConnection.getConnection());
+            boolean res = recyclingRuleControl.insertRecyclingRule(recyclingRule);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
                 f4=false;setupTab4();CleanComboBoxRecyclingRule();//RecyclingRecyclingRuleIDComboBox.getItems().add(recyclingRule.getRuleId());
@@ -1159,21 +1370,26 @@ public class MainPageController {
             return;
         }
         try {
-            if(RecyclingStatusIdComboBox.getValue().length()==0 || RecyclingRecyclingRuleIDComboBox.getValue().length()==0 || RecyclingIDTrashInfoComboBox.getValue().length()==0){
+            if(RecyclingStatusIdComboBox.getValue()==null || RecyclingRecyclingRuleIDComboBox.getValue()==null || RecyclingIDTrashInfoComboBox.getValue()==null || RecyclingStatusIdComboBox.getValue().length()==0 || RecyclingRecyclingRuleIDComboBox.getValue().length()==0 || RecyclingIDTrashInfoComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
             java.sql.Date sqlDate = null;
             if (RecyclingDateComboBox.getValue() != null) {
                 sqlDate = java.sql.Date.valueOf(RecyclingDateComboBox.getValue());
             }
+            RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
+            String recyclingStatusID=recyclingStatusControl.getRecyclingStatusIdByName(RecyclingStatusIdComboBox.getValue());
+            if(recyclingStatusID==null){
+                new ErrorClass().startError("Ошибка","Статус переработки не найден в базе данных");return;
+            }
             Recycling recycling = Recycling.builder()
-                    .recyclingStatusId(RecyclingStatusIdComboBox.getValue())
+                    .recyclingStatusId(recyclingStatusID)
                     .ruleId(RecyclingRecyclingRuleIDComboBox.getValue())
                     .trashInfoId(RecyclingIDTrashInfoComboBox.getValue())
                     .recyclingDate(sqlDate)
                     .build();
-            RecyclingControl control = new RecyclingControl(DataBaseConnection.getConnection());
-            boolean res = control.insertRecycling(recycling);
+            RecyclingControl recyclingControl = new RecyclingControl(DataBaseConnection.getConnection());
+            boolean res = recyclingControl.insertRecycling(recycling);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
                 f5=false;setupTab5();CleanComboBoxRecycling();//ReportIdRecyclingComboBox.getItems().add(recycling.getRecyclingId());
@@ -1193,15 +1409,15 @@ public class MainPageController {
             return;
         }
         try {
-            if(RecyclingStatusNameComboBox.getValue().length()==0 || RecyclingStatusContentComboBox.getValue().length()==0){
+            if(RecyclingStatusNameComboBox.getValue()==null || RecyclingStatusContentComboBox.getValue()==null || RecyclingStatusNameComboBox.getValue().length()==0 || RecyclingStatusContentComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
             RecyclingStatus recyclingStatus = RecyclingStatus.builder()
                     .recyclingStatusName(RecyclingStatusNameComboBox.getValue())
                     .currentProcessDescription(RecyclingStatusContentComboBox.getValue())
                     .build();
-            RecyclingStatusControl control = new RecyclingStatusControl(DataBaseConnection.getConnection());
-            boolean res = control.insertRecyclingStatus(recyclingStatus);
+            RecyclingStatusControl recyclingStatusControl = new RecyclingStatusControl(DataBaseConnection.getConnection());
+            boolean res = recyclingStatusControl.insertRecyclingStatus(recyclingStatus);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
                 f6=false;setupTab6();CleanComboBoxRecyclingStatus();//RecyclingStatusIdComboBox.getItems().add(recyclingStatus.getRecyclingStatusId());
@@ -1221,7 +1437,7 @@ public class MainPageController {
             return;
         }
         try {
-            if(TrashInfoComboBoxIDUser.getValue().length()==0 || TrashInfoComboBoxIDTrashType.getValue().length()==0){
+            if(TrashInfoComboBoxIDUser.getValue()==null || TrashInfoComboBoxIDTrashType.getValue()==null || TrashInfoComboBoxIDUser.getValue().length()==0 || TrashInfoComboBoxIDTrashType.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
             int quantity = Integer.parseInt(TrashInfoComboBoxTrashQuantity.getEditor().getText());
@@ -1229,13 +1445,20 @@ public class MainPageController {
                 new ErrorClass().startError("Ошибка", "Количество мусора не может быть меньше 1");
                 return;
             }
+            UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+            String userId=userControl.getUserIdByLogin(TrashInfoComboBoxIDUser.getValue());
+            TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
+            String trashTypeId=trashTypeControl.getTrashTypeIdByName(TrashInfoComboBoxIDTrashType.getValue());
+            if(userId==null || trashTypeId==null){
+                new ErrorClass().startError("Ошибка","Пользователь  или тип мусора не найден в базе данных");return;
+            }
             TrashInfo trashInfo = TrashInfo.builder()
-                    .userId(TrashInfoComboBoxIDUser.getValue())
-                    .trashTypeId(TrashInfoComboBoxIDTrashType.getValue())
+                    .userId(userId)
+                    .trashTypeId(trashTypeId)
                     .trashQuantity(quantity)
                     .build();
-            TrashInfoControl control = new TrashInfoControl(DataBaseConnection.getConnection());
-            boolean res = control.insertTrashInfo(trashInfo);
+            TrashInfoControl trashInfoControl = new TrashInfoControl(DataBaseConnection.getConnection());
+            boolean res = trashInfoControl.insertTrashInfo(trashInfo);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
                 f7=false;setupTab7();CleanComboBoxTrashInfo();//RecyclingIDTrashInfoComboBox.getItems().add(trashInfo.getTrashInfoId());
@@ -1256,7 +1479,8 @@ public class MainPageController {
             return;
         }
         try {
-            if(UserLoginComboBox.getValue().length()==0 || UserPasswordComboBox.getValue().length()==0 ||
+            if(UserLoginComboBox.getValue()==null || UserPasswordComboBox.getValue()==null ||
+                    UserNameComboBox.getValue()==null || UserSurnameComboBox.getValue()==null|| UserEmailComboBjx.getValue()==null || UserLoginComboBox.getValue().length()==0 || UserPasswordComboBox.getValue().length()==0 ||
                     UserNameComboBox.getValue().length()==0 || UserSurnameComboBox.getValue().length()==0|| UserEmailComboBjx.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
@@ -1267,8 +1491,8 @@ public class MainPageController {
                     .password(UserPasswordComboBox.getValue())
                     .email(UserEmailComboBjx.getValue())
                     .build();
-            UserControl control = new UserControl(DataBaseConnection.getConnection());
-            boolean res = control.insertUser(user1);
+            UserControl userControl = new UserControl(DataBaseConnection.getConnection());
+            boolean res = userControl.insertUser(user1);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
                 f9=false;setupTab9();CleanComboBoxUser();//TrashInfoComboBoxIDUser.getItems().add(user1.getUserId());
@@ -1288,7 +1512,7 @@ public class MainPageController {
             /*TrashType trashType = TrashType.builder()
                     .trashTypeName(TrashTypeComboBoxName.getValue())
                     .build();*/
-            if(TrashTypeComboBoxName.getValue().length()==0){
+            if(TrashTypeComboBoxName.getValue()==null || TrashTypeComboBoxName.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
             ProceduresAndFunctions proceduresAndFunctions=new ProceduresAndFunctions(DataBaseConnection.getConnection());
@@ -1473,8 +1697,10 @@ public class MainPageController {
     }
     private void fillFieldsFromSelectedRowTrashInfo(TrashInfo selected) {
         TrashInfoIDComboBox.setValue(selected.getTrashInfoId());
-        TrashInfoComboBoxIDUser.setValue(selected.getUserId());
-        TrashInfoComboBoxIDTrashType.setValue(selected.getTrashTypeId());
+        UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+        TrashInfoComboBoxIDUser.setValue(userControl.getLoginByUserId(selected.getUserId()));
+        TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
+        TrashInfoComboBoxIDTrashType.setValue(trashTypeControl.getTrashTypeNameById(selected.getTrashTypeId()));
         TrashInfoComboBoxTrashQuantity.setValue(selected.getTrashQuantity());
         updateTrashInfoID.setValue(selected.getTrashInfoId());
     }
@@ -1486,7 +1712,8 @@ public class MainPageController {
     }
     private void fillFieldsFromSelectedRowRecycling(Recycling selected) {
         RecyclingIDComboBox.setValue(selected.getRecyclingId());
-        RecyclingStatusIdComboBox.setValue(selected.getRecyclingStatusId());
+        RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
+        RecyclingStatusIdComboBox.setValue(recyclingStatusControl.getRecyclingStatusNameById(selected.getRecyclingStatusId()));
         RecyclingRecyclingRuleIDComboBox.setValue(selected.getRuleId());
         RecyclingIDTrashInfoComboBox.setValue(selected.getTrashInfoId());
         RecyclingDateComboBox.setValue(String.valueOf(selected.getRecyclingDate()));
@@ -1499,8 +1726,10 @@ public class MainPageController {
     }
     private void fillFieldsFromSelectedRowReport(Report selected) {
         ReportIDComboBox.setValue(selected.getReportId());
-        ReportTypeIDComboBox.setValue(selected.getReportTypeId());
-        IDAdminComboBox.setValue(selected.getAdminId());
+        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+        ReportTypeIDComboBox.setValue(reportTypeControl.getReportTypeNameById(selected.getReportTypeId()));
+        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
+        IDAdminComboBox.setValue(adminControl.getLoginByAdminId(selected.getAdminId()));
         ReportContentComboBox.setValue(selected.getContent());
         ReportIdRecyclingComboBox.setValue(selected.getRecyclingId());
         ReportDateComboBox.setValue(String.valueOf(selected.getReportDate()));
@@ -1564,7 +1793,7 @@ public class MainPageController {
         EmailComboBox.getItems().setAll(uniqueEmails);
         AgeComboBox.getItems().setAll(uniqueAges);
         BirthYearComboBox.getItems().setAll(uniqueBirthYears);
-        IDAdminComboBox.getItems().setAll(uniqueID);
+        IDAdminComboBox.getItems().setAll(uniqueLogin);
 
         /*for (Admin admin : admins) {
             IDComboBox.getItems().add(admin.getAdminId());
@@ -1585,7 +1814,8 @@ public class MainPageController {
         ReportType1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeId()));
         ReportType2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeName()));
         ReportTypeTableView.setItems(observableList);
-        if(f2)return;Set<String> uniqueID = new HashSet<>();
+        if(f2)return;
+        Set<String> uniqueID = new HashSet<>();
         Set<String> uniqueName = new HashSet<>();
         for (ReportType row : rows) {
             uniqueID.add(row.getReportTypeId());
@@ -1594,7 +1824,7 @@ public class MainPageController {
         updateReportTypeID.getItems().setAll(uniqueID);
         IDReportTypeComboBox.getItems().setAll(uniqueID);
         ReportTypeNameComboBox.getItems().setAll(uniqueName);
-        ReportTypeIDComboBox.getItems().setAll(uniqueID);
+        ReportTypeIDComboBox.getItems().setAll(uniqueName);
         f2=true;
     }private boolean f3=false;
     private void setupTab3() {
@@ -1602,8 +1832,20 @@ public class MainPageController {
         List<Report> rows = (List<Report>) forAllEntities.getAllRows("report");
         ObservableList<Report> observableList = FXCollections.observableArrayList(rows);
         Report1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportId()));
-        Report2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeId()));
-        Report3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAdminId()));
+        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+        Report2.setCellValueFactory(cellData -> {
+            String reportTypeId = cellData.getValue().getReportTypeId();
+            String reportTypeName = reportTypeControl.getReportTypeNameById(reportTypeId);
+            return new SimpleStringProperty(reportTypeName);
+        });
+        //Report2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeId()));
+        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
+        Report3.setCellValueFactory(cellData -> {
+            String adminId = cellData.getValue().getAdminId();
+            String login = adminControl.getLoginByAdminId(adminId);
+            return new SimpleStringProperty(login);
+        });
+        //Report3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAdminId()));
         Report4.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getContent()));
         Report5.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getReportDate()));
         Report6.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingId()));
@@ -1659,7 +1901,13 @@ public class MainPageController {
         List<Recycling> rows = (List<Recycling>) forAllEntities.getAllRows("recycling");
         ObservableList<Recycling> observableList = FXCollections.observableArrayList(rows);
         Recycling1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingId()));
-        Recycling2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingStatusId()));
+        RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
+        Recycling2.setCellValueFactory(cellData -> {
+            String recyclingStatusId = cellData.getValue().getRecyclingStatusId();
+            String recyclingStatus = recyclingStatusControl.getRecyclingStatusNameById(recyclingStatusId);
+            return new SimpleStringProperty(recyclingStatus);
+        });
+        //Recycling2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingStatusId()));
         Recycling3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRuleId()));
         Recycling4.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashInfoId()));
         Recycling5.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getRecyclingDate()));
@@ -1701,7 +1949,7 @@ public class MainPageController {
         }
         updateRecyclingStatusID.getItems().setAll(uniqueID);
         RecyclingStatusIDComboBox.getItems().setAll(uniqueID);
-        RecyclingStatusIdComboBox.getItems().setAll(uniqueID);
+        RecyclingStatusIdComboBox.getItems().setAll(uniqueStatus);
         RecyclingStatusNameComboBox.getItems().setAll(uniqueStatus);
         RecyclingStatusContentComboBox.getItems().setAll(uniqueDescriptions);
         /*for (RecyclingStatus row : rows) {
@@ -1716,8 +1964,20 @@ public class MainPageController {
         List<TrashInfo> rows = (List<TrashInfo>) forAllEntities.getAllRows("trash_info");
         ObservableList<TrashInfo> observableList = FXCollections.observableArrayList(rows);
         TrashInfo1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashInfoId()));
-        TrashInfo2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserId()));
-        TrashInfo3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashTypeId()));
+        UserControl userControl=new UserControl(DataBaseConnection.getConnection());
+        TrashInfo2.setCellValueFactory(cellData -> {
+            String userId = cellData.getValue().getUserId();
+            String userLogin = userControl.getLoginByUserId(userId);
+            return new SimpleStringProperty(userLogin);
+        });
+        //TrashInfo2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserId()));
+        TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
+        TrashInfo3.setCellValueFactory(cellData -> {
+            String trashTypeId = cellData.getValue().getTrashTypeId();
+            String trashType = trashTypeControl.getTrashTypeNameById(trashTypeId);
+            return new SimpleStringProperty(trashType);
+        });
+        //TrashInfo3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashTypeId()));
         TrashInfo4.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getTrashQuantity()));
         TrashInfoTableView.setItems(observableList);if(f7)return;
         Set<Integer> uniqueTrashQuantities = new HashSet<>();
@@ -1753,7 +2013,7 @@ public class MainPageController {
         updateTrashTypeID.getItems().setAll(uniqueID);
         TrashTypeComboBoxID.getItems().setAll(uniqueID);
         TrashTypeComboBoxName.getItems().setAll(uniqueName);
-        TrashInfoComboBoxIDTrashType.getItems().setAll(uniqueID);
+        TrashInfoComboBoxIDTrashType.getItems().setAll(uniqueName);
         f8=true;
     }private boolean f9=false;
     private void setupTab9() {
@@ -1784,7 +2044,7 @@ public class MainPageController {
         updateUserID.getItems().setAll(uniqueID);
         UserIDComboBox.getItems().setAll(uniqueID);
         UserLoginComboBox.getItems().setAll(uniqueLogin);
-        TrashInfoComboBoxIDUser.getItems().setAll(uniqueID);
+        TrashInfoComboBoxIDUser.getItems().setAll(uniqueLogin);
         UserNameComboBox.getItems().setAll(uniqueNames);
         UserSurnameComboBox.getItems().setAll(uniqueSurnames);
         UserPasswordComboBox.getItems().setAll(uniquePasswords);

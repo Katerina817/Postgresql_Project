@@ -152,4 +152,34 @@ public class TrashTypeControl {
         }
         return results;
     }
+
+
+    public String getTrashTypeIdByName(String trashTypeName) {
+        String trashTypeId = null;
+        String sql = "SELECT trash_type_id FROM trash_type WHERE trash_type_name = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, trashTypeName);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                trashTypeId = resultSet.getString("trash_type_id");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске trash_type_id", e.getMessage());
+        }
+        return trashTypeId;
+    }
+    public String getTrashTypeNameById(String trashTypeId) {
+        String trashTypeName = null;
+        String sql = "SELECT trash_type_name FROM trash_type WHERE trash_type_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, trashTypeId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                trashTypeName = resultSet.getString("trash_type_name");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске trash_type_name", e.getMessage());
+        }
+        return trashTypeName;
+    }
 }

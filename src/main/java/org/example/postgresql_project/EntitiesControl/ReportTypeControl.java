@@ -162,4 +162,35 @@ public class ReportTypeControl {
         }
         return results;
     }
+
+
+
+    public String getReportTypeIdByName(String reportTypeName) {
+        String reportTypeId = null;
+        String sql = "SELECT report_type_id FROM report_type WHERE report_type_name = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, reportTypeName);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                reportTypeId = resultSet.getString("report_type_id");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске report_type_id", e.getMessage());
+        }
+        return reportTypeId;
+    }
+    public String getReportTypeNameById(String reportTypeId) {
+        String reportTypeName = null;
+        String sql = "SELECT report_type_name FROM report_type WHERE report_type_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, reportTypeId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                reportTypeName = resultSet.getString("report_type_name");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске report_type_name", e.getMessage());
+        }
+        return reportTypeName;
+    }
 }

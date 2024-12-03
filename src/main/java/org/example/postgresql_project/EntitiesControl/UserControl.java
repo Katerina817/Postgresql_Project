@@ -227,4 +227,35 @@ public class UserControl {
         }
         return users;
     }
+
+
+
+    public String getUserIdByLogin(String login) {
+        String userId = null;
+        String sql = "SELECT user_id FROM users WHERE login = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                userId = resultSet.getString("user_id");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске user_id", e.getMessage());
+        }
+        return userId;
+    }
+    public String getLoginByUserId(String userId) {
+        String login = null;
+        String sql = "SELECT login FROM users WHERE user_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                login = resultSet.getString("login");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске login", e.getMessage());
+        }
+        return login;
+    }
 }

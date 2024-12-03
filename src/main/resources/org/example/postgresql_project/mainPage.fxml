@@ -210,8 +210,8 @@
                   <TableView fx:id="ReportTableView" layoutX="25.0" layoutY="25.0" prefHeight="200.0" prefWidth="788.0">
                     <columns>
                       <TableColumn fx:id="Report1" prefWidth="121.79999160766602" text="ID" />
-                      <TableColumn fx:id="Report2" prefWidth="130.99998474121094" text="ID типа отчета" />
-                        <TableColumn fx:id="Report3" prefWidth="126.60003662109375" text="ID админа" />
+                      <TableColumn fx:id="Report2" prefWidth="130.99998474121094" text="Тип отчета" />
+                        <TableColumn fx:id="Report3" prefWidth="126.60003662109375" text="Логин админа" />
                         <TableColumn fx:id="Report4" prefWidth="134.60003662109375" text="Содержание" />
                         <TableColumn fx:id="Report5" prefWidth="132.5999755859375" text="Дата создания отчета" />
                         <TableColumn fx:id="Report6" prefWidth="146.0" text="ID переработки" />
@@ -221,11 +221,11 @@
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="156.0" layoutY="235.0" prefHeight="18.0" prefWidth="131.0" text="ID типа отчета">
+                  <Label alignment="CENTER" layoutX="156.0" layoutY="235.0" prefHeight="18.0" prefWidth="131.0" text="Тип отчета">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="287.0" layoutY="235.0" prefHeight="18.0" prefWidth="131.0" text="ID админа">
+                  <Label alignment="CENTER" layoutX="287.0" layoutY="235.0" prefHeight="18.0" prefWidth="131.0" text="Логин админа">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
@@ -386,7 +386,7 @@
                   <TableView fx:id="RecyclingTableView" layoutX="28.0" layoutY="30.0" prefHeight="200.0" prefWidth="788.0">
                     <columns>
                       <TableColumn fx:id="Recycling1" prefWidth="143.00000381469727" text="ID" />
-                      <TableColumn fx:id="Recycling2" prefWidth="166.99998474121094" text="ID статуса переработки" />
+                      <TableColumn fx:id="Recycling2" prefWidth="166.99998474121094" text="Статус переработки" />
                         <TableColumn fx:id="Recycling3" prefWidth="180.39996337890625" text="ID правила переработки" />
                         <TableColumn fx:id="Recycling4" prefWidth="175.60003662109375" text="ID информации о мусоре" />
                         <TableColumn fx:id="Recycling5" prefWidth="127.800048828125" text="Дата переработки" />
@@ -397,7 +397,7 @@
                         <Font name="Roboto Light" size="14.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="161.0" layoutY="235.0" prefHeight="20.0" prefWidth="167.0" text="ID статуса переработки">
+                  <Label alignment="CENTER" layoutX="161.0" layoutY="235.0" prefHeight="20.0" prefWidth="167.0" text="Статус переработки">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font>
@@ -585,8 +585,8 @@
                   <TableView fx:id="TrashInfoTableView" layoutX="26.0" layoutY="25.0" prefHeight="200.0" prefWidth="788.0">
                     <columns>
                       <TableColumn fx:id="TrashInfo1" prefWidth="225.6000099182129" text="ID" />
-                      <TableColumn fx:id="TrashInfo2" prefWidth="214.3999786376953" text="ID пользователя" />
-                        <TableColumn fx:id="TrashInfo3" prefWidth="184.79998779296875" text="ID типа мусора" />
+                      <TableColumn fx:id="TrashInfo2" prefWidth="214.3999786376953" text="Логин пользователя" />
+                        <TableColumn fx:id="TrashInfo3" prefWidth="184.79998779296875" text="Тип мусора" />
                         <TableColumn fx:id="TrashInfo4" prefWidth="167.5999755859375" text="Количество мусора" />
                     </columns>
                   </TableView>
@@ -594,11 +594,11 @@
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="223.0" layoutY="235.0" prefHeight="22.0" prefWidth="197.0" text="ID пользователя">
+                  <Label alignment="CENTER" layoutX="223.0" layoutY="235.0" prefHeight="22.0" prefWidth="197.0" text="Логин пользователя">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font></Label>
-                  <Label alignment="CENTER" layoutX="420.0" layoutY="235.0" prefHeight="22.0" prefWidth="197.0" text="ID типа мусора">
+                  <Label alignment="CENTER" layoutX="420.0" layoutY="235.0" prefHeight="22.0" prefWidth="197.0" text="Тип мусора">
                      <font>
                         <Font name="Roboto Light" size="14.0" />
                      </font></Label>

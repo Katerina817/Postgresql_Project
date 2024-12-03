@@ -252,4 +252,34 @@ public class AdminControl {
         }
         return admins;
     }
+
+
+    public String getLoginByAdminId(String adminId) {
+        String login = null;
+        String sql = "SELECT login FROM admin WHERE admin_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, adminId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                login = resultSet.getString("login");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске логина", e.getMessage());
+        }
+        return login;
+    }
+    public String getAdminIdByLogin(String login) {
+        String adminId = null;
+        String sql = "SELECT admin_id FROM admin WHERE login = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                adminId = resultSet.getString("admin_id");
+            }
+        } catch (SQLException e) {
+            new ErrorClass().startError("Ошибка", "Ошибка при поиске admin_id", e.getMessage());
+        }
+        return adminId;
+    }
 }
