@@ -227,11 +227,30 @@ public class MainPageController {
     private ChoiceBox<String> deleteUserColumnName;
     @FXML
     private TextField delValueUser;
-
+    private UserControl userControl;
+    private AdminControl adminControl;
+    private ReportTypeControl reportTypeControl;
+    private ReportControl reportControl;
+    private RecyclingRuleControl recyclingRuleControl;
+    private RecyclingControl recyclingControl;
+    private RecyclingStatusControl recyclingStatusControl;
+    private TrashInfoControl trashInfoControl;
+    private TrashTypeControl trashTypeControl;
 
     private final ForAllEntities forAllEntities = new ForAllEntities(DataBaseConnection.getConnection());
     @FXML
     public void initialize() {
+        userControl=new UserControl(DataBaseConnection.getConnection());
+        adminControl=new AdminControl(DataBaseConnection.getConnection());
+        reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
+        reportControl=new ReportControl(DataBaseConnection.getConnection());
+        recyclingRuleControl=new RecyclingRuleControl(DataBaseConnection.getConnection());
+        recyclingControl=new RecyclingControl(DataBaseConnection.getConnection());
+        recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
+        trashInfoControl=new TrashInfoControl(DataBaseConnection.getConnection());
+        trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
+
+
         //Установка данных в таблице
         setupTab1();setupTab2();setupTab3();
         setupTab4();setupTab5();setupTab6();
@@ -345,6 +364,10 @@ public class MainPageController {
         if(delValueAdmin.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (deleteAdminColumnName.getValue().contains(";") || delValueAdmin.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (deleteAdminColumnName.getValue()) {
             case "ID" -> "admin_id";
             case "Логин" -> "login";
@@ -356,7 +379,6 @@ public class MainPageController {
             case "Год рождения" -> "birth_year";
             default -> "";
         };
-        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
         boolean res=adminControl.deleteAdminByColumnName(columnName, delValueAdmin.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
@@ -371,12 +393,15 @@ public class MainPageController {
         if(delValueReportType.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (deleteReportTypeColumnName.getValue().contains(";") || delValueReportType.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (deleteReportTypeColumnName.getValue()) {
             case "ID" -> "report_type_id";
             case "Наименование типа отчета" -> "report_type_name";
             default -> "";
         };
-        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
         boolean res=reportTypeControl.deleteReportTypeByColumnName(columnName, delValueReportType.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
@@ -390,14 +415,17 @@ public class MainPageController {
         if(delValueReport.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        String columnName;ReportControl reportControl=new ReportControl(DataBaseConnection.getConnection());boolean res=false;
+        if (deleteReportColumnName.getValue().contains(";") || delValueReport.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
+        String columnName;boolean res=false;
         switch (deleteReportColumnName.getValue()) {
             case "ID" :{
                 columnName="report_id";res=reportControl.deleteReportByColumnName(columnName, delValueReport.getText());break;
             }
             case "Тип отчета":{
                 columnName="report_type_id";
-                ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
                 String reportType=delValueReport.getText();
                 String reportTypeID=reportTypeControl.getReportTypeIdByName(reportType);
                 if(reportTypeID==null){
@@ -410,7 +438,6 @@ public class MainPageController {
             //case "ID типа отчета" -> "report_type_id";
             case "Логин админа":{
                 columnName="admin_id";
-                AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
                 String login=delValueReport.getText();
                 String adminID=adminControl.getAdminIdByLogin(login);
                 if(adminID==null){
@@ -446,12 +473,15 @@ public class MainPageController {
         if(delValueRecyclingRule.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (deleteRecyclingRuleColumnName.getValue().contains(";") || delValueRecyclingRule.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (deleteRecyclingRuleColumnName.getValue()) {
             case "ID" -> "rule_id";
             case "Содержание" -> "content";
             default -> "";
         };
-        RecyclingRuleControl recyclingRuleControl=new RecyclingRuleControl(DataBaseConnection.getConnection());
         boolean res=recyclingRuleControl.deleteRecyclingRuleByColumnName(columnName, delValueRecyclingRule.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
@@ -465,7 +495,10 @@ public class MainPageController {
         if(delValueRecycling.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        RecyclingControl recyclingControl=new RecyclingControl(DataBaseConnection.getConnection());
+        if (deleteRecyclingColumnName.getValue().contains(";") || delValueRecycling.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName;boolean res=false;
         switch (deleteRecyclingColumnName.getValue()) {
             case "ID":{
@@ -473,7 +506,6 @@ public class MainPageController {
             }
             case "Статус переработки":{
                 columnName="recycling_status_id";
-                RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
                 String recyclingStatus=delValueRecycling.getText();
                 String recyclingStatusID=recyclingStatusControl.getRecyclingStatusIdByName(recyclingStatus);
                 if(recyclingStatusID==null){
@@ -509,13 +541,16 @@ public class MainPageController {
         if(delValueRecyclingStatus.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (deleteRecyclingStatusColumnName.getValue().contains(";") || delValueRecyclingStatus.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (deleteRecyclingStatusColumnName.getValue()) {
             case "ID" -> "recycling_status_id";
             case "Наименование статуса переработки" -> "recycling_status_name";
             case "Описание текущего процесса" -> "current_process_description";
             default -> "";
         };
-        RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
         boolean res=recyclingStatusControl.deleteRecyclingStatusByColumnName(columnName, delValueRecyclingStatus.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
@@ -529,7 +564,10 @@ public class MainPageController {
         if(delValueTrashInfo.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        TrashInfoControl trashInfoControl=new TrashInfoControl(DataBaseConnection.getConnection());
+        if (deleteTrashInfoColumnName.getValue().contains(";") || delValueTrashInfo.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName;boolean res=false;
         switch (deleteTrashInfoColumnName.getValue()) {
             case "ID":{
@@ -537,7 +575,6 @@ public class MainPageController {
             }
             case "Логин пользователя":{
                 columnName="user_id";
-                UserControl userControl=new UserControl(DataBaseConnection.getConnection());
                 String login=delValueTrashInfo.getText();
                 String userID=userControl.getUserIdByLogin(login);
                 if(userID==null){
@@ -549,7 +586,6 @@ public class MainPageController {
             }
             case "Тип мусора":{
                 columnName="trash_type_id";
-                TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
                 String trashType=delValueTrashInfo.getText();
                 String trashTypeID=trashTypeControl.getTrashTypeIdByName(trashType);
                 if(trashTypeID==null){
@@ -582,9 +618,12 @@ public class MainPageController {
         if(delValueTrashInfo.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (deleteTrashInfoColumnName.getValue().contains(";") || delValueTrashInfo.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         if(deleteTrashInfoColumnName.getValue().equals("Логин пользователя")){
             ProceduresAndFunctions proceduresAndFunctions=new ProceduresAndFunctions(DataBaseConnection.getConnection());
-            UserControl userControl=new UserControl(DataBaseConnection.getConnection());
             String userID=userControl.getUserIdByLogin(delValueTrashInfo.getText());
             if(userID==null){
                 new ErrorClass().startError("Ошибка","Пользователь не найден");return;
@@ -610,6 +649,10 @@ public class MainPageController {
         if(delValueUser.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (deleteUserColumnName.getValue().contains(";") || delValueUser.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (deleteUserColumnName.getValue()) {
             case "ID" -> "user_id";
             case "Логин" -> "login";
@@ -619,7 +662,6 @@ public class MainPageController {
             case "Почта" -> "email";
             default -> "";
         };
-        UserControl userControl=new UserControl(DataBaseConnection.getConnection());
         boolean res=userControl.deleteUsersByColumnName(columnName, delValueUser.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
@@ -633,12 +675,15 @@ public class MainPageController {
         if(delValueTrashType.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (deleteTrashTypeColumnName.getValue().contains(";") || delValueTrashType.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (deleteTrashTypeColumnName.getValue()) {
             case "ID" -> "trash_type_id";
             case "Наименование типа мусора" -> "trash_type_name";
             default -> "";
         };
-        TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
         boolean res=trashTypeControl.deleteTrashTypeByColumnName(columnName, delValueTrashType.getText());
         if(res){
             new ErrorClass().startSuccess("Успех", "Запись успешно удалена");
@@ -654,6 +699,10 @@ public class MainPageController {
         if(newValueAdmin.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (updateAdminID.getValue().contains(";") || newValueAdmin.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (updateAdminColumnName.getValue()) {
             case "Логин" -> "login";
             case "Имя" -> "name";
@@ -664,7 +713,6 @@ public class MainPageController {
             case "Год рождения" -> "birth_year";
             default -> "";
         };
-        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
         adminControl.updateAdminField(updateAdminID.getValue(),columnName, newValueAdmin.getText());f1=false;setupTab1();
         CleanComboBoxAdmin();
     }
@@ -677,11 +725,14 @@ public class MainPageController {
         if(newValueReportType.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (updateReportTypeID.getValue().contains(";") || newValueReportType.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (updateReportTypeColumnName.getValue()) {
             case "Наименование типа отчета" -> "report_type_name";
             default -> "";
         };
-        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
         reportTypeControl.updateReportTypeField(updateReportTypeID.getValue(),columnName, newValueReportType.getText());f2=false;setupTab2();
         CleanComboBoxReportType();
     }@FXML
@@ -693,12 +744,14 @@ public class MainPageController {
         if(newValueReport.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        ReportControl reportControl=new ReportControl(DataBaseConnection.getConnection());
+        if (updateReportID.getValue().contains(";") || newValueReport.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName;
         switch (updateReportColumnName.getValue()) {
             case "Тип отчета":{
                 columnName="report_type_id";
-                ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
                 String reportType=newValueReport.getText();
                 String reportTypeID=reportTypeControl.getReportTypeIdByName(reportType);
                 if(reportTypeID==null){
@@ -710,7 +763,6 @@ public class MainPageController {
             //case "ID типа отчета" -> "report_type_id";
             case "Логин админа":{
                 columnName="admin_id";
-                AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
                 String login=newValueReport.getText();
                 String adminId=adminControl.getAdminIdByLogin(login);
                 if(adminId==null){
@@ -745,11 +797,14 @@ public class MainPageController {
         if(newValueRecyclingRule.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (updateRecyclingRuleID.getValue().contains(";") || newValueRecyclingRule.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (updateRecyclingRuleColumnName.getValue()) {
             case "Содержание" -> "content";
             default -> "";
         };
-        RecyclingRuleControl recyclingRuleControl=new RecyclingRuleControl(DataBaseConnection.getConnection());
         recyclingRuleControl.updateRecyclingRuleField(updateRecyclingRuleID.getValue(),columnName, newValueRecyclingRule.getText());f4=false;setupTab4();
         CleanComboBoxRecyclingRule();
     }@FXML
@@ -761,12 +816,14 @@ public class MainPageController {
         if(newValueRecycling.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        RecyclingControl recyclingControl=new RecyclingControl(DataBaseConnection.getConnection());
+        if (updateRecyclingID.getValue().contains(";") || newValueRecycling.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName;
         switch (updateRecyclingColumnName.getValue()) {
             case "Статус переработки":{
                 columnName="recycling_status_id";
-                RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
                 String recyclingStatus=newValueRecycling.getText();
                 String recyclingStatusID=recyclingStatusControl.getRecyclingStatusIdByName(recyclingStatus);
                 if(recyclingStatusID==null){
@@ -803,6 +860,10 @@ public class MainPageController {
         if(newValueRecyclingStatus.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (updateRecyclingStatusID.getValue().contains(";") || newValueRecyclingStatus.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (updateRecyclingStatusColumnName.getValue()) {
             case "Наименование статуса переработки" -> "recycling_status_name";
             case "Описание текущего процесса" -> "current_process_description";
@@ -813,7 +874,6 @@ public class MainPageController {
             proceduresAndFunctions.callUpdateRecyclingStatusProcedure(updateRecyclingStatusID.getValue(),newValueRecyclingStatus.getText());
         }
         else{
-            RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
             recyclingStatusControl.updateRecyclingStatusField(updateRecyclingStatusID.getValue(),columnName, newValueRecyclingStatus.getText());
         }
         f6=false;setupTab6();
@@ -827,11 +887,14 @@ public class MainPageController {
         if(newValueTrashInfo.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
-        String columnName;TrashInfoControl trashInfoControl=new TrashInfoControl(DataBaseConnection.getConnection());
+        if (updateTrashInfoID.getValue().contains(";") || newValueTrashInfo.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
+        String columnName;
         switch (updateTrashInfoColumnName.getValue()) {
             case "Логин пользователя":{
                 columnName="user_id";
-                UserControl userControl=new UserControl(DataBaseConnection.getConnection());
                 String login=newValueTrashInfo.getText();
                 String userID=userControl.getUserIdByLogin(login);
                 if(userID==null){
@@ -842,7 +905,6 @@ public class MainPageController {
             }
             case "Тип мусора":{
                 columnName="trash_type_id";
-                TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
                 String trashType=newValueTrashInfo.getText();
                 String trashTypeID=trashTypeControl.getTrashTypeIdByName(trashType);
                 if(trashTypeID==null){
@@ -865,12 +927,20 @@ public class MainPageController {
         CleanComboBoxTrashInfo();
     }@FXML
     private void onUpdateUser(){
+        if (updateUserID.getValue().contains(";") || newValueUser.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         if (updateUserID.getValue()==null || updateUserColumnName.getValue()==null || newValueUser.getText()==null){
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
         }
         if(newValueUser.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
+        if (updateUserID.getValue().contains(";") || newValueUser.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
         }
         String columnName = switch (updateUserColumnName.getValue()) {
             case "Логин" -> "login";
@@ -880,7 +950,6 @@ public class MainPageController {
             case "Почта" -> "email";
             default -> "";
         };
-        UserControl userControl=new UserControl(DataBaseConnection.getConnection());
         userControl.updateUserField(updateUserID.getValue(),columnName, newValueUser.getText());f9=false;setupTab9();
         CleanComboBoxUser();
     }@FXML
@@ -892,11 +961,14 @@ public class MainPageController {
         if(newValueTrashType.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
+        if (updateTrashTypeID.getValue().contains(";") || newValueTrashType.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
+        }
         String columnName = switch (updateTrashTypeColumnName.getValue()) {
             case "Наименование типа мусора" -> "trash_type_name";
             default -> "";
         };
-        TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
         trashTypeControl.updateTrashTypeField(updateTrashTypeID.getValue(),columnName, newValueTrashType.getText());f8=false;setupTab8();
         CleanComboBoxTrashType();
     }
@@ -908,6 +980,10 @@ public class MainPageController {
         }
         if(delValueReportType.getText().length()==0){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+        }
+        if (deleteReportTypeColumnName.getValue().contains(";") || delValueReportType.getText().contains(";")) {
+            new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");
+            return;
         }
         if(deleteReportTypeColumnName.getValue().equals("Наименование типа отчета")){
             ProceduresAndFunctions proceduresAndFunctions=new ProceduresAndFunctions(DataBaseConnection.getConnection());
@@ -933,16 +1009,34 @@ public class MainPageController {
         try {
             Map<String, Object> params = new HashMap<>();
             if (IDComboBox.getValue() != null && !IDComboBox.getValue().isEmpty()) {
+                if (IDComboBox.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("admin_id", IDComboBox.getValue());
             }if (LoginComboBox.getValue() != null && !LoginComboBox.getValue().isEmpty()) {
+                if (LoginComboBox.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("login", LoginComboBox.getValue());
             }if (NameComboBox.getValue() != null && !NameComboBox.getValue().isEmpty()) {
+                if (NameComboBox.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("name", NameComboBox.getValue());
             }if (SurnameComboBox.getValue() != null && !SurnameComboBox.getValue().isEmpty()) {
+                if (SurnameComboBox.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("surname", SurnameComboBox.getValue());
             }if (PasswordComboBox.getValue() != null && !PasswordComboBox.getValue().isEmpty()) {
+                if (PasswordComboBox.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("password", PasswordComboBox.getValue());
             }if (EmailComboBox.getValue() != null && !EmailComboBox.getValue().isEmpty()) {
+                if (EmailComboBox.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("email", EmailComboBox.getValue());
             }if (AgeComboBox.getValue() != null && !AgeComboBox.getEditor().getText().isEmpty()) {
                 params.put("age", Integer.parseInt(AgeComboBox.getEditor().getText()));
@@ -951,7 +1045,6 @@ public class MainPageController {
             if (params.isEmpty()) {
                 new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
                 return;}
-            AdminControl adminControl = new AdminControl(DataBaseConnection.getConnection());
             List<Admin> admins = adminControl.searchAdminByParameters(params);
             if (!admins.isEmpty()) {
                 ObservableList<Admin> adminObservableList = FXCollections.observableArrayList(admins);
@@ -975,13 +1068,18 @@ public class MainPageController {
     private void findReportType(){
         Map<String, Object> params = new HashMap<>();
         if (IDReportTypeComboBox.getValue() != null && !IDReportTypeComboBox.getValue().isEmpty()) {
+            if (IDReportTypeComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("report_type_id", IDReportTypeComboBox.getValue());
         }if (ReportTypeNameComboBox.getValue() != null && !ReportTypeNameComboBox.getValue().isEmpty()) {
+            if (ReportTypeNameComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("report_type_name", ReportTypeNameComboBox.getValue());
         }if (params.isEmpty()) {
             new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
             return;}
-        ReportTypeControl reportTypeControl = new ReportTypeControl(DataBaseConnection.getConnection());
         List<ReportType> reportTypes = reportTypeControl.searchReportTypeByParameters(params);
         if (!reportTypes.isEmpty()) {
             ObservableList<ReportType> observableList = FXCollections.observableArrayList(reportTypes);
@@ -995,17 +1093,30 @@ public class MainPageController {
     }@FXML
     private void findReport(){
         Map<String, Object> params = new HashMap<>();
-        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
-        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
         if (ReportIDComboBox.getValue() != null && !ReportIDComboBox.getValue().isEmpty()) {
+            if (ReportIDComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("report_id", ReportIDComboBox.getValue());
         }if (ReportTypeIDComboBox.getValue() != null && !ReportTypeIDComboBox.getValue().isEmpty()) {
+            if (ReportTypeIDComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("report_type_id", reportTypeControl.getReportTypeIdByName(ReportTypeIDComboBox.getValue()));
         }if (IDAdminComboBox.getValue() != null && !IDAdminComboBox.getValue().isEmpty()) {
+            if (IDAdminComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("admin_id", adminControl.getAdminIdByLogin(IDAdminComboBox.getValue()));
         }if (ReportContentComboBox.getValue() != null && !ReportContentComboBox.getValue().isEmpty()) {
+            if (ReportContentComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("content", ReportContentComboBox.getValue());
         }if (ReportIdRecyclingComboBox.getValue() != null && !ReportIdRecyclingComboBox.getValue().isEmpty()) {
+            if (ReportIdRecyclingComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("recycling_id", ReportIdRecyclingComboBox.getValue());
         }if (ReportDateComboBox.getValue() != null && !ReportDateComboBox.getValue().isEmpty()) {
             try {
@@ -1018,7 +1129,6 @@ public class MainPageController {
         }if (params.isEmpty()) {
             new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
             return;}
-        ReportControl reportControl = new ReportControl(DataBaseConnection.getConnection());
         List<Report> reports = reportControl.searchReportByParameters(params);
         if (!reports.isEmpty()) {
             ObservableList<Report> observableList = FXCollections.observableArrayList(reports);
@@ -1047,13 +1157,18 @@ public class MainPageController {
     private void findRecyclingRule(){
         Map<String, Object> params = new HashMap<>();
         if (RecyclingRuleContentComboBox.getValue() != null && !RecyclingRuleContentComboBox.getValue().isEmpty()) {
+            if (RecyclingRuleContentComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("content", RecyclingRuleContentComboBox.getValue());
         }if (RecyclingRuleIDComboBox.getValue() != null && !RecyclingRuleIDComboBox.getValue().isEmpty()) {
+            if (RecyclingRuleIDComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("rule_id", RecyclingRuleIDComboBox.getValue());
         }if (params.isEmpty()) {
             new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
             return;}
-        RecyclingRuleControl recyclingRuleControl = new RecyclingRuleControl(DataBaseConnection.getConnection());
         List<RecyclingRule> recyclingRules = recyclingRuleControl.searchRecyclingRuleByParameters(params);
         if (!recyclingRules.isEmpty()) {
             ObservableList<RecyclingRule> observableList = FXCollections.observableArrayList(recyclingRules);
@@ -1067,14 +1182,25 @@ public class MainPageController {
     }@FXML
     private void findRecycling(){
         Map<String, Object> params = new HashMap<>();
-        RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
         if (RecyclingIDComboBox.getValue() != null && !RecyclingIDComboBox.getValue().isEmpty()) {
+            if (RecyclingIDComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("recycling_id", RecyclingIDComboBox.getValue());
         }if (RecyclingStatusIdComboBox.getValue() != null && !RecyclingStatusIdComboBox.getValue().isEmpty()) {
+            if (RecyclingStatusIdComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("recycling_status_id", recyclingStatusControl.getRecyclingStatusIdByName(RecyclingStatusIdComboBox.getValue()));
         }if (RecyclingRecyclingRuleIDComboBox.getValue() != null && !RecyclingRecyclingRuleIDComboBox.getValue().isEmpty()) {
+            if (RecyclingRecyclingRuleIDComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("rule_id", RecyclingRecyclingRuleIDComboBox.getValue());
         }if (RecyclingIDTrashInfoComboBox.getValue() != null && !RecyclingIDTrashInfoComboBox.getValue().isEmpty()) {
+            if (RecyclingIDTrashInfoComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("trash_info_id", RecyclingIDTrashInfoComboBox.getValue());
         }if (RecyclingDateComboBox.getValue() != null && !RecyclingDateComboBox.getValue().isEmpty()) {
             try {
@@ -1087,7 +1213,6 @@ public class MainPageController {
         }if (params.isEmpty()) {
             new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
             return;}
-        RecyclingControl recyclingControl = new RecyclingControl(DataBaseConnection.getConnection());
         List<Recycling> recyclings = recyclingControl.searchRecyclingByParameters(params);
         if (!recyclings.isEmpty()) {
             ObservableList<Recycling> observableList = FXCollections.observableArrayList(recyclings);
@@ -1110,15 +1235,23 @@ public class MainPageController {
     private void findRecyclingStatus(){
         Map<String, Object> params = new HashMap<>();
         if (RecyclingStatusIDComboBox.getValue() != null && !RecyclingStatusIDComboBox.getValue().isEmpty()) {
+            if (RecyclingStatusIDComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("recycling_status_id", RecyclingStatusIDComboBox.getValue());
         }if (RecyclingStatusNameComboBox.getValue() != null && !RecyclingStatusNameComboBox.getValue().isEmpty()) {
+            if (RecyclingStatusNameComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("recycling_status_name", RecyclingStatusNameComboBox.getValue());
         }if (RecyclingStatusContentComboBox.getValue() != null && !RecyclingStatusContentComboBox.getValue().isEmpty()) {
+            if (RecyclingStatusContentComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("current_process_description", RecyclingStatusContentComboBox.getValue());
         }if (params.isEmpty()) {
             new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
             return;}
-        RecyclingStatusControl recyclingStatusControl = new RecyclingStatusControl(DataBaseConnection.getConnection());
         List<RecyclingStatus> recyclingStatuses = recyclingStatusControl.searchRecyclingStatusByParameters(params);
         if (!recyclingStatuses.isEmpty()) {
             ObservableList<RecyclingStatus> observableList = FXCollections.observableArrayList(recyclingStatuses);
@@ -1134,20 +1267,26 @@ public class MainPageController {
     private void findTrashInfo(){
         try {
             Map<String, Object> params = new HashMap<>();
-            UserControl userControl=new UserControl(DataBaseConnection.getConnection());
-            TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
             if (TrashInfoIDComboBox.getValue() != null && !TrashInfoIDComboBox.getValue().isEmpty()) {
+                if (TrashInfoIDComboBox.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("trash_info_id", TrashInfoIDComboBox.getValue());
             }if (TrashInfoComboBoxIDUser.getValue() != null && !TrashInfoComboBoxIDUser.getValue().isEmpty()) {
+                if (TrashInfoComboBoxIDUser.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("user_id", userControl.getUserIdByLogin(TrashInfoComboBoxIDUser.getValue()));
             }if (TrashInfoComboBoxIDTrashType.getValue() != null && !TrashInfoComboBoxIDTrashType.getValue().isEmpty()) {
+                if (TrashInfoComboBoxIDTrashType.getValue().contains(";")) {
+                    new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+                }
                 params.put("trash_type_id", trashTypeControl.getTrashTypeIdByName(TrashInfoComboBoxIDTrashType.getValue()));
             }if (TrashInfoComboBoxTrashQuantity.getValue() != null && !TrashInfoComboBoxTrashQuantity.getEditor().getText().isEmpty()) {
                 params.put("trash_quantity", Integer.parseInt(TrashInfoComboBoxTrashQuantity.getEditor().getText()));
             }if (params.isEmpty()) {
                 new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
                 return;}
-            TrashInfoControl trashInfoControl = new TrashInfoControl(DataBaseConnection.getConnection());
             List<TrashInfo> trashInfos = trashInfoControl.searchTrashInfoByParameters(params);
             if (!trashInfos.isEmpty()) {
                 ObservableList<TrashInfo> observableList = FXCollections.observableArrayList(trashInfos);
@@ -1177,13 +1316,18 @@ public class MainPageController {
     private void findTrashType(){
         Map<String, Object> params = new HashMap<>();
         if (TrashTypeComboBoxID.getValue() != null && !TrashTypeComboBoxID.getValue().isEmpty()) {
+            if (TrashTypeComboBoxID.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("trash_type_id", TrashTypeComboBoxID.getValue());
         }if (TrashTypeComboBoxName.getValue() != null && !TrashTypeComboBoxName.getValue().isEmpty()) {
+            if (TrashTypeComboBoxName.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("trash_type_name", TrashTypeComboBoxName.getValue());}
         if (params.isEmpty()) {
             new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
             return;}
-        TrashTypeControl trashTypeControl = new TrashTypeControl(DataBaseConnection.getConnection());
         List<TrashType> trashTypes = trashTypeControl.searchTrashTypeByParameters(params);
         if (!trashTypes.isEmpty()) {
             ObservableList<TrashType> observableList = FXCollections.observableArrayList(trashTypes);
@@ -1198,21 +1342,38 @@ public class MainPageController {
     private void findUser(){
         Map<String, Object> params = new HashMap<>();
         if (UserIDComboBox.getValue() != null && !UserIDComboBox.getValue().isEmpty()) {
+            if (UserIDComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("user_id", UserIDComboBox.getValue());
         }if (UserLoginComboBox.getValue() != null && !UserLoginComboBox.getValue().isEmpty()) {
+            if (UserLoginComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("login", UserLoginComboBox.getValue());
         }if (UserNameComboBox.getValue() != null && !UserNameComboBox.getValue().isEmpty()) {
+            if (UserNameComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("name", UserNameComboBox.getValue());
         }if (UserSurnameComboBox.getValue() != null && !UserSurnameComboBox.getValue().isEmpty()) {
+            if (UserSurnameComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("surname", UserSurnameComboBox.getValue());
         }if (UserPasswordComboBox.getValue() != null && !UserPasswordComboBox.getValue().isEmpty()) {
+            if (UserPasswordComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("password", UserPasswordComboBox.getValue());
         }if (UserEmailComboBjx.getValue() != null && !UserEmailComboBjx.getValue().isEmpty()) {
+            if (UserEmailComboBjx.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             params.put("email", UserEmailComboBjx.getValue());
         }if (params.isEmpty()) {
             new ErrorClass().startError("Ошибка", "Укажите хотя бы один параметр для поиска.");
             return;}
-        UserControl userControl = new UserControl(DataBaseConnection.getConnection());
         List<User> users = userControl.searchUserByParameters(params);
         if (!users.isEmpty()) {
             ObservableList<User> adminObservableList = FXCollections.observableArrayList(users);
@@ -1252,7 +1413,6 @@ public class MainPageController {
             if(LoginComboBox.getValue()==null || PasswordComboBox.getValue()==null || LoginComboBox.getValue().length()==0 || PasswordComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
-            System.out.println(PasswordComboBox.getValue().length());
             Admin admin = Admin.builder()
                     .login(LoginComboBox.getValue())
                     .name(NameComboBox.getValue())
@@ -1262,7 +1422,6 @@ public class MainPageController {
                     .age(age)
                     .birthYear(birthYear)
                     .build();
-            AdminControl adminControl = new AdminControl(DataBaseConnection.getConnection());
             boolean res = adminControl.insertAdmin(admin);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
@@ -1288,7 +1447,6 @@ public class MainPageController {
             ReportType reportType = ReportType.builder()
                     .reportTypeName(ReportTypeNameComboBox.getValue())
                     .build();
-            ReportTypeControl reportTypeControl = new ReportTypeControl(DataBaseConnection.getConnection());
             boolean res = reportTypeControl.insertReportType(reportType);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
@@ -1313,9 +1471,7 @@ public class MainPageController {
             if (ReportDateComboBox.getValue() != null) {
                 sqlDate = java.sql.Date.valueOf(ReportDateComboBox.getValue());
             }
-            AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
             String adminID=adminControl.getAdminIdByLogin(IDAdminComboBox.getValue());
-            ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
             String reportTypeId=reportTypeControl.getReportTypeIdByName(ReportTypeIDComboBox.getValue());
             if(adminID==null || reportTypeId==null){
                 new ErrorClass().startError("Ошибка","Тип отчета, админ или информация о переработке не найдены в базе данных");return;
@@ -1327,7 +1483,6 @@ public class MainPageController {
                     .recyclingId(ReportIdRecyclingComboBox.getValue())
                     .reportDate(sqlDate)
                     .build();
-            ReportControl reportControl = new ReportControl(DataBaseConnection.getConnection());
             boolean res = reportControl.insertReport(report);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
@@ -1352,7 +1507,6 @@ public class MainPageController {
             RecyclingRule recyclingRule = RecyclingRule.builder()
                     .content(RecyclingRuleContentComboBox.getValue())
                     .build();
-            RecyclingRuleControl recyclingRuleControl = new RecyclingRuleControl(DataBaseConnection.getConnection());
             boolean res = recyclingRuleControl.insertRecyclingRule(recyclingRule);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
@@ -1377,7 +1531,6 @@ public class MainPageController {
             if (RecyclingDateComboBox.getValue() != null) {
                 sqlDate = java.sql.Date.valueOf(RecyclingDateComboBox.getValue());
             }
-            RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
             String recyclingStatusID=recyclingStatusControl.getRecyclingStatusIdByName(RecyclingStatusIdComboBox.getValue());
             if(recyclingStatusID==null){
                 new ErrorClass().startError("Ошибка","Статус переработки не найден в базе данных");return;
@@ -1388,7 +1541,6 @@ public class MainPageController {
                     .trashInfoId(RecyclingIDTrashInfoComboBox.getValue())
                     .recyclingDate(sqlDate)
                     .build();
-            RecyclingControl recyclingControl = new RecyclingControl(DataBaseConnection.getConnection());
             boolean res = recyclingControl.insertRecycling(recycling);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
@@ -1416,7 +1568,6 @@ public class MainPageController {
                     .recyclingStatusName(RecyclingStatusNameComboBox.getValue())
                     .currentProcessDescription(RecyclingStatusContentComboBox.getValue())
                     .build();
-            RecyclingStatusControl recyclingStatusControl = new RecyclingStatusControl(DataBaseConnection.getConnection());
             boolean res = recyclingStatusControl.insertRecyclingStatus(recyclingStatus);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
@@ -1445,9 +1596,7 @@ public class MainPageController {
                 new ErrorClass().startError("Ошибка", "Количество мусора не может быть меньше 1");
                 return;
             }
-            UserControl userControl=new UserControl(DataBaseConnection.getConnection());
             String userId=userControl.getUserIdByLogin(TrashInfoComboBoxIDUser.getValue());
-            TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
             String trashTypeId=trashTypeControl.getTrashTypeIdByName(TrashInfoComboBoxIDTrashType.getValue());
             if(userId==null || trashTypeId==null){
                 new ErrorClass().startError("Ошибка","Пользователь  или тип мусора не найден в базе данных");return;
@@ -1457,7 +1606,6 @@ public class MainPageController {
                     .trashTypeId(trashTypeId)
                     .trashQuantity(quantity)
                     .build();
-            TrashInfoControl trashInfoControl = new TrashInfoControl(DataBaseConnection.getConnection());
             boolean res = trashInfoControl.insertTrashInfo(trashInfo);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
@@ -1491,7 +1639,6 @@ public class MainPageController {
                     .password(UserPasswordComboBox.getValue())
                     .email(UserEmailComboBjx.getValue())
                     .build();
-            UserControl userControl = new UserControl(DataBaseConnection.getConnection());
             boolean res = userControl.insertUser(user1);
             if(res){
                 new ErrorClass().startSuccess("Успех", "Добавление строки прошло успешно");
@@ -1697,9 +1844,7 @@ public class MainPageController {
     }
     private void fillFieldsFromSelectedRowTrashInfo(TrashInfo selected) {
         TrashInfoIDComboBox.setValue(selected.getTrashInfoId());
-        UserControl userControl=new UserControl(DataBaseConnection.getConnection());
         TrashInfoComboBoxIDUser.setValue(userControl.getLoginByUserId(selected.getUserId()));
-        TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
         TrashInfoComboBoxIDTrashType.setValue(trashTypeControl.getTrashTypeNameById(selected.getTrashTypeId()));
         TrashInfoComboBoxTrashQuantity.setValue(selected.getTrashQuantity());
         updateTrashInfoID.setValue(selected.getTrashInfoId());
@@ -1712,7 +1857,6 @@ public class MainPageController {
     }
     private void fillFieldsFromSelectedRowRecycling(Recycling selected) {
         RecyclingIDComboBox.setValue(selected.getRecyclingId());
-        RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
         RecyclingStatusIdComboBox.setValue(recyclingStatusControl.getRecyclingStatusNameById(selected.getRecyclingStatusId()));
         RecyclingRecyclingRuleIDComboBox.setValue(selected.getRuleId());
         RecyclingIDTrashInfoComboBox.setValue(selected.getTrashInfoId());
@@ -1726,9 +1870,7 @@ public class MainPageController {
     }
     private void fillFieldsFromSelectedRowReport(Report selected) {
         ReportIDComboBox.setValue(selected.getReportId());
-        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
         ReportTypeIDComboBox.setValue(reportTypeControl.getReportTypeNameById(selected.getReportTypeId()));
-        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
         IDAdminComboBox.setValue(adminControl.getLoginByAdminId(selected.getAdminId()));
         ReportContentComboBox.setValue(selected.getContent());
         ReportIdRecyclingComboBox.setValue(selected.getRecyclingId());
@@ -1832,14 +1974,12 @@ public class MainPageController {
         List<Report> rows = (List<Report>) forAllEntities.getAllRows("report");
         ObservableList<Report> observableList = FXCollections.observableArrayList(rows);
         Report1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportId()));
-        ReportTypeControl reportTypeControl=new ReportTypeControl(DataBaseConnection.getConnection());
         Report2.setCellValueFactory(cellData -> {
             String reportTypeId = cellData.getValue().getReportTypeId();
             String reportTypeName = reportTypeControl.getReportTypeNameById(reportTypeId);
             return new SimpleStringProperty(reportTypeName);
         });
         //Report2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getReportTypeId()));
-        AdminControl adminControl=new AdminControl(DataBaseConnection.getConnection());
         Report3.setCellValueFactory(cellData -> {
             String adminId = cellData.getValue().getAdminId();
             String login = adminControl.getLoginByAdminId(adminId);
@@ -1901,7 +2041,6 @@ public class MainPageController {
         List<Recycling> rows = (List<Recycling>) forAllEntities.getAllRows("recycling");
         ObservableList<Recycling> observableList = FXCollections.observableArrayList(rows);
         Recycling1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRecyclingId()));
-        RecyclingStatusControl recyclingStatusControl=new RecyclingStatusControl(DataBaseConnection.getConnection());
         Recycling2.setCellValueFactory(cellData -> {
             String recyclingStatusId = cellData.getValue().getRecyclingStatusId();
             String recyclingStatus = recyclingStatusControl.getRecyclingStatusNameById(recyclingStatusId);
@@ -1964,14 +2103,12 @@ public class MainPageController {
         List<TrashInfo> rows = (List<TrashInfo>) forAllEntities.getAllRows("trash_info");
         ObservableList<TrashInfo> observableList = FXCollections.observableArrayList(rows);
         TrashInfo1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTrashInfoId()));
-        UserControl userControl=new UserControl(DataBaseConnection.getConnection());
         TrashInfo2.setCellValueFactory(cellData -> {
             String userId = cellData.getValue().getUserId();
             String userLogin = userControl.getLoginByUserId(userId);
             return new SimpleStringProperty(userLogin);
         });
         //TrashInfo2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUserId()));
-        TrashTypeControl trashTypeControl=new TrashTypeControl(DataBaseConnection.getConnection());
         TrashInfo3.setCellValueFactory(cellData -> {
             String trashTypeId = cellData.getValue().getTrashTypeId();
             String trashType = trashTypeControl.getTrashTypeNameById(trashTypeId);
