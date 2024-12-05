@@ -361,7 +361,7 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции изменения информации");
             return;
         }
-        if(delValueAdmin.getText().length()==0){
+        if(delValueAdmin.getText().isEmpty()){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         if (deleteAdminColumnName.getValue().contains(";") || delValueAdmin.getText().contains(";")) {
@@ -390,7 +390,7 @@ public class MainPageController {
             new ErrorClass().startError("Ошибка","Поля не заполнены","Пожалуйста, заполните все поля для выполнения операции удаления информации");
             return;
         }
-        if(delValueReportType.getText().length()==0){
+        if(delValueReportType.getText().isEmpty()){
             new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
         }
         if (deleteReportTypeColumnName.getValue().contains(";") || delValueReportType.getText().contains(";")) {
@@ -1413,6 +1413,12 @@ public class MainPageController {
             if(LoginComboBox.getValue()==null || PasswordComboBox.getValue()==null || LoginComboBox.getValue().length()==0 || PasswordComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
+            if (LoginComboBox.getValue().contains(";") || (NameComboBox.getValue()!=null &&NameComboBox.getValue().length()!=0 && NameComboBox.getValue().contains(";")) ||
+                    (SurnameComboBox.getValue()!=null &&SurnameComboBox.getValue().length()!=0 && SurnameComboBox.getValue().contains(";")) ||PasswordComboBox.getValue().contains(";") ||
+                    (EmailComboBox.getValue()!=null &&EmailComboBox.getValue().length()!=0 &&EmailComboBox.getValue().contains(";"))) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
+            //if()
             Admin admin = Admin.builder()
                     .login(LoginComboBox.getValue())
                     .name(NameComboBox.getValue())
@@ -1444,6 +1450,9 @@ public class MainPageController {
             if(ReportTypeNameComboBox.getValue()==null ||ReportTypeNameComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
+            if (ReportTypeNameComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             ReportType reportType = ReportType.builder()
                     .reportTypeName(ReportTypeNameComboBox.getValue())
                     .build();
@@ -1466,6 +1475,9 @@ public class MainPageController {
         try {
             if(IDAdminComboBox.getValue()==null || ReportContentComboBox.getValue()==null || ReportIdRecyclingComboBox.getValue()==null || IDAdminComboBox.getValue().length()==0 || ReportContentComboBox.getValue().length()==0 || ReportIdRecyclingComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
+            if (ReportTypeIDComboBox.getValue().contains(";")||IDAdminComboBox.getValue().contains(";")||ReportContentComboBox.getValue().contains(";")|| ReportIdRecyclingComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
             }
             java.sql.Date sqlDate = null;
             if (ReportDateComboBox.getValue() != null) {
@@ -1504,6 +1516,9 @@ public class MainPageController {
             if(RecyclingRuleContentComboBox.getValue()==null || RecyclingRuleContentComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
+            if (RecyclingRuleContentComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             RecyclingRule recyclingRule = RecyclingRule.builder()
                     .content(RecyclingRuleContentComboBox.getValue())
                     .build();
@@ -1526,6 +1541,9 @@ public class MainPageController {
         try {
             if(RecyclingStatusIdComboBox.getValue()==null || RecyclingRecyclingRuleIDComboBox.getValue()==null || RecyclingIDTrashInfoComboBox.getValue()==null || RecyclingStatusIdComboBox.getValue().length()==0 || RecyclingRecyclingRuleIDComboBox.getValue().length()==0 || RecyclingIDTrashInfoComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
+            if (RecyclingIDTrashInfoComboBox.getValue().contains(";")||RecyclingRecyclingRuleIDComboBox.getValue().contains(";")|| RecyclingStatusIdComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
             }
             java.sql.Date sqlDate = null;
             if (RecyclingDateComboBox.getValue() != null) {
@@ -1564,6 +1582,9 @@ public class MainPageController {
             if(RecyclingStatusNameComboBox.getValue()==null || RecyclingStatusContentComboBox.getValue()==null || RecyclingStatusNameComboBox.getValue().length()==0 || RecyclingStatusContentComboBox.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
+            if (RecyclingStatusNameComboBox.getValue().contains(";")|| RecyclingStatusContentComboBox.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             RecyclingStatus recyclingStatus = RecyclingStatus.builder()
                     .recyclingStatusName(RecyclingStatusNameComboBox.getValue())
                     .currentProcessDescription(RecyclingStatusContentComboBox.getValue())
@@ -1590,6 +1611,9 @@ public class MainPageController {
         try {
             if(TrashInfoComboBoxIDUser.getValue()==null || TrashInfoComboBoxIDTrashType.getValue()==null || TrashInfoComboBoxIDUser.getValue().length()==0 || TrashInfoComboBoxIDTrashType.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
+            if (TrashInfoComboBoxIDUser.getValue().contains(";")|| TrashInfoComboBoxIDTrashType.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
             }
             int quantity = Integer.parseInt(TrashInfoComboBoxTrashQuantity.getEditor().getText());
             if(quantity<1){
@@ -1632,6 +1656,11 @@ public class MainPageController {
                     UserNameComboBox.getValue().length()==0 || UserSurnameComboBox.getValue().length()==0|| UserEmailComboBjx.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
             }
+            if (UserLoginComboBox.getValue().contains(";") || (UserNameComboBox.getValue()!=null &&UserNameComboBox.getValue().length()!=0 && UserNameComboBox.getValue().contains(";")) ||
+                    (UserSurnameComboBox.getValue()!=null &&UserSurnameComboBox.getValue().length()!=0 && UserSurnameComboBox.getValue().contains(";")) ||UserPasswordComboBox.getValue().contains(";") ||
+                    (UserEmailComboBjx.getValue()!=null &&UserEmailComboBjx.getValue().length()!=0 &&UserEmailComboBjx.getValue().contains(";"))) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
+            }
             User user1 = User.builder()
                     .login(UserLoginComboBox.getValue())
                     .name(UserNameComboBox.getValue())
@@ -1661,6 +1690,9 @@ public class MainPageController {
                     .build();*/
             if(TrashTypeComboBoxName.getValue()==null || TrashTypeComboBoxName.getValue().length()==0){
                 new ErrorClass().startError("Ошибка","Ошибка ввода пустых строк");return;
+            }
+            if (TrashTypeComboBoxName.getValue().contains(";")) {
+                new ErrorClass().startError("Ошибка","","Поле содержит недопустимый символ ';'.");return;
             }
             ProceduresAndFunctions proceduresAndFunctions=new ProceduresAndFunctions(DataBaseConnection.getConnection());
             proceduresAndFunctions.callAddTrashTypeProcedure(TrashTypeComboBoxName.getValue());
